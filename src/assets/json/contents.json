@@ -1,0 +1,109 @@
+[
+    {
+        "id": 1,
+        "content_id": 2,
+        "link": "videos/9448gXSuJ5PT8y2QyDqnUKamodbytvVuXncnJdS3.mp4",
+        "caption": "First Video",
+        "start": null,
+        "end": null,
+        "uploaded": 1,
+        "created_at": "2024-03-18T23:56:19.000000Z",
+        "updated_at": "2024-03-18T23:56:19.000000Z",
+        "type": "video",
+        "title": "Intro video",
+        "duration": 10
+    },
+    {
+        "id": 2,
+        "content_id": 3,
+        "link": "videos/EwuDRZQXLobd9QNjKmdea1dddihuS0NYvl0tveAE.mp4",
+        "caption": "First Video",
+        "start": null,
+        "end": null,
+        "uploaded": 1,
+        "created_at": "2024-03-18T23:56:35.000000Z",
+        "updated_at": "2024-03-18T23:56:35.000000Z",
+        "type": "video",
+        "title": "Intro video",
+        "duration": 10
+    },
+    {
+        "id": 3,
+        "content_id": 4,
+        "link": "https://www.youtube.com/watch?v=C6rNeMnSi2o",
+        "caption": "Youtube Video",
+        "start": null,
+        "end": null,
+        "uploaded": 0,
+        "created_at": "2024-03-18T23:56:45.000000Z",
+        "updated_at": "2024-03-18T23:56:45.000000Z",
+        "type": "video",
+        "title": "Intro video",
+        "duration": 10
+    },
+    {
+        "id": 1,
+        "content_id": 5,
+        "link": "images/ayxNBpvEiFhWraSHUIlvygY9D7sHpSkiRmEddafe.jpg",
+        "caption": "Updated image",
+        "created_at": "2024-03-18T23:56:59.000000Z",
+        "updated_at": "2024-03-19T00:07:24.000000Z",
+        "type": "image",
+        "title": "Algerian Map",
+        "duration": 10
+    },
+    {
+        "id": 1,
+        "content_id": 6,
+        "link": "documents/8YWOKl9uY5iZceLpx5IbeI4IvN8jMeHk0MOUR1Tf.pdf",
+        "caption": "Updated doc",
+        "created_at": "2024-03-18T23:57:19.000000Z",
+        "updated_at": "2024-03-19T00:07:10.000000Z",
+        "type": "document",
+        "title": "Assignment",
+        "duration": 10
+    },
+    {
+        "id": 1,
+        "content_id": 7,
+        "data": "<p><strong>This is some updated text data.</strong></p>",
+        "created_at": "2024-03-18T23:57:29.000000Z",
+        "updated_at": "2024-03-24T14:37:07.000000Z",
+        "type": "text",
+        "title": "Intro Reading",
+        "duration": 10
+    },
+    {
+        "id": 1,
+        "content_id": 8,
+        "instruction": null,
+        "created_at": "2024-03-18T23:57:49.000000Z",
+        "updated_at": "2024-03-24T14:23:01.000000Z",
+        "pass_percentage": null,
+        "type": "quize",
+        "title": "Practice Quiz",
+        "duration": 10
+    },
+    {
+        "id": 2,
+        "content_id": 9,
+        "instruction": "New instr",
+        "created_at": "2024-03-24T14:17:20.000000Z",
+        "updated_at": "2024-03-24T14:45:44.000000Z",
+        "pass_percentage": "60",
+        "type": "quize",
+        "title": "Practice Quiz",
+        "duration": 10
+    },
+    {
+        "id": 3,
+        "content_id": 10,
+        "instruction": "Complete all the questions",
+        "created_at": "2024-03-24T14:49:49.000000Z",
+        "updated_at": "2024-03-24T14:49:49.000000Z",
+        "pass_percentage": "80",
+        "type": "quize",
+        "title": "Practice Quiz",
+        "duration": 10
+    }
+]

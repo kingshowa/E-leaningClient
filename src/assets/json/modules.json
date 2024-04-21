@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "name": "Regex in python",
+        "code": "DES23",
+        "description": "This part introduces all necessary information on variables declaration, use and declaration",
+        "duration": "3",
+        "creator": 2,
+        "created_at": "2024-03-18T23:47:59.000000Z",
+        "updated_at": "2024-03-18T23:49:58.000000Z",
+        "deleted_at": null,
+        "course_id": 0
+    },
+    {
+        "id": 2,
+        "name": "Variables in Python1",
+        "code": "DES23",
+        "description": "This part introduces all necessary information on variables declaration, use and declaration",
+        "duration": "2",
+        "creator": 2,
+        "created_at": "2024-03-18T23:48:15.000000Z",
+        "updated_at": "2024-03-18T23:48:15.000000Z",
+        "deleted_at": null
+    },
+    {
+        "id": 3,
+        "name": "Variables in Python2",
+        "code": "DES23",
+        "description": "This part introduces all necessary information on variables declaration, use and declaration",
+        "duration": "2",
+        "creator": 2,
+        "created_at": "2024-03-18T23:48:21.000000Z",
+        "updated_at": "2024-03-18T23:48:21.000000Z",
+        "deleted_at": null
+    },
+    {
+        "id": 5,
+        "name": "Variables in Python2",
+        "code": "DES23",
+        "description": "This part introduces all necessary information on variables declaration, use and declaration",
+        "duration": "2",
+        "creator": 2,
+        "created_at": "2024-03-18T23:50:32.000000Z",
+        "updated_at": "2024-03-18T23:50:32.000000Z",
+        "deleted_at": null
+    }
+]
