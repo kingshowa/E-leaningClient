@@ -32,11 +32,7 @@ import "assets/css/style.css";
 // Data
 import { getColumns, getRows } from "layouts/contents/data";
 
-import contents from "assets/json/contents.json";
-import modules from "assets/json/modules.json";
-//import courses from "assets/json/courses.json";
-
-import { fetchObjects, deleteObject } from "api.js";
+import { fetchObjects, postData, editData } from "api.js";
 
 function ViewModule() {
   // Get params from url
@@ -46,7 +42,10 @@ function ViewModule() {
   const state = Number(searchParams.get("state"));
 
   const [data, setData] = useState();
+  const [formData, setFormData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
+
   // fetch data
   useEffect(() => {
     const fetchData = async () => {
@@ -54,6 +53,7 @@ function ViewModule() {
         const data1 = await fetchObjects("module/contents/" + id);
         setData(data1.module);
         setCourses(data1.courses);
+        setFormData(data1.module);
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch objects:", error);
@@ -84,15 +84,36 @@ function ViewModule() {
   // Update data management
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setData({ ...data, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    data.course_id = selectedValue;
-    console.log(data);
+    //formData.course_id = selectedValue;
+    if (formData != null) {
+      const url = "module/edit/" + id;
+      const saveData = async () => {
+        try {
+          const responseData = await postData(formData, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setIsSaved(true);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
+    console.log(formData);
     // perfom save operations
   };
+
+  useEffect(() => {
+    if (isSaved) {
+      // Perform navigation after state change
+      window.location.href = "/modules/module?id=" + id; // Navigate to another page
+    }
+  }, [isSaved]);
 
   return isLoading ? (
     <div>
@@ -116,77 +137,82 @@ function ViewModule() {
           />
         </MDBox>
         {/* Edit content */}
-        <MDBox mt={5} mb={2} className={toggleState == 1 ? "active-content" : "content"}>
-          <MDBox component="form" role="form" onSubmit={handleSubmit} p={3} pt={2}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDInput
-                    type="text"
-                    name="name"
-                    label="Name"
-                    fullWidth
-                    value={data.name}
-                    onChange={handleInputChange}
-                  />
-                </MDBox>
+        {formData ? (
+          <MDBox mt={5} mb={2} className={toggleState == 1 ? "active-content" : "content"}>
+            <MDBox component="form" role="form" onSubmit={handleSubmit} p={3} pt={2}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDInput
+                      type="text"
+                      name="name"
+                      label="Name"
+                      fullWidth
+                      value={formData.name}
+                      onChange={handleInputChange}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDInput
+                      type="text"
+                      name="code"
+                      label="Code"
+                      fullWidth
+                      value={formData.code}
+                      onChange={handleInputChange}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDTextarea
+                      name="description"
+                      label="Description"
+                      value={formData.description}
+                      onChange={handleInputChange}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDInput
+                      type="number"
+                      name="duration"
+                      label="Duration in hours"
+                      fullWidth
+                      value={formData.duration}
+                      onChange={handleInputChange}
+                    />
+                  </MDBox>
+                </Grid>
+                {/* <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <SearchableSelect
+                      options={courses}
+                      name="course_id"
+                      val={formData.course_id}
+                      title="Select course"
+                      setValue={setSelectedValue}
+                    />
+                  </MDBox>
+                </Grid> */}
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDButton variant="gradient" color="dark" type="submit">
+                      update course
+                    </MDButton>
+                  </MDBox>
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDInput
-                    type="text"
-                    name="code"
-                    label="Code"
-                    fullWidth
-                    value={data.code}
-                    onChange={handleInputChange}
-                  />
-                </MDBox>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDInput
-                    type="number"
-                    name="duration"
-                    label="Duration in hours"
-                    fullWidth
-                    value={data.duration}
-                    onChange={handleInputChange}
-                  />
-                </MDBox>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <SearchableSelect
-                    options={courses}
-                    name="course_id"
-                    val={data.course_id}
-                    title="Select course"
-                    setValue={setSelectedValue}
-                  />
-                </MDBox>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDTextarea
-                    name="description"
-                    label="Description"
-                    value={data.description}
-                    onChange={handleInputChange}
-                  />
-                </MDBox>
-              </Grid>
-              <Grid item xs={12} md={6}></Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDButton variant="gradient" color="dark" type="submit">
-                    update course
-                  </MDButton>
-                </MDBox>
-              </Grid>
-            </Grid>
+            </MDBox>
           </MDBox>
-        </MDBox>
+        ) : (
+          <div>
+            <p>Loading...</p>
+          </div>
+        )}
       </Header>
       <MDBox pt={2} pb={3}>
         <Grid container spacing={6}>

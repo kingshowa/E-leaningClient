@@ -250,29 +250,35 @@ function ViewProgram() {
             <p>Loading...</p>
           </div>
         )}
-        <MDBox mt={5} mb={2} className={toggleState == 2 ? "active-content" : "content"}>
-          <MDBox p={3} pt={2}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <MDBox>
-                  <Switch
-                    name="enabled"
-                    checked={formData.enabled}
-                    onChange={handleSwitchChange1}
-                  />
-                  <MDTypography
-                    variant="button"
-                    fontWeight="regular"
-                    color="text"
-                    sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-                  >
-                    &nbsp;&nbsp;Enable Program
-                  </MDTypography>
-                </MDBox>
+        {formData ? (
+          <MDBox mt={5} mb={2} className={toggleState == 2 ? "active-content" : "content"}>
+            <MDBox p={3} pt={2}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <MDBox>
+                    <Switch
+                      name="enabled"
+                      checked={formData.enabled}
+                      onChange={handleSwitchChange1}
+                    />
+                    <MDTypography
+                      variant="button"
+                      fontWeight="regular"
+                      color="text"
+                      sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
+                    >
+                      &nbsp;&nbsp;Enable Program
+                    </MDTypography>
+                  </MDBox>
+                </Grid>
               </Grid>
-            </Grid>
+            </MDBox>
           </MDBox>
-        </MDBox>
+        ) : (
+          <div>
+            <p>Loading...</p>
+          </div>
+        )}
       </Header>
       <MDBox pt={2} pb={3}>
         <Grid container spacing={6}>

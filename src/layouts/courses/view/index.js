@@ -35,13 +35,10 @@ import "assets/css/style.css";
 // Data
 import { getColumns, getRows } from "layouts/modules/data";
 
-import modules from "assets/json/modules.json";
-import course from "assets/json/course.json";
-
 // Images
 import homeDecor1 from "assets/images/home-decor-1.jpg";
 
-import { fetchObjects, deleteObject } from "api.js";
+import { fetchObjects, postData, editData } from "api.js";
 
 function ViewCourse() {
   // Get params from url
@@ -51,7 +48,9 @@ function ViewCourse() {
   const state = Number(searchParams.get("state"));
 
   const [data, setData] = useState();
+  const [formData, setFormData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
   // fetch data
   useEffect(() => {
     const fetchData = async () => {
@@ -59,6 +58,7 @@ function ViewCourse() {
         const data1 = await fetchObjects("course/modules/" + id);
         setData(data1.course);
         setTeachers(data1.teachers);
+        setFormData(data1.course);
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch objects:", error);
@@ -90,40 +90,85 @@ function ViewCourse() {
   // Update data management
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setData({ ...data, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
   // Handle switch toggle
   const handleSwitchChange = (e) => {
     const { name, checked } = e.target;
-    setData({ ...data, [name]: checked });
+    setFormData({ ...formData, [name]: checked ? 1 : 0 });
   };
   // Handle switch toggle
   const handleSwitchChange1 = (e) => {
     const { name, checked } = e.target;
-    setData({ ...data, [name]: checked });
-    console.log(data.enabled ? "Disabled" : "Enabled");
-    // call disable API to enable course
+    setFormData({ ...formData, [name]: checked });
+    console.log(formData.enabled ? "Disabled" : "Enabled");
+    const url = "course/enable/" + id;
+    const saveData = async () => {
+      try {
+        const d = { enabled: checked };
+        const responseData = await editData(d, url);
+        console.log("Data saved successfully:", responseData);
+        // Navigate to another page after successful data saving
+        //setIsSaved(true);
+      } catch (error) {
+        console.error("Error posting data:", error.message);
+      }
+    };
+    saveData();
   };
   // Handle switch toggle
   const handleSwitchChange2 = (e) => {
     const { name, checked } = e.target;
-    setData({ ...data, [name]: checked });
-    console.log(data.completed ? "Not Complete" : "Completed");
-    // call disable API to mark course completed
+    setFormData({ ...formData, [name]: checked });
+    console.log(formData.completed ? "Not Complete" : "Completed");
+    const url = "course/completed/" + id;
+    const saveData = async () => {
+      try {
+        const d = { completed: checked };
+        const responseData = await editData(d, url);
+        console.log("Data saved successfully:", responseData);
+        // Navigate to another page after successful data saving
+        //setIsSaved(true);
+      } catch (error) {
+        console.error("Error posting data:", error.message);
+      }
+    };
+    saveData();
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    data.assigned_to = selectedValue;
-    console.log(data);
+    formData.assigned_to = selectedValue;
+    if (formData != null) {
+      const url = "course/edit/" + id;
+      const saveData = async () => {
+        try {
+          const responseData = await postData(formData, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setIsSaved(true);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
+    console.log(formData);
     // perfom save operations
   };
 
   // Upload file type
   const handleFileUpload = (event) => {
     // get the selected file from the input
-    data.photo = event.target.files[0];
+    formData.photo = event.target.files[0];
   };
+
+  useEffect(() => {
+    if (isSaved) {
+      // Perform navigation after state change
+      window.location.href = "/courses/course?id=" + id; // Navigate to another page
+    }
+  }, [isSaved]);
 
   return isLoading ? (
     <div>
@@ -151,153 +196,173 @@ function ViewCourse() {
           />
         </MDBox>
         {/* Edit content */}
-        <MDBox mt={5} mb={2} className={toggleState == 1 ? "active-content" : "content"}>
-          <MDBox component="form" role="form" onSubmit={handleSubmit} p={3} pt={2}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDInput
-                    type="text"
-                    name="name"
-                    label="Name"
-                    fullWidth
-                    value={data.name}
-                    onChange={handleInputChange}
-                  />
-                </MDBox>
+        {formData ? (
+          <MDBox mt={5} mb={2} className={toggleState == 1 ? "active-content" : "content"}>
+            <MDBox component="form" role="form" onSubmit={handleSubmit} p={3} pt={2}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDInput
+                      type="text"
+                      name="name"
+                      label="Name"
+                      fullWidth
+                      value={formData.name}
+                      onChange={handleInputChange}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDInput
+                      type="text"
+                      name="code"
+                      label="Code"
+                      fullWidth
+                      value={formData.code}
+                      onChange={handleInputChange}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDSelect
+                      defaultValue=" "
+                      name="level"
+                      value={formData.level}
+                      onChange={handleInputChange}
+                    >
+                      <MenuItem value=" ">Select Level</MenuItem>
+                      <MenuItem value="beginner">Beginner</MenuItem>
+                      <MenuItem value="intermediate">Intermediate</MenuItem>
+                      <MenuItem value="advanced">Advanced</MenuItem>
+                    </MDSelect>
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <SearchableSelect
+                      options={teachers}
+                      name="assigned_to"
+                      val={formData.assigned_to}
+                      title="Select responsible teacher"
+                      setValue={setSelectedValue}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDInput
+                      type="number"
+                      name="price"
+                      label="Price"
+                      fullWidth
+                      value={formData.price}
+                      onChange={handleInputChange}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDInput
+                      type="file"
+                      name="photo"
+                      label="Photo"
+                      fullWidth
+                      p={2}
+                      onChange={handleFileUpload}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDTextarea
+                      name="description"
+                      label="Bescription"
+                      value={formData.description}
+                      onChange={handleInputChange}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={2}>
+                    <Switch
+                      name="enabled"
+                      checked={formData.enabled}
+                      onChange={handleSwitchChange}
+                    />
+                    <MDTypography
+                      variant="button"
+                      fontWeight="regular"
+                      color="text"
+                      sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
+                    >
+                      &nbsp;&nbsp;Enable
+                    </MDTypography>
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox my={1}>
+                    <MDButton variant="gradient" color="dark" type="submit">
+                      update course
+                    </MDButton>
+                  </MDBox>
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDInput
-                    type="text"
-                    name="code"
-                    label="Code"
-                    fullWidth
-                    value={data.code}
-                    onChange={handleInputChange}
-                  />
-                </MDBox>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDSelect
-                    defaultValue=" "
-                    name="level"
-                    value={data.level}
-                    onChange={handleInputChange}
-                  >
-                    <MenuItem value=" ">Select Level</MenuItem>
-                    <MenuItem value="beginner">Beginner</MenuItem>
-                    <MenuItem value="intermediate">Intermediate</MenuItem>
-                    <MenuItem value="advanced">Advanced</MenuItem>
-                  </MDSelect>
-                </MDBox>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <SearchableSelect
-                    options={teachers}
-                    name="assigned_to"
-                    val={data.assigned_to}
-                    title="Select responsible teacher"
-                    setValue={setSelectedValue}
-                  />
-                </MDBox>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDInput
-                    type="number"
-                    name="price"
-                    label="Price"
-                    fullWidth
-                    value={data.price}
-                    onChange={handleInputChange}
-                  />
-                </MDBox>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDInput
-                    type="file"
-                    name="photo"
-                    label="Photo"
-                    fullWidth
-                    p={2}
-                    onChange={handleFileUpload}
-                  />
-                </MDBox>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDTextarea
-                    name="description"
-                    label="Bescription"
-                    value={data.description}
-                    onChange={handleInputChange}
-                  />
-                </MDBox>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={2}>
-                  <Switch name="enabled" checked={data.enabled} onChange={handleSwitchChange} />
-                  <MDTypography
-                    variant="button"
-                    fontWeight="regular"
-                    color="text"
-                    sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-                  >
-                    &nbsp;&nbsp;Enable
-                  </MDTypography>
-                </MDBox>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox my={1}>
-                  <MDButton variant="gradient" color="dark" type="submit">
-                    update course
-                  </MDButton>
-                </MDBox>
-              </Grid>
-            </Grid>
+            </MDBox>
           </MDBox>
-        </MDBox>
+        ) : (
+          <div>
+            <p>Loading...</p>
+          </div>
+        )}
         {/* Edit content */}
-        <MDBox mt={5} mb={2} className={toggleState == 2 ? "active-content" : "content"}>
-          <MDBox component="form" role="form" onSubmit={handleSubmit} p={3} pt={2}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <MDBox>
-                  <Switch name="enabled" checked={data.enabled} onChange={handleSwitchChange1} />
-                  <MDTypography
-                    variant="button"
-                    fontWeight="regular"
-                    color="text"
-                    sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-                  >
-                    &nbsp;&nbsp;Enable Course
-                  </MDTypography>
-                </MDBox>
+        {formData ? (
+          <MDBox mt={5} mb={2} className={toggleState == 2 ? "active-content" : "content"}>
+            <MDBox component="form" role="form" onSubmit={handleSubmit} p={3} pt={2}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <MDBox>
+                    <Switch
+                      name="enabled"
+                      checked={formData.enabled}
+                      onChange={handleSwitchChange1}
+                    />
+                    <MDTypography
+                      variant="button"
+                      fontWeight="regular"
+                      color="text"
+                      sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
+                    >
+                      &nbsp;&nbsp;Enable Course
+                    </MDTypography>
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <MDBox>
+                    <Switch
+                      name="completed"
+                      checked={formData.completed}
+                      onChange={handleSwitchChange2}
+                    />
+                    <MDTypography
+                      variant="button"
+                      fontWeight="regular"
+                      color="text"
+                      sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
+                    >
+                      &nbsp;&nbsp;Course completed
+                    </MDTypography>
+                  </MDBox>
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <MDBox>
-                  <Switch
-                    name="completed"
-                    checked={data.completed}
-                    onChange={handleSwitchChange2}
-                  />
-                  <MDTypography
-                    variant="button"
-                    fontWeight="regular"
-                    color="text"
-                    sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-                  >
-                    &nbsp;&nbsp;Course completed
-                  </MDTypography>
-                </MDBox>
-              </Grid>
-            </Grid>
+            </MDBox>
           </MDBox>
-        </MDBox>
+        ) : (
+          <div>
+            <p>Loading...</p>
+          </div>
+        )}
       </Header>
       <MDBox pt={2} pb={3}>
         <Grid container spacing={6}>

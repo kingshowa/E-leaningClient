@@ -1,11 +1,9 @@
-// react-router-dom components
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
-import NativeSelect from "@mui/material/NativeSelect";
 import MenuItem from "@mui/material/MenuItem";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -21,27 +19,79 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
-function CreateCourse() {
-  const options = [
-    { id: 0, name: "Option 0" },
-    { id: 1, name: "Option 1" },
-    { id: 2, name: "Option 2" },
-    { id: 3, name: "Option 3" },
-    { id: 4, name: "Option 4" },
-    { id: 5, name: "Option 5" },
-    { id: 6, name: "Option 6" },
-    { id: 7, name: "Option 7" },
-    { id: 8, name: "Option 8" },
-    { id: 9, name: "Option 9" },
-    { id: 10, name: "Option 10" },
-    { id: 11, name: "Option 11" },
-    { id: 12, name: "Option 12" },
-    { id: 13, name: "Option 13" },
-    { id: 14, name: "Option 14" },
-    { id: 15, name: "Option 15" },
-  ];
+import { postData, fetchObjects } from "api.js";
 
-  return (
+function CreateCourse() {
+  const [data, setData] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // selected value from Searchable selection
+  const [selectedValue, setSelectedValue] = useState(0);
+  const [teachers, setTeachers] = useState();
+
+  // fetch data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data1 = await fetchObjects("teachers");
+        setTeachers(data1.teachers);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch objects:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Update data management
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+    console.log(data);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    data.assigned_to = selectedValue;
+    if (data != null) {
+      const url = "course";
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setIsSaved(true);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
+    console.log(data);
+    //setData(null);
+    // perfom save operations
+  };
+
+  // Upload file type
+  const handleFileUpload = (event) => {
+    // get the selected file from the input
+    data.photo = event.target.files[0];
+    console.log(data);
+  };
+
+  useEffect(() => {
+    if (isSaved) {
+      // Perform navigation after state change
+      window.location.href = "/courses"; // Navigate to another page
+    }
+  }, [isSaved]);
+
+  return isLoading ? (
+    <div>
+      <p>Loading...</p>
+    </div>
+  ) : (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox pt={2} pb={3}>
@@ -59,21 +109,33 @@ function CreateCourse() {
                   Create New Course
                 </MDTypography>
               </MDBox>
-              <MDBox component="form" role="form" p={3} pt={2}>
+              <MDBox component="form" role="form" onSubmit={handleSubmit} p={3} pt={2}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={6}>
                     <MDBox my={1}>
-                      <MDInput type="text" name="name" label="Name" fullWidth />
+                      <MDInput
+                        type="text"
+                        name="name"
+                        label="Name"
+                        fullWidth
+                        onChange={handleInputChange}
+                      />
                     </MDBox>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <MDBox my={1}>
-                      <MDInput type="text" name="code" label="Code" fullWidth />
+                      <MDInput
+                        type="text"
+                        name="code"
+                        label="Code"
+                        fullWidth
+                        onChange={handleInputChange}
+                      />
                     </MDBox>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <MDBox my={1}>
-                      <MDSelect defaultValue=" " name="level">
+                      <MDSelect defaultValue=" " name="level" onChange={handleInputChange}>
                         <MenuItem value=" ">Select Level</MenuItem>
                         <MenuItem value="beginner">Beginner</MenuItem>
                         <MenuItem value="intermediate">Intermediate</MenuItem>
@@ -84,29 +146,48 @@ function CreateCourse() {
                   <Grid item xs={12} md={6}>
                     <MDBox my={1}>
                       <SearchableSelect
-                        options={options}
+                        options={teachers}
                         name="teacher"
                         val={0}
                         title="Select responsible teacher"
+                        setValue={setSelectedValue}
                       />
                     </MDBox>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <MDBox my={1}>
-                      <MDInput type="number" name="price" label="Price" fullWidth />
+                      <MDInput
+                        type="text"
+                        name="price"
+                        label="Price"
+                        placeholder="0.00"
+                        fullWidth
+                        onChange={handleInputChange}
+                      />
                     </MDBox>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <MDBox my={1}>
-                      <MDInput type="file" name="photo" label="Photo" fullWidth p={2} />
+                      <MDInput
+                        type="file"
+                        name="photo"
+                        label="Photo"
+                        fullWidth
+                        p={2}
+                        onChange={handleFileUpload}
+                      />
                     </MDBox>
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12}>
                     <MDBox my={1}>
-                      <MDTextarea name="description" label="Description" />
+                      <MDTextarea
+                        name="description"
+                        label="Description"
+                        onChange={handleInputChange}
+                      />
                     </MDBox>
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  {/* <Grid item xs={12} md={6}>
                     <MDBox>
                       <Switch name="enabled" />
                       <MDTypography
@@ -118,7 +199,7 @@ function CreateCourse() {
                         &nbsp;&nbsp;Enable course
                       </MDTypography>
                     </MDBox>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12} md={6}>
                     <MDBox my={1}>
                       <MDButton variant="gradient" color="dark" type="submit">
