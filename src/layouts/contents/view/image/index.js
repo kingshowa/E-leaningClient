@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -20,10 +20,7 @@ import Header from "layouts/programs/components/Header/Header1";
 import "assets/css/style.css";
 
 // Data
-import contents from "assets/json/contents.json";
-
-// Images
-import homeDecor1 from "assets/images/home-decor-1.jpg";
+import { postData, fetchObjects } from "api.js";
 
 function ViewContent() {
   // Get params from url
@@ -32,7 +29,25 @@ function ViewContent() {
   const id = searchParams.get("id");
   const state = Number(searchParams.get("state"));
 
-  const [data, setData] = useState(contents[3]); // change data with actual
+  const [data, setData] = useState();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
+
+  // fetch data
+  useEffect(() => {
+    fetchData();
+  }, [id]);
+
+  const fetchData = async () => {
+    try {
+      const data1 = await fetchObjects("content/image/" + id);
+      setData(data1.image);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch objects:", error);
+    }
+  };
 
   // togle tabs
   const [toggleState, setToggleState] = useState(state);
@@ -41,21 +56,48 @@ function ViewContent() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
+    setIsSaved(false);
     console.log(data);
-    // perfom save operations
   };
 
   // Upload file type
   const handleFileUpload = (event) => {
-    // get the selected file from the input
-    data.link = event.target.files[0];
+    data.image = event.target.files[0];
+    setIsSaved(false);
+    console.log(data);
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(data);
+    if (data != null) {
+      const url = "content/image/edit/" + id;
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setIsSaved(true);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
+    // perfom save operations
   };
 
-  return (
+  useEffect(() => {
+    if (isSaved) {
+      setToggleState(0);
+      fetchData();
+    }
+  }, [isSaved]);
+
+  return isLoading ? (
+    <div>
+      <p>Loading...</p>
+    </div>
+  ) : (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox mb={2} />
@@ -64,7 +106,7 @@ function ViewContent() {
         <MDBox mt={5} mb={2} className={toggleState == 0 ? "active-content" : "content"}>
           <ImageContentCard
             title={data.title}
-            image={homeDecor1}
+            image={data.link}
             caption={data.caption}
             shadow={false}
           />

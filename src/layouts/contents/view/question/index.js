@@ -28,8 +28,7 @@ import "assets/css/style.css";
 // Data
 import { getColumns, getRows } from "layouts/contents/data/options";
 
-import quiz from "assets/json/quiz.json";
-import { fetchObjects, deleteObject } from "api.js";
+import { fetchObjects, postData } from "api.js";
 
 function ViewContent() {
   // Get params from url
@@ -40,6 +39,7 @@ function ViewContent() {
 
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
   // fetch data
   useEffect(() => {
     const fetchData = async () => {
@@ -65,51 +65,69 @@ function ViewContent() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
+    setIsSaved(false);
   };
-
+  //console.log(data);
   const renderContent = () => {
-    switch (data.options[0].type) {
-      case "image":
-        return (
-          <>
-            {Array.from({ length: data.options.length }, (_, index) => (
-              <EditImageOption
-                key={index + 1}
-                index={index + 1}
-                disabled={false}
-                optionData={data.options[index]}
-              />
-            ))}
-          </>
-        );
-      case "text":
-        return (
-          <>
-            {Array.from({ length: data.options.length }, (_, index) => (
-              <EditTextOption
-                key={index + 1}
-                index={index + 1}
-                disabled={false}
-                optionData={data.options[index]}
-              />
-            ))}
-          </>
-        );
-      default:
-        return null;
-    }
+    if (data.options.length)
+      switch (data.options[0].type) {
+        case "image":
+          return (
+            <>
+              {Array.from({ length: data.options.length }, (_, index) => (
+                <EditImageOption
+                  key={index + 1}
+                  index={index + 1}
+                  disabled={false}
+                  optionData={data.options[index]}
+                />
+              ))}
+            </>
+          );
+        case "text":
+          return (
+            <>
+              {Array.from({ length: data.options.length }, (_, index) => (
+                <EditTextOption
+                  key={index + 1}
+                  index={index + 1}
+                  disabled={false}
+                  optionData={data.options[index]}
+                />
+              ))}
+            </>
+          );
+        default:
+          return null;
+      }
   };
 
   const handleFileUpload = (event) => {
     // get the selected file from the input
     data.imageUrl = event.target.files[0];
+    setIsSaved(false);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(data);
+    if (data != null && !isSaved) {
+      const url = "quize/question/" + id;
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setIsSaved(true);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
     // perfom save operations
   };
+
+  console.log(data);
 
   return isLoading ? (
     <div>
@@ -122,7 +140,7 @@ function ViewContent() {
       <Header state={toggleState} setToggleState={setToggleState}>
         {/* View content */}
         <MDBox mt={5} mb={2} className={toggleState == 0 ? "active-content" : "content"}>
-          <QuestionInfoCard image={""} context={data.context} shadow={false} />
+          <QuestionInfoCard image={data.imageUrl} context={data.context} shadow={false} />
         </MDBox>
         {/* Edit content */}
         <MDBox mt={3} mb={2} className={toggleState == 1 ? "active-content" : "content"}>

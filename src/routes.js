@@ -39,7 +39,7 @@ import ViewImageContent from "layouts/contents/view/image";
 import ViewTextContent from "layouts/contents/view/text";
 import ViewQuizContent from "layouts/contents/view/quiz";
 import ViewQuestion from "layouts/contents/view/question";
-import EditModule from "layouts/modules/edit";
+// import EditModule from "layouts/modules/edit";
 import EditDocumentContent from "layouts/contents/edit/document";
 import Billing from "layouts/billing";
 import Notifications from "layouts/notifications";
@@ -128,11 +128,6 @@ const routes = [
         key: "view_module",
         route: "/modules/module",
         component: <ViewModule />,
-      },
-      {
-        key: "edit_module",
-        route: "/modules/edit",
-        component: <EditModule />,
       },
     ],
   },

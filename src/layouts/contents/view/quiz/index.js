@@ -31,7 +31,7 @@ import "assets/css/style.css";
 import { getColumns, getRows } from "layouts/contents/data/questions";
 
 import quiz from "assets/json/quiz.json";
-import { fetchObjects, deleteObject } from "api.js";
+import { fetchObjects, editData } from "api.js";
 
 function ViewContent() {
   // Get params from url
@@ -81,6 +81,20 @@ function ViewContent() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(data);
+    if (data != null) {
+      const url = "content/quize/edit/" + id;
+      const saveData = async () => {
+        try {
+          const responseData = await editData(data, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setToggleState(0);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
     // perfom save operations
   };
 
@@ -117,7 +131,7 @@ function ViewContent() {
                     name="title"
                     label="Title"
                     fullWidth
-                    value={data.content.title}
+                    value={data.title}
                     onChange={handleInputChange}
                   />
                 </MDBox>
@@ -146,7 +160,6 @@ function ViewContent() {
                   />
                 </MDBox>
               </Grid>
-              <input type="hidden" name="type" value="quize" />
               <Grid item xs={12} md={6}></Grid>
               <Grid item xs={12} md={6}>
                 <MDBox my={1}>
@@ -173,7 +186,12 @@ function ViewContent() {
                 <MDTypography variant="h6" fontWeight="medium">
                   Questions
                 </MDTypography>
-                <MDButton variant="gradient" color="dark" component={Link} to="/create-question">
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  component={Link}
+                  to={"/create-question?id=" + id}
+                >
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                   &nbsp;add question
                 </MDButton>

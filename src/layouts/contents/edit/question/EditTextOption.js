@@ -8,6 +8,7 @@ import MDButton from "components/MDButton";
 import MDInput from "components/MDInput";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { postData } from "api.js";
 
 function CreateOption({ index, disabled = false, optionData }) {
   const [data, setData] = useState(optionData);
@@ -25,12 +26,26 @@ function CreateOption({ index, disabled = false, optionData }) {
 
   const handleChange1 = (event) => {
     const newData = { ...data };
-    newData[event.target.name] = event.target.checked;
+    newData[event.target.name] = event.target.checked ? 1 : 0;
     setData(newData);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (data != null) {
+      const url = "quize/option/" + optionData.id;
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          //setToggleState(0);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
     console.log(data); // perfom save
   };
 

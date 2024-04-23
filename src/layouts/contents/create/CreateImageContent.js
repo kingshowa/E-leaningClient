@@ -1,33 +1,53 @@
+import React, { useState, useEffect } from "react";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import { MenuItem } from "@mui/material";
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import MDInput from "components/MDInput";
-import MDSelect from "components/MDSelect";
 
-// Material Dashboard 2 React example components
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
+import PropTypes from "prop-types";
 
-function CreateContent() {
+function CreateContent({ setData }) {
+  const [docContent, setDocContent] = useState({});
+
+  // Upload file type
+  const handleFileUpload = (event) => {
+    docContent.image = event.target.files[0];
+    setData(docContent);
+  };
+
+  // Update data management
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setDocContent({ ...docContent, [name]: value });
+    //setData(docContent);
+  };
+
+  useEffect(() => {
+    if (docContent) {
+      setData(docContent);
+    }
+  }, [docContent]);
+
   return (
     <Grid container spacing={3} pt={3}>
       <Grid item xs={12} md={6}>
         <MDBox my={1}>
-          <MDInput type="file" name="image" label="Image" fullWidth />
+          <MDInput type="file" name="image" label="Image" fullWidth onChange={handleFileUpload} />
         </MDBox>
       </Grid>
       <Grid item xs={12} md={6}>
         <MDBox my={1}>
-          <MDInput type="text" name="caption" label="Caption" fullWidth />
+          <MDInput
+            type="text"
+            name="caption"
+            label="Caption"
+            fullWidth
+            onChange={handleInputChange}
+          />
         </MDBox>
       </Grid>
-      <input type="hidden" name="type" value="image" />
       <Grid item xs={12} md={6}>
         <MDBox my={1}>
           <MDButton variant="gradient" color="dark" type="submit">
@@ -38,5 +58,9 @@ function CreateContent() {
     </Grid>
   );
 }
+
+CreateContent.propTypes = {
+  setData: PropTypes.func,
+};
 
 export default CreateContent;

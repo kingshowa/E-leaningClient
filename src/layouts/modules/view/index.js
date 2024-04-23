@@ -32,7 +32,7 @@ import "assets/css/style.css";
 // Data
 import { getColumns, getRows } from "layouts/contents/data";
 
-import { fetchObjects, postData, editData } from "api.js";
+import { fetchObjects, postData } from "api.js";
 
 function ViewModule() {
   // Get params from url
@@ -48,27 +48,27 @@ function ViewModule() {
 
   // fetch data
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data1 = await fetchObjects("module/contents/" + id);
-        setData(data1.module);
-        setCourses(data1.courses);
-        setFormData(data1.module);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch objects:", error);
-      }
-    };
     fetchData();
   }, [id]);
+
+  const fetchData = async () => {
+    try {
+      const data1 = await fetchObjects("module/contents/" + id);
+      setData(data1.module);
+      setFormData(data1.module);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch objects:", error);
+    }
+  };
 
   // Courses table
   const columns = getColumns();
   const rows = data ? getRows({ items: data.contents, setData, parent_id: id }) : []; //  courses is an array not object
 
-  // selected value from Searchable selection
-  const [selectedValue, setSelectedValue] = useState(0);
-  const [courses, setCourses] = useState();
+  // // selected value from Searchable selection
+  // const [selectedValue, setSelectedValue] = useState(0);
+  // const [courses, setCourses] = useState();
   // Paginations
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5; // Number of rows per page
@@ -85,6 +85,7 @@ function ViewModule() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setIsSaved(false);
   };
 
   const handleSubmit = (event) => {
@@ -110,8 +111,9 @@ function ViewModule() {
 
   useEffect(() => {
     if (isSaved) {
-      // Perform navigation after state change
-      window.location.href = "/modules/module?id=" + id; // Navigate to another page
+      setToggleState(0);
+      fetchData();
+      //window.location.href = "/modules/module?id=" + id; // Navigate to another page
     }
   }, [isSaved]);
 
@@ -130,8 +132,7 @@ function ViewModule() {
             title={data.name}
             description={data.description}
             info={{
-              creator: "Alec M. Thompson",
-              duration: "2 hrs",
+              duration: data.duration + " hrs",
             }}
             shadow={false}
           />
@@ -201,7 +202,7 @@ function ViewModule() {
                 <Grid item xs={12} md={6}>
                   <MDBox my={1}>
                     <MDButton variant="gradient" color="dark" type="submit">
-                      update course
+                      update module
                     </MDButton>
                   </MDBox>
                 </Grid>
@@ -228,7 +229,12 @@ function ViewModule() {
                 <MDTypography variant="h6" fontWeight="medium">
                   Module Contents
                 </MDTypography>
-                <MDButton variant="gradient" color="dark" component={Link} to="/create-content">
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  component={Link}
+                  to={"/create-content?id=" + id}
+                >
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                   &nbsp;add new content
                 </MDButton>

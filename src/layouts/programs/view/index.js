@@ -13,6 +13,7 @@ import MDTypography from "components/MDTypography";
 import MDBox from "components/MDBox";
 import MDButton from "components/MDButton";
 import Pagination from "components/MDPagination/Pagination";
+import SearchableSelect from "components/MDSelect/SearchableSelect";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -33,8 +34,6 @@ import Header from "layouts/programs/components/Header";
 //css
 import "assets/css/style.css";
 
-// Images
-import homeDecor1 from "assets/images/home-decor-1.jpg";
 import { fetchObjects, postData, editData } from "api.js";
 
 function ViewProgram() {
@@ -50,18 +49,38 @@ function ViewProgram() {
   const [isSaved, setIsSaved] = useState(false);
   // fetch data
   useEffect(() => {
+    fetchData();
+  }, [id]);
+
+  const fetchData = async () => {
+    try {
+      const data1 = await fetchObjects("program/courses/" + id);
+      setData(data1.program);
+      setFormData(data1.program);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch objects:", error);
+    }
+  };
+  console.log(data);
+
+  // selected value from Searchable selection
+  const [selectedValue, setSelectedValue] = useState(0);
+  const [courses, setCourses] = useState();
+
+  // fetch data
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const data1 = await fetchObjects("program/courses/" + id);
-        setData(data1.program);
-        setFormData(data1.program);
-        setIsLoading(false);
+        const data1 = await fetchObjects("courses/manage/" + id);
+        setCourses(data1.courses);
+        //setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch objects:", error);
       }
     };
     fetchData();
-  }, [id]);
+  }, []);
 
   // Courses table
   const columns = getColumns();
@@ -128,6 +147,29 @@ function ViewProgram() {
     // perfom save operations
   };
 
+  const handleSubmit1 = (event) => {
+    event.preventDefault();
+    if (selectedValue != 0) {
+      const courseData = {
+        courseId: selectedValue,
+        programId: id,
+      };
+      const url = "program/add/course";
+      const saveData = async () => {
+        try {
+          const responseData = await postData(courseData, url);
+          console.log("Data saved successfully:", responseData);
+          setSelectedValue(0);
+          fetchData();
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+      console.log(courseData);
+    }
+  };
+
   // Upload file type
   const handleFileUpload = (event) => {
     // get the selected file from the input
@@ -136,8 +178,8 @@ function ViewProgram() {
 
   useEffect(() => {
     if (isSaved) {
-      // Perform navigation after state change
-      window.location.href = "/programs/program?id=" + id; // Navigate to another page
+      setToggleState(0);
+      fetchData();
     }
   }, [isSaved]);
 
@@ -153,7 +195,7 @@ function ViewProgram() {
         {/* View content */}
         <MDBox mt={5} mb={2} className={toggleState == 0 ? "active-content" : "content"}>
           <ProgramInfoCard
-            image={homeDecor1}
+            image={data.photo}
             title={data.name}
             price={data.price}
             description={data.description}
@@ -294,9 +336,37 @@ function ViewProgram() {
                 <MDTypography variant="h6" fontWeight="medium">
                   Program Courses
                 </MDTypography>
-                <MDButton variant="gradient" color="dark" component={Link} to="/courses/create">
+                {courses != null ? (
+                  <MDBox
+                    component="form"
+                    role="form"
+                    onSubmit={handleSubmit1}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <SearchableSelect
+                      options={courses}
+                      name="course"
+                      val={0}
+                      title="Select course"
+                      setValue={setSelectedValue}
+                    />
+                    <MDButton variant="gradient" color="dark" type="submit">
+                      <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                      &nbsp;add
+                    </MDButton>
+                  </MDBox>
+                ) : (
+                  <div />
+                )}
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  component={Link}
+                  to={"/courses/create?id=" + id}
+                >
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                  &nbsp;add new course
+                  &nbsp;create new course
                 </MDButton>
               </MDBox>
               <MDBox pt={3}>

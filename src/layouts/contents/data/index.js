@@ -15,8 +15,18 @@ import { Link } from "react-router-dom";
 import { useMaterialUIController } from "context";
 import PropTypes from "prop-types";
 
-function downloadDocument(url) {
+function downloadDocument(url, name) {
   console.log("Downloading: " + url);
+  // Create a hidden link element
+  const link = document.createElement("a");
+  link.href = url;
+  link.target = "_blank";
+  link.download = name || "document"; // Set the download attribute with a filename
+
+  // Append the link to the body and trigger the download
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link); // Clean up
 }
 
 function getColumns() {
@@ -67,7 +77,9 @@ function getRows({ items, setData, parent_id }) {
           <Tooltip title="View Content" placement="top">
             <MDTypography
               component={item.type == "document" ? "a" : Link}
-              onClick={item.type == "document" ? () => downloadDocument(item.link) : null}
+              onClick={
+                item.type == "document" ? () => downloadDocument(item.link, item.type) : null
+              }
               to={"/" + item.type + "-content?id=" + item.id}
               color="text"
             >
@@ -80,7 +92,7 @@ function getRows({ items, setData, parent_id }) {
               component={Link}
               to={
                 item.type == "document"
-                  ? "/edit-document?id=" + item.id
+                  ? "/edit-document?id=" + item.id + "&m=" + parent_id
                   : "/" + item.type + "-content?id=" + item.id + "&state=1"
               }
               color="text"
@@ -93,7 +105,7 @@ function getRows({ items, setData, parent_id }) {
             <DeleteModal
               name="content"
               restore={false}
-              id={item.id}
+              id={item.content_id}
               setData={setData}
               parent_id={parent_id}
             />

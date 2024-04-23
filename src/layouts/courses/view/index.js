@@ -35,9 +35,6 @@ import "assets/css/style.css";
 // Data
 import { getColumns, getRows } from "layouts/modules/data";
 
-// Images
-import homeDecor1 from "assets/images/home-decor-1.jpg";
-
 import { fetchObjects, postData, editData } from "api.js";
 
 function ViewCourse() {
@@ -53,19 +50,20 @@ function ViewCourse() {
   const [isSaved, setIsSaved] = useState(false);
   // fetch data
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data1 = await fetchObjects("course/modules/" + id);
-        setData(data1.course);
-        setTeachers(data1.teachers);
-        setFormData(data1.course);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch objects:", error);
-      }
-    };
     fetchData();
   }, [id]);
+
+  const fetchData = async () => {
+    try {
+      const data1 = await fetchObjects("course/modules/" + id);
+      setData(data1.course);
+      setTeachers(data1.teachers);
+      setFormData(data1.course);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch objects:", error);
+    }
+  };
 
   // Courses table
   const columns = getColumns();
@@ -73,7 +71,24 @@ function ViewCourse() {
 
   // selected value from Searchable selection
   const [selectedValue, setSelectedValue] = useState(0);
+  const [selectedValue1, setSelectedValue1] = useState(0);
   const [teachers, setTeachers] = useState();
+  const [modules, setModules] = useState();
+
+  // fetch data
+  useEffect(() => {
+    fetchModuleData();
+  }, [id]);
+
+  const fetchModuleData = async () => {
+    try {
+      const data1 = await fetchObjects("modules/manage/" + id);
+      setModules(data1.modules);
+      //setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch objects:", error);
+    }
+  };
 
   // Paginations
   const [currentPage, setCurrentPage] = useState(1);
@@ -91,6 +106,7 @@ function ViewCourse() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setIsSaved(false);
   };
   // Handle switch toggle
   const handleSwitchChange = (e) => {
@@ -127,8 +143,6 @@ function ViewCourse() {
         const d = { completed: checked };
         const responseData = await editData(d, url);
         console.log("Data saved successfully:", responseData);
-        // Navigate to another page after successful data saving
-        //setIsSaved(true);
       } catch (error) {
         console.error("Error posting data:", error.message);
       }
@@ -157,16 +171,41 @@ function ViewCourse() {
     // perfom save operations
   };
 
+  const handleSubmit1 = (event) => {
+    event.preventDefault();
+    if (selectedValue1 != 0) {
+      const moduleData = {
+        courseId: id,
+        moduleId: selectedValue1,
+      };
+      const url = "course/add/module";
+      const saveData = async () => {
+        try {
+          const responseData = await postData(moduleData, url);
+          console.log("Data saved successfully:", responseData);
+          setSelectedValue1(0);
+          fetchData();
+          fetchModuleData();
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+      console.log(moduleData);
+    }
+  };
+
   // Upload file type
   const handleFileUpload = (event) => {
     // get the selected file from the input
     formData.photo = event.target.files[0];
+    setIsSaved(false);
   };
 
   useEffect(() => {
     if (isSaved) {
-      // Perform navigation after state change
-      window.location.href = "/courses/course?id=" + id; // Navigate to another page
+      setToggleState(0);
+      fetchData();
     }
   }, [isSaved]);
 
@@ -182,7 +221,7 @@ function ViewCourse() {
         {/* View content */}
         <MDBox mt={5} mb={2} className={toggleState == 0 ? "active-content" : "content"}>
           <ProgramInfoCard
-            image={homeDecor1}
+            image={data.photo}
             title={data.name}
             price={data.price}
             description={data.description}
@@ -378,9 +417,37 @@ function ViewCourse() {
                 <MDTypography variant="h6" fontWeight="medium">
                   Course Modules
                 </MDTypography>
-                <MDButton variant="gradient" color="dark" component={Link} to="/modules/create">
+                {modules != null ? (
+                  <MDBox
+                    component="form"
+                    role="form"
+                    onSubmit={handleSubmit1}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <SearchableSelect
+                      options={modules}
+                      name="module"
+                      val={0}
+                      title="Select module"
+                      setValue={setSelectedValue1}
+                    />
+                    <MDButton variant="gradient" color="dark" type="submit">
+                      <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                      &nbsp;add
+                    </MDButton>
+                  </MDBox>
+                ) : (
+                  <div />
+                )}
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  component={Link}
+                  to={"/modules/create?id=" + id}
+                >
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                  &nbsp;add new module
+                  &nbsp;create new module
                 </MDButton>
               </MDBox>
               <MDBox pt={3}>

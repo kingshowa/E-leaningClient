@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -22,6 +22,7 @@ import "assets/css/style.css";
 
 // Data
 import contents from "assets/json/contents.json";
+import { postData, fetchObjects } from "api.js";
 
 // Video
 import video1 from "assets/videos/PHP_in_100_Seconds.mp4";
@@ -33,9 +34,25 @@ function ViewContent() {
   const id = searchParams.get("id");
   const state = Number(searchParams.get("state"));
 
-  const [data, setData] = useState(contents[0]); // change data with actual
-  // selected value from Searchable selection
-  const [selectedValue, setSelectedValue] = useState(data.course_id);
+  const [data, setData] = useState();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
+
+  // fetch data
+  useEffect(() => {
+    fetchData();
+  }, [id]);
+
+  const fetchData = async () => {
+    try {
+      const data1 = await fetchObjects("content/video/" + id);
+      setData(data1.video);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch objects:", error);
+    }
+  };
 
   // togle tabs
   const [toggleState, setToggleState] = useState(state);
@@ -44,15 +61,50 @@ function ViewContent() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
+    setIsSaved(false);
+  };
+
+  // Upload file type
+  const handleFileUpload = (event) => {
+    // get the selected file from the input
+    data.video = event.target.files[0];
+    setIsSaved(false);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(data);
+    if (data != null) {
+      const url = "content/video/edit/" + id;
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setIsSaved(true);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
     // perfom save operations
   };
 
-  return (
+  useEffect(() => {
+    if (isSaved) {
+      setToggleState(0);
+      fetchData();
+    }
+  }, [isSaved]);
+
+  // console.log(data);
+
+  return isLoading ? (
+    <div>
+      <p>Loading...</p>
+    </div>
+  ) : (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox mb={2} />
@@ -61,7 +113,7 @@ function ViewContent() {
         <MDBox mt={5} mb={2} className={toggleState == 0 ? "active-content" : "content"}>
           <VideoContentCard
             title={data.title}
-            video={video1}
+            video={data.link}
             caption={data.caption}
             shadow={false}
           />
@@ -84,7 +136,13 @@ function ViewContent() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <MDBox my={1}>
-                  <MDInput type="file" name="image" label="Image file" fullWidth />
+                  <MDInput
+                    type="file"
+                    name="image"
+                    label="Image file"
+                    fullWidth
+                    onChange={handleFileUpload}
+                  />
                 </MDBox>
               </Grid>
               <Grid item xs={12} md={6}>

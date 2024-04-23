@@ -1,5 +1,6 @@
-import ReactDOM from "react-dom";
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -22,11 +23,17 @@ import CreateDocumentContent from "layouts/contents/create/CreateDocumentContent
 import CreateTextContent from "layouts/contents/create/CreateTextContent";
 import CreateQuizContent from "layouts/contents/create/CreateQuizContent";
 
-import { postData, fetchObjects } from "api.js";
+import { postData } from "api.js";
 
 function CreateContent() {
+  // Get params from url
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = Number(searchParams.get("id"));
+
   const [contentType, setContentType] = useState("");
   const [data, setData] = useState(null);
+  const [content, setContent] = useState(" ");
   const [isSaved, setIsSaved] = useState(false);
 
   // Update data management
@@ -38,62 +45,57 @@ function CreateContent() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    //data.assigned_to = selectedValue;
+    spreadData();
+    data.moduleId = id;
+    //console.log(data);
     if (data != null) {
-      const url = "course////////";
-      // const saveData = async () => {
-      //   try {
-      //     const responseData = await postData(data, url);
-      //     console.log("Data saved successfully:", responseData);
-      //     // Navigate to another page after successful data saving
-      //     setIsSaved(true);
-      //   } catch (error) {
-      //     console.error("Error posting data:", error.message);
-      //   }
-      // };
-      // saveData();
+      const url = "content";
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setIsSaved(true);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
     }
-    console.log(data);
-    //setData(null);
-    // perfom save operations
   };
 
-  // Upload file type
-  const handleFileUpload = (event) => {
-    // get the selected file from the input
-    data.photo = event.target.files[0];
-    console.log(data);
+  const spreadData = () => {
+    Object.keys(content).map((key) => (data[key] = content[key]));
   };
 
   useEffect(() => {
     if (isSaved) {
       // Perform navigation after state change
-      window.location.href = "/courses"; // Navigate to another page
+      window.location.href = "/modules/module?id=" + id; // Navigate to another page
     }
   }, [isSaved]);
 
   const handleChange = (event) => {
     setContentType(event.target.value);
+    const { name, value } = event.target;
+    setData({ ...data, [name]: value });
+    console.log(data);
   };
 
   const renderContent = (e) => {
-    // const { name, value } = e.target;
-    // setData({ ...data, [name]: value });
-    // console.log(data);
-
     switch (contentType) {
-      case "linked_video":
-        return <CreateLinkedVideoContent />;
+      // case "linked_video":
+      //   return <CreateLinkedVideoContent setData={setContent} />;
       case "video":
-        return <CreateUploadedVideoContent />;
+        return <CreateUploadedVideoContent setData={setContent} />;
       case "image":
-        return <CreateImageContent />;
+        return <CreateImageContent setData={setContent} />;
       case "document":
-        return <CreateDocumentContent />;
+        return <CreateDocumentContent setData={setContent} />;
       case "text":
-        return <CreateTextContent />;
+        return <CreateTextContent setData={setContent} />;
       case "quize":
-        return <CreateQuizContent />;
+        return <CreateQuizContent setData={setContent} />;
       default:
         return null;
     }
@@ -129,17 +131,28 @@ function CreateContent() {
                       />
                     </MDBox>
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12} md={3}>
                     <MDBox my={1}>
                       <MDSelect defaultValue=" " onChange={handleChange} name="type">
                         <MenuItem value=" ">Select content type</MenuItem>
                         <MenuItem value="text">Reading</MenuItem>
                         {/* <MenuItem value="linked_video">Link Video</MenuItem> */}
-                        <MenuItem value="video">Upload Video</MenuItem>
+                        <MenuItem value="video">Video</MenuItem>
                         <MenuItem value="document">Document</MenuItem>
                         <MenuItem value="image">Image</MenuItem>
                         <MenuItem value="quize">Quiz</MenuItem>
                       </MDSelect>
+                    </MDBox>
+                  </Grid>
+                  <Grid item xs={12} md={3}>
+                    <MDBox my={1}>
+                      <MDInput
+                        type="number"
+                        name="duration"
+                        label="Duration in minutes"
+                        fullWidth
+                        onChange={handleInputChange}
+                      />
                     </MDBox>
                   </Grid>
                 </Grid>

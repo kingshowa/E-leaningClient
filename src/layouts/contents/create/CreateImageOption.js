@@ -8,20 +8,23 @@ import MDButton from "components/MDButton";
 import MDInput from "components/MDInput";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { postData } from "api.js";
 
 function CreateOption({ questionId, index, disabled = false }) {
   const [data, setData] = useState({
     image: null,
-    isCorrect: false,
-    questionId: questionId,
+    isCorrect: 0,
   });
+
+  const [isSaved, setIsSaved] = useState(false);
+
   const [isDisabled, setIsDisabled] = useState(disabled);
   const handleDisableInput = () => {
     setIsDisabled(true); // Set state to disable input fields
   };
   const handleChange = (event) => {
     const newData = { ...data };
-    newData[event.target.name] = event.target.checked;
+    newData[event.target.name] = event.target.checked ? 1 : 0;
     setData(newData);
     console.log(newData);
   };
@@ -30,10 +33,30 @@ function CreateOption({ questionId, index, disabled = false }) {
     // get the selected file from the input
     data.image = event.target.files[0];
   };
-  const handleSubmit = () => {};
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (data.image != null && questionId != null && !isSaved) {
+      const url = "option/" + questionId;
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setIsSaved(true);
+          handleDisableInput();
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
+    // perfom save operations
+    console.log(data);
+  };
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <Grid container spacing={2} pt={2}>
         <Grid item xs={12} md={8}>
           <MDBox my={1}>
@@ -68,12 +91,7 @@ function CreateOption({ questionId, index, disabled = false }) {
         </Grid>
         <Grid item xs={12} md={2}>
           <MDBox my={1}>
-            <MDButton
-              className={"imgOpt" + index}
-              variant="gradient"
-              color="dark"
-              onClick={handleDisableInput}
-            >
+            <MDButton className={"imgOpt" + index} variant="gradient" color="dark" type="submit">
               save
             </MDButton>
           </MDBox>

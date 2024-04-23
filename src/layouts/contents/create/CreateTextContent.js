@@ -1,20 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDButton from "components/MDButton";
+import PropTypes from "prop-types";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-function CreateContent() {
+function CreateContent({ setData }) {
   const [editorContent, setEditorContent] = useState("");
 
   const handleEditorChange = (event, editor) => {
     const data = editor.getData();
     setEditorContent(data);
+    setData({ data: data });
   };
+
+  useEffect(() => {
+    if (editorContent) {
+      //setData({ data: data });
+    }
+  }, [editorContent]);
 
   const editorStyle = {
     width: "100%", // Set the desired width
@@ -36,5 +44,9 @@ function CreateContent() {
     </Grid>
   );
 }
+
+CreateContent.propTypes = {
+  setData: PropTypes.func,
+};
 
 export default CreateContent;

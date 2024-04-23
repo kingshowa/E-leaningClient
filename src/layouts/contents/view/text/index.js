@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -23,7 +23,7 @@ import Header from "layouts/programs/components/Header/Header1";
 import "assets/css/style.css";
 
 // Data
-import contents from "assets/json/contents.json";
+import { editData, fetchObjects } from "api.js";
 
 function ViewContent() {
   // Get params from url
@@ -32,8 +32,29 @@ function ViewContent() {
   const id = searchParams.get("id");
   const state = Number(searchParams.get("state"));
 
-  const [data, setData] = useState(contents[5]); // change data with actual /////
-  const [editorContent, setEditorContent] = useState(data.data);
+  const [data, setData] = useState({ data: "" }); // change data with actual /////
+  const [editorContent, setEditorContent] = useState();
+
+  useEffect(() => {
+    if (data) {
+      setEditorContent(data.data);
+    }
+  }, [data]);
+
+  const [isLoading, setIsLoading] = useState(true);
+  // fetch data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data1 = await fetchObjects("content/text/" + id);
+        setData(data1.text);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch objects:", error);
+      }
+    };
+    fetchData();
+  }, [id]);
 
   // togle tabs
   const [toggleState, setToggleState] = useState(state);
@@ -56,12 +77,28 @@ function ViewContent() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log(data);
+    if (data != null) {
+      const url = "content/text/edit/" + id;
+      const saveData = async () => {
+        try {
+          const responseData = await editData(data, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setToggleState(0);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
     // perfom save operations
   };
 
-  return (
+  return isLoading ? (
+    <div>
+      <p>Loading...</p>
+    </div>
+  ) : (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox mb={2} />
@@ -81,7 +118,7 @@ function ViewContent() {
         <MDBox mt={5} mb={2} className={toggleState == 1 ? "active-content" : "content"}>
           <MDBox component="form" role="form" onSubmit={handleSubmit} p={3} pt={2}>
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <MDBox my={1}>
                   <MDInput
                     type="text"

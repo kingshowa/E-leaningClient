@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -13,21 +13,33 @@ import MDInput from "components/MDInput";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-// Data
-import contents from "assets/json/contents.json";
+
+import { postData, fetchObjects } from "api.js";
 
 function EditContent() {
   // Get params from url
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
-  const state = Number(searchParams.get("state"));
+  const m_id = Number(searchParams.get("m"));
 
-  const [data, setData] = useState(contents[4]); // change data with actual
+  const [data, setData] = useState(); // change data with actual
+  const [isSaved, setIsSaved] = useState(false);
 
-  // togle tabs
-  const [toggleState, setToggleState] = useState(state);
-
+  const [isLoading, setIsLoading] = useState(true);
+  // fetch data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data1 = await fetchObjects("content/document/" + id);
+        setData(data1.document);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch objects:", error);
+      }
+    };
+    fetchData();
+  }, [id]);
   // Update data management
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,16 +49,41 @@ function EditContent() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(data);
+    if (data != null) {
+      const url = "content/document/edit/" + id;
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setIsSaved(true);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
     // perfom save operations
   };
+
+  useEffect(() => {
+    if (isSaved) {
+      // Perform navigation after state change
+      window.location.href = "/modules/module?id=" + m_id; // Navigate to another page
+    }
+  }, [isSaved]);
 
   // Upload file type
   const handleFileUpload = (event) => {
     // get the selected file from the input
-    data.link = event.target.files[0];
+    data.document = event.target.files[0];
   };
 
-  return (
+  return isLoading ? (
+    <div>
+      <p>Loading...</p>
+    </div>
+  ) : (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox mb={2} />

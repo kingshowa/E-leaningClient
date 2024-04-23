@@ -1,5 +1,7 @@
 import ReactDOM from "react-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -19,10 +21,21 @@ import Footer from "examples/Footer";
 
 import CreateImageOption from "layouts/contents/create/CreateImageOption";
 import CreateTextOption from "layouts/contents/create/CreateTextOption";
+import { fetchObjects, postData } from "api.js";
 
 function CreateContent() {
+  // Get params from url
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = Number(searchParams.get("id"));
+
   const [optionType, setOptionType] = useState("");
   const [optionsNum, setOptionsNum] = useState(0);
+
+  const [qnId, setQnId] = useState(null);
+
+  const [data, setData] = useState();
+  const [isSaved, setIsSaved] = useState(false);
 
   const handleChange = (event) => {
     setOptionType(event.target.value);
@@ -42,7 +55,7 @@ function CreateContent() {
                 key={index + 1}
                 index={index + 1}
                 disabled={false}
-                questionId={1}
+                questionId={qnId}
               />
             ))}
           </>
@@ -51,13 +64,49 @@ function CreateContent() {
         return (
           <>
             {Array.from({ length: optionsNum }, (_, index) => (
-              <CreateTextOption key={index + 1} index={index + 1} disabled={false} questionId={1} />
+              <CreateTextOption
+                key={index + 1}
+                index={index + 1}
+                disabled={false}
+                questionId={qnId}
+              />
             ))}
           </>
         );
       default:
         return null;
     }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (data != null && !isSaved) {
+      const url = "question/" + id;
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data, url);
+          setQnId(responseData.id);
+          console.log("Data saved successfully:", responseData);
+          setIsSaved(true);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
+    // perfom save operations
+    //console.log(data);
+  };
+
+  // Update data management
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
+  const handleFileUpload = (event) => {
+    // get the selected file from the input
+    data.imageUrl = event.target.files[0];
   };
 
   return (
@@ -72,16 +121,11 @@ function CreateContent() {
                   Create New Question
                 </MDTypography>
               </MDBox>
-              <MDBox component="form" role="form" p={3} pt={2}>
+              <MDBox component="form" role="form" onSubmit={handleSubmit} p={3} pt={2}>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <MDBox my={1}>
-                      <MDTextarea name="context" label="Question" />
-                    </MDBox>
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <MDBox my={1}>
-                      <MDInput type="file" name="image" label="Image" fullWidth />
+                      <MDTextarea name="context" label="Question" onChange={handleInputChange} />
                     </MDBox>
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -106,7 +150,18 @@ function CreateContent() {
                   </Grid>
                   <Grid item xs={12} md={4}>
                     <MDBox my={1}>
-                      <MDButton variant="gradient" color="dark">
+                      <MDInput
+                        type="file"
+                        name="image"
+                        label="Image"
+                        fullWidth
+                        onChange={handleFileUpload}
+                      />
+                    </MDBox>
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <MDBox my={1}>
+                      <MDButton variant="gradient" color="dark" type="submit">
                         create question
                       </MDButton>
                     </MDBox>

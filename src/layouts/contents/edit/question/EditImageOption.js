@@ -9,6 +9,8 @@ import MDInput from "components/MDInput";
 import { useState } from "react";
 import PropTypes from "prop-types";
 
+import { postData } from "api.js";
+
 function CreateOption({ index, disabled = false, optionData }) {
   const [data, setData] = useState(optionData);
   const [isDisabled, setIsDisabled] = useState(disabled);
@@ -16,6 +18,7 @@ function CreateOption({ index, disabled = false, optionData }) {
   const handleDisableInput = () => {
     setIsDisabled(true); // Set state to disable input fields
   };
+
   const handleChange = (event) => {
     const newData = { ...data };
     newData[event.target.name] = event.target.checked;
@@ -29,6 +32,20 @@ function CreateOption({ index, disabled = false, optionData }) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (data != null) {
+      const url = "quize/option/" + optionData.id;
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data, url);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          //setToggleState(0);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
     console.log(data); // perfom save
   };
 
