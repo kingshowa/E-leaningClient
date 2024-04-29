@@ -3,10 +3,14 @@ import axios from "axios";
 const BASE_URL = "http://e-learningsystem.test/api";
 
 // Function to fetch objects
-export const fetchObjects = async (url) => {
+export const fetchObjects = async (url, token) => {
   // name of the objects and their parent id
   try {
-    const response = await axios.get(`${BASE_URL}/${url}`);
+    const response = await axios.get(`${BASE_URL}/${url}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    });
     return response.data;
   } catch (error) {
     throw new Error("Failed to fetch objects");
@@ -14,9 +18,13 @@ export const fetchObjects = async (url) => {
 };
 
 // Function to delete an object
-export const deleteObject = async (url) => {
+export const deleteObject = async (url, token) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/${url}`);
+    const response = await axios.delete(`${BASE_URL}/${url}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    });
     return response.data;
   } catch (error) {
     throw new Error(`Failed to delete`);
@@ -34,11 +42,12 @@ export const restoreObject = async (url) => {
 };
 
 // Function to post data (generic POST request)
-export const postData = async (formData, url) => {
+export const postData = async (formData, url, token) => {
   try {
     const response = await axios.post(`${BASE_URL}/${url}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
@@ -47,9 +56,13 @@ export const postData = async (formData, url) => {
   }
 };
 // Function to post data (generic POST request)
-export const editData = async (formData, url) => {
+export const editData = async (formData, url, token) => {
   try {
-    const response = await axios.put(`${BASE_URL}/${url}`, formData);
+    const response = await axios.put(`${BASE_URL}/${url}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    });
     return response.data;
   } catch (error) {
     throw new Error(`Failed to post data: ${error.message}`);

@@ -22,16 +22,22 @@ import theme from "assets/theme";
 import themeDark from "assets/theme-dark";
 
 // Material Dashboard 2 React routes
-import routes from "routes";
+import adminRoutes from "routes/adminRoutes";
+import teacherRoutes from "routes/teacterRoutes";
+import studentRoutes from "routes/studentRoutes";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import { useAuth } from "context/authContext";
+import { USER_ROLES } from "constants.js";
 
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
 export default function App() {
+  const { token, role } = useAuth();
+
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -113,27 +119,59 @@ export default function App() {
     </MDBox>
   );
 
-  return (
+  const [isConnected, setIsConnected] = useState();
+
+  useEffect(() => {
+    if (token != null) {
+      setIsConnected(true);
+    } else {
+      setIsConnected(false);
+    }
+  }, [token]);
+
+  return isConnected ? (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {role == USER_ROLES.ADMIN || role == USER_ROLES.TEACHER ? (
         <>
-          <Sidenav
-            color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="E-learning Platform"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-          <Configurator />
-          {configsButton}
+          {layout === "dashboard" && (
+            <>
+              <Sidenav
+                color={sidenavColor}
+                brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+                brandName="E-learning Platform"
+                routes={role == USER_ROLES.ADMIN ? adminRoutes : teacherRoutes}
+                onMouseEnter={handleOnMouseEnter}
+                onMouseLeave={handleOnMouseLeave}
+              />
+              <Configurator />
+              {configsButton}
+            </>
+          )}
+          <Routes>
+            {getRoutes(role == USER_ROLES.ADMIN ? adminRoutes : teacherRoutes)}
+            <Route path="*" element={<Navigate to="/dashboard" />} />
+          </Routes>
+        </>
+      ) : (
+        <>
+          <>
+            <Configurator />
+            {configsButton}
+          </>
+          <Routes>
+            {getRoutes(studentRoutes)}
+            <Route path="*" element={<Navigate to="/home" />} />
+          </Routes>
         </>
       )}
-      {layout === "vr" && <Configurator />}
+    </ThemeProvider>
+  ) : (
+    <ThemeProvider theme={darkMode ? themeDark : theme}>
+      <CssBaseline />
       <Routes>
-        {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        {getRoutes(studentRoutes)}
+        <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
       </Routes>
     </ThemeProvider>
   );

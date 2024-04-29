@@ -25,19 +25,19 @@ import { Link } from "react-router-dom";
 import { getColumns, getRows } from "layouts/modules/data";
 import { getDelColumns, getDelRows } from "layouts/modules/data/deleted";
 
-import modules from "assets/json/modules.json";
-import { fetchObjects, deleteObject } from "api.js";
+import { fetchObjects } from "api.js";
+import { useAuth } from "context/authContext";
 
 function Modules() {
+  const { token } = useAuth();
+
   const [data, setData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
   // fetch data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data1 = await fetchObjects("modules/manage");
+        const data1 = await fetchObjects("modules/manage", token);
         setData(data1);
-        setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch objects:", error);
       }

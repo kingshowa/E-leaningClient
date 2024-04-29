@@ -22,7 +22,7 @@
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
+import Messages from "layouts/messages";
 import Programs from "layouts/programs";
 import Courses from "layouts/courses";
 import Modules from "layouts/modules";
@@ -50,7 +50,8 @@ import SignUp from "layouts/authentication/sign-up";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
-const routes = [
+// TEACHER ROUTES
+const teacherRoutes = [
   {
     type: "collapse",
     name: "Dashboard",
@@ -58,30 +59,6 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
     component: <Dashboard />,
-  },
-  {
-    type: "collapse",
-    name: "Programs",
-    key: "programs",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/programs",
-    collapse: [
-      {
-        key: "programs",
-        route: "/programs",
-        component: <Programs />,
-      },
-      {
-        key: "create_program",
-        route: "/programs/create",
-        component: <CreateProgram />,
-      },
-      {
-        key: "view_program",
-        route: "/programs/program",
-        component: <ViewProgram />,
-      },
-    ],
   },
   {
     type: "collapse",
@@ -171,27 +148,11 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
-  },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    component: <Billing />,
-  },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
+    name: "Messages",
+    key: "messages",
+    icon: <Icon fontSize="small">email</Icon>,
+    route: "/messages",
+    component: <Messages />,
   },
   {
     type: "collapse",
@@ -219,4 +180,4 @@ const routes = [
   },
 ];
 
-export default routes;
+export default teacherRoutes;

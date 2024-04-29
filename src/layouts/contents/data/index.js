@@ -40,8 +40,6 @@ function getColumns() {
 }
 
 function getRows({ items, setData, parent_id }) {
-  const [controller] = useMaterialUIController();
-  const { darkMode } = controller;
   let pRow = [];
   let index = 1;
   items.forEach(function (item) {
@@ -72,7 +70,7 @@ function getRows({ items, setData, parent_id }) {
           justifyContent="space-between"
           ml="auto"
           lineHeight={0}
-          color={darkMode ? "white" : "dark"}
+          color={"dark"}
         >
           <Tooltip title="View Content" placement="top">
             <MDTypography

@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
 
 // prop-types is a library for typechecking of props.
@@ -38,9 +23,9 @@ import breakpoints from "assets/theme/base/breakpoints";
 import burceMars from "assets/images/bruce-mars.jpg";
 import backgroundImage from "assets/images/bg-profile.jpeg";
 
-function Header({ children }) {
+function Header({ children, state, setToggleState }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
-  const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState(state ? state : 0);
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -86,50 +71,40 @@ function Header({ children }) {
       <Card
         sx={{
           position: "relative",
-          mt: -8,
+          mt: -20,
           mx: 3,
           py: 2,
           px: 2,
         }}
       >
         <Grid container spacing={3} alignItems="center">
-          <Grid item>
-            <MDAvatar src={burceMars} alt="profile-image" size="xl" shadow="sm" />
-          </Grid>
-          <Grid item>
-            <MDBox height="100%" mt={0.5} lineHeight={1}>
-              <MDTypography variant="h5" fontWeight="medium">
-                Richard Davis
-              </MDTypography>
-              <MDTypography variant="button" color="text" fontWeight="regular">
-                CEO / Co-Founder
-              </MDTypography>
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
+          <Grid item xs={12} md={6}>
             <AppBar position="static">
               <Tabs orientation={tabsOrientation} value={tabValue} onChange={handleSetTabValue}>
                 <Tab
-                  label="App"
+                  onClick={() => setToggleState(0)}
+                  label="Profile"
                   icon={
                     <Icon fontSize="small" sx={{ mt: -0.25 }}>
-                      home
+                      person
                     </Icon>
                   }
                 />
                 <Tab
-                  label="Message"
+                  onClick={() => setToggleState(1)}
+                  label="Edit"
                   icon={
                     <Icon fontSize="small" sx={{ mt: -0.25 }}>
-                      email
+                      edit
                     </Icon>
                   }
                 />
                 <Tab
-                  label="Settings"
+                  onClick={() => setToggleState(2)}
+                  label="Password"
                   icon={
                     <Icon fontSize="small" sx={{ mt: -0.25 }}>
-                      settings
+                      key
                     </Icon>
                   }
                 />
@@ -146,11 +121,14 @@ function Header({ children }) {
 // Setting default props for the Header
 Header.defaultProps = {
   children: "",
+  state: 0,
 };
 
 // Typechecking props for the Header
 Header.propTypes = {
   children: PropTypes.node,
+  state: PropTypes.number,
+  setToggleState: PropTypes.func,
 };
 
 export default Header;

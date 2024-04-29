@@ -32,8 +32,6 @@ function CreateContent({ setData }) {
       <MDBox my={1} ml={3} mt={3} style={editorStyle}>
         <CKEditor editor={ClassicEditor} data={editorContent} onChange={handleEditorChange} />
       </MDBox>
-      <input type="hidden" name="type" value="text" />
-      <input type="hidden" name="data" value={editorContent} />
       <Grid item xs={12} md={6}>
         <MDBox my={1}>
           <MDButton variant="gradient" color="dark" type="submit">

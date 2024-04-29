@@ -32,8 +32,11 @@ import { getColumns, getRows } from "layouts/contents/data/questions";
 
 import quiz from "assets/json/quiz.json";
 import { fetchObjects, editData } from "api.js";
+import { useAuth } from "context/authContext";
 
 function ViewContent() {
+  const { token } = useAuth();
+
   // Get params from url
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -46,7 +49,7 @@ function ViewContent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data1 = await fetchObjects("quize/questions/" + id);
+        const data1 = await fetchObjects("quize/questions/" + id, token);
         setData(data1.quize);
         setIsLoading(false);
       } catch (error) {
@@ -85,7 +88,7 @@ function ViewContent() {
       const url = "content/quize/edit/" + id;
       const saveData = async () => {
         try {
-          const responseData = await editData(data, url);
+          const responseData = await editData(data, url, token);
           console.log("Data saved successfully:", responseData);
           // Navigate to another page after successful data saving
           setToggleState(0);

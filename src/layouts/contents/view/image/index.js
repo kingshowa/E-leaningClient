@@ -21,8 +21,11 @@ import "assets/css/style.css";
 
 // Data
 import { postData, fetchObjects } from "api.js";
+import { useAuth } from "context/authContext";
 
 function ViewContent() {
+  const { token } = useAuth();
+
   // Get params from url
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -41,7 +44,7 @@ function ViewContent() {
 
   const fetchData = async () => {
     try {
-      const data1 = await fetchObjects("content/image/" + id);
+      const data1 = await fetchObjects("content/image/" + id, token);
       setData(data1.image);
       setIsLoading(false);
     } catch (error) {
@@ -73,7 +76,7 @@ function ViewContent() {
       const url = "content/image/edit/" + id;
       const saveData = async () => {
         try {
-          const responseData = await postData(data, url);
+          const responseData = await postData(data, url, token);
           console.log("Data saved successfully:", responseData);
           // Navigate to another page after successful data saving
           setIsSaved(true);

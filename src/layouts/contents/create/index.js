@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -24,8 +25,12 @@ import CreateTextContent from "layouts/contents/create/CreateTextContent";
 import CreateQuizContent from "layouts/contents/create/CreateQuizContent";
 
 import { postData } from "api.js";
+import { useAuth } from "context/authContext";
 
 function CreateContent() {
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
   // Get params from url
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -47,12 +52,11 @@ function CreateContent() {
     event.preventDefault();
     spreadData();
     data.moduleId = id;
-    //console.log(data);
     if (data != null) {
       const url = "content";
       const saveData = async () => {
         try {
-          const responseData = await postData(data, url);
+          const responseData = await postData(data, url, token);
           console.log("Data saved successfully:", responseData);
           // Navigate to another page after successful data saving
           setIsSaved(true);
@@ -71,7 +75,7 @@ function CreateContent() {
   useEffect(() => {
     if (isSaved) {
       // Perform navigation after state change
-      window.location.href = "/modules/module?id=" + id; // Navigate to another page
+      navigate("/modules/module?id=" + id); // Navigate to another page
     }
   }, [isSaved]);
 

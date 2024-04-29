@@ -21,9 +21,12 @@ import Footer from "examples/Footer";
 
 import CreateImageOption from "layouts/contents/create/CreateImageOption";
 import CreateTextOption from "layouts/contents/create/CreateTextOption";
-import { fetchObjects, postData } from "api.js";
+import { postData } from "api.js";
+import { useAuth } from "context/authContext";
 
 function CreateContent() {
+  const { token } = useAuth();
+
   // Get params from url
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -84,7 +87,7 @@ function CreateContent() {
       const url = "question/" + id;
       const saveData = async () => {
         try {
-          const responseData = await postData(data, url);
+          const responseData = await postData(data, url, token);
           setQnId(responseData.id);
           console.log("Data saved successfully:", responseData);
           setIsSaved(true);
@@ -94,8 +97,6 @@ function CreateContent() {
       };
       saveData();
     }
-    // perfom save operations
-    //console.log(data);
   };
 
   // Update data management
@@ -105,7 +106,6 @@ function CreateContent() {
   };
 
   const handleFileUpload = (event) => {
-    // get the selected file from the input
     data.imageUrl = event.target.files[0];
   };
 

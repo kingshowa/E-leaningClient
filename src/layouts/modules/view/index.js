@@ -33,8 +33,11 @@ import "assets/css/style.css";
 import { getColumns, getRows } from "layouts/contents/data";
 
 import { fetchObjects, postData } from "api.js";
+import { useAuth } from "context/authContext";
 
 function ViewModule() {
+  const { token } = useAuth();
+
   // Get params from url
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -53,7 +56,7 @@ function ViewModule() {
 
   const fetchData = async () => {
     try {
-      const data1 = await fetchObjects("module/contents/" + id);
+      const data1 = await fetchObjects("module/contents/" + id, token);
       setData(data1.module);
       setFormData(data1.module);
       setIsLoading(false);
@@ -90,12 +93,11 @@ function ViewModule() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    //formData.course_id = selectedValue;
     if (formData != null) {
       const url = "module/edit/" + id;
       const saveData = async () => {
         try {
-          const responseData = await postData(formData, url);
+          const responseData = await postData(formData, url, token);
           console.log("Data saved successfully:", responseData);
           // Navigate to another page after successful data saving
           setIsSaved(true);
@@ -105,15 +107,12 @@ function ViewModule() {
       };
       saveData();
     }
-    console.log(formData);
-    // perfom save operations
   };
 
   useEffect(() => {
     if (isSaved) {
       setToggleState(0);
       fetchData();
-      //window.location.href = "/modules/module?id=" + id; // Navigate to another page
     }
   }, [isSaved]);
 

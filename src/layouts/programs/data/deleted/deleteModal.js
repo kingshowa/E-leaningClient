@@ -17,8 +17,11 @@ import PropTypes from "prop-types";
 import quiz from "assets/json/quiz.json";
 
 import { fetchObjects, deleteObject } from "api.js";
+import { useAuth } from "context/authContext";
 
 function AlertDialog({ name, restore, id, setData, parent_id }) {
+  const { token } = useAuth();
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,26 +33,10 @@ function AlertDialog({ name, restore, id, setData, parent_id }) {
   const handleDelete = () => {
     let url = "program/destroy/" + id;
     let loader = "admin/programs";
-    // switch (name) {
-    //   case "program":
-    //     url = "program/delete/" + id;
-    //     loader = "programs";
-    //   case "course":
-    //     url = parent_id === "" ? "program/delete/" + id + "/" + parent_id : "course/delete/" + id;
-    //     loader = parent_id === "" ? "courses/manage" : "program/courses/" + parent_id;
-    //   case "module":
-    //   case "content":
-    //   case "question":
-    //     url = "quize/question/" + id;
-    //   case "option":
-
-    //   default:
-    //     "";
-    // }
 
     const deleteData = async () => {
       try {
-        const data = await deleteObject(url);
+        const data = await deleteObject(url, token);
         console.log(data.message);
         await fetchData();
       } catch (error) {
@@ -61,7 +48,7 @@ function AlertDialog({ name, restore, id, setData, parent_id }) {
 
     const fetchData = async () => {
       try {
-        const data = await fetchObjects(loader); // to be made dynamic
+        const data = await fetchObjects(loader, token); // to be made dynamic
         setData(data);
         console.log(data);
       } catch (error) {
@@ -69,8 +56,6 @@ function AlertDialog({ name, restore, id, setData, parent_id }) {
       }
     };
 
-    //update data fetched from api
-    //setData(quiz.questions[0]);
     console.log(name + "has been deleted. ID: " + id);
     setOpen(false);
   };

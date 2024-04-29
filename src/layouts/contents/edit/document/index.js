@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -15,8 +17,12 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
 import { postData, fetchObjects } from "api.js";
+import { useAuth } from "context/authContext";
 
 function EditContent() {
+  const navigate = useNavigate();
+  const { token } = useAuth();
+
   // Get params from url
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -31,7 +37,7 @@ function EditContent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data1 = await fetchObjects("content/document/" + id);
+        const data1 = await fetchObjects("content/document/" + id, token);
         setData(data1.document);
         setIsLoading(false);
       } catch (error) {
@@ -53,7 +59,7 @@ function EditContent() {
       const url = "content/document/edit/" + id;
       const saveData = async () => {
         try {
-          const responseData = await postData(data, url);
+          const responseData = await postData(data, url, token);
           console.log("Data saved successfully:", responseData);
           // Navigate to another page after successful data saving
           setIsSaved(true);
@@ -69,7 +75,7 @@ function EditContent() {
   useEffect(() => {
     if (isSaved) {
       // Perform navigation after state change
-      window.location.href = "/modules/module?id=" + m_id; // Navigate to another page
+      navigate("/modules/module?id=" + m_id); // Navigate to another page
     }
   }, [isSaved]);
 

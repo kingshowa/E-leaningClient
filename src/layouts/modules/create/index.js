@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -18,12 +19,16 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
 import { postData, fetchObjects } from "api.js";
+import { useAuth } from "context/authContext";
 
 function CreateCourse() {
+  const navigate = useNavigate();
+  const { token } = useAuth();
+
   // Get params from url
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const id = searchParams.get("id");
+  const id = Number(searchParams.get("id"));
 
   const [data, setData] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
@@ -61,7 +66,7 @@ function CreateCourse() {
       const url = "module";
       const saveData = async () => {
         try {
-          const responseData = await postData(data, url);
+          const responseData = await postData(data, url, token);
           console.log("Data saved successfully:", responseData);
           // Navigate to another page after successful data saving
           setIsSaved(true);
@@ -72,14 +77,12 @@ function CreateCourse() {
       saveData();
     }
     console.log(data);
-    //setData(null);
-    // perfom save operations
   };
 
   useEffect(() => {
     if (isSaved) {
       // Perform navigation after state change
-      window.location.href = id != 0 ? "/courses/course?id=" + id : "/modules"; // Navigate to another page
+      navigate(id != 0 ? "/courses/course?id=" + id : "/modules"); // Navigate to another page
     }
   }, [isSaved]);
 

@@ -1,25 +1,13 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
 
 // react-router components
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
+import { useAuth } from "context/authContext";
+
+import { postData } from "api.js";
 
 // @material-ui core components
 import AppBar from "@mui/material/AppBar";
@@ -54,6 +42,8 @@ import {
 } from "context";
 
 function DashboardNavbar({ absolute, light, isMini }) {
+  const { token, logout } = useAuth();
+  const navigate = useNavigate();
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
@@ -91,6 +81,23 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
 
+  const logOut = () => {
+    console.log("Loged out");
+    const url = "auth/logout";
+    const saveData = async () => {
+      try {
+        const responseData = await postData({}, url, token);
+        console.log("Data saved successfully:", responseData);
+        logout();
+        // Navigate to another page after successful data saving
+        navigate("/authentication/sign-in");
+      } catch (error) {
+        console.error("Error posting data:", error.message);
+      }
+    };
+    saveData();
+  };
+
   // Render the notifications menu
   const renderMenu = () => (
     <Menu
@@ -104,9 +111,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
-      <NotificationItem icon={<Icon>podcasts</Icon>} title="Manage Podcast sessions" />
-      <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Payment successfully completed" />
+      <Link to="/messages">
+        <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
+      </Link>
+      <Link to="/profile">
+        <NotificationItem icon={<Icon>person</Icon>} title="My Profile" />
+      </Link>
+      <NotificationItem icon={<Icon>logout</Icon>} title="Log Out" onClick={() => logOut()} />
     </Menu>
   );
 
@@ -139,11 +150,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
               <MDInput label="Search here" />
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
-                <IconButton sx={navbarIconButton} size="small" disableRipple>
-                  <Icon sx={iconsStyle}>account_circle</Icon>
-                </IconButton>
-              </Link>
+              <IconButton sx={navbarIconButton} size="small" disableRipple onClick={handleOpenMenu}>
+                <Icon sx={iconsStyle}>account_circle</Icon>
+              </IconButton>
               <IconButton
                 size="small"
                 disableRipple
@@ -172,7 +181,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 aria-controls="notification-menu"
                 aria-haspopup="true"
                 variant="contained"
-                onClick={handleOpenMenu}
               >
                 <Icon sx={iconsStyle}>notifications</Icon>
               </IconButton>

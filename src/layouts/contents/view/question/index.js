@@ -29,8 +29,11 @@ import "assets/css/style.css";
 import { getColumns, getRows } from "layouts/contents/data/options";
 
 import { fetchObjects, postData } from "api.js";
+import { useAuth } from "context/authContext";
 
 function ViewContent() {
+  const { token } = useAuth();
+
   // Get params from url
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -44,7 +47,7 @@ function ViewContent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data1 = await fetchObjects("question/" + id);
+        const data1 = await fetchObjects("question/" + id, token);
         setData(data1.question);
         setIsLoading(false);
       } catch (error) {
@@ -114,7 +117,7 @@ function ViewContent() {
       const url = "quize/question/" + id;
       const saveData = async () => {
         try {
-          const responseData = await postData(data, url);
+          const responseData = await postData(data, url, token);
           console.log("Data saved successfully:", responseData);
           // Navigate to another page after successful data saving
           setIsSaved(true);

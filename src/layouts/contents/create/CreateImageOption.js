@@ -9,8 +9,11 @@ import MDInput from "components/MDInput";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { postData } from "api.js";
+import { useAuth } from "context/authContext";
 
 function CreateOption({ questionId, index, disabled = false }) {
+  const { token } = useAuth();
+
   const [data, setData] = useState({
     image: null,
     isCorrect: 0,
@@ -40,7 +43,7 @@ function CreateOption({ questionId, index, disabled = false }) {
       const url = "option/" + questionId;
       const saveData = async () => {
         try {
-          const responseData = await postData(data, url);
+          const responseData = await postData(data, url, token);
           console.log("Data saved successfully:", responseData);
           // Navigate to another page after successful data saving
           setIsSaved(true);
@@ -51,8 +54,6 @@ function CreateOption({ questionId, index, disabled = false }) {
       };
       saveData();
     }
-    // perfom save operations
-    console.log(data);
   };
 
   return (

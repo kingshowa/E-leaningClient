@@ -42,7 +42,6 @@ const SearchableSelect = ({ options, name, val, title, setValue }) => {
   };
 
   SearchableSelect.defaultProps = {
-    val: 0,
     title: " ",
   };
 

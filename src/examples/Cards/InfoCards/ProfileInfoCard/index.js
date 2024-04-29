@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 // react-routers components
 import { Link } from "react-router-dom";
 
@@ -24,16 +9,19 @@ import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Icon from "@mui/material/Icon";
+import Grid from "@mui/material/Grid";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import MDAvatar from "components/MDAvatar";
 
 // Material Dashboard 2 React base styles
 import colors from "assets/theme/base/colors";
 import typography from "assets/theme/base/typography";
+import burceMars from "assets/images/bruce-mars.jpg";
 
-function ProfileInfoCard({ title, description, info, social, action, shadow }) {
+function ProfileInfoCard({ title, photo, info, name, role, action, shadow }) {
   const labels = [];
   const values = [];
   const { socialMediaColors } = colors;
@@ -66,55 +54,58 @@ function ProfileInfoCard({ title, description, info, social, action, shadow }) {
     </MDBox>
   ));
 
-  // Render the card social media icons
-  const renderSocial = social.map(({ link, icon, color }) => (
-    <MDBox
-      key={color}
-      component="a"
-      href={link}
-      target="_blank"
-      rel="noreferrer"
-      fontSize={size.lg}
-      color={socialMediaColors[color].main}
-      pr={1}
-      pl={0.5}
-      lineHeight={1}
-    >
-      {icon}
-    </MDBox>
-  ));
+  // // Render the card social media icons
+  // const renderSocial = social.map(({ link, icon, color }) => (
+  //   <MDBox
+  //     key={color}
+  //     component="a"
+  //     href={link}
+  //     target="_blank"
+  //     rel="noreferrer"
+  //     fontSize={size.lg}
+  //     color={socialMediaColors[color].main}
+  //     pr={1}
+  //     pl={0.5}
+  //     lineHeight={1}
+  //   >
+  //     {icon}
+  //   </MDBox>
+  // ));
 
   return (
     <Card sx={{ height: "100%", boxShadow: !shadow && "none" }}>
-      <MDBox display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
-        <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          {title}
-        </MDTypography>
-        <MDTypography component={Link} to={action.route} variant="body2" color="secondary">
-          <Tooltip title={action.tooltip} placement="top">
-            <Icon>edit</Icon>
-          </Tooltip>
-        </MDTypography>
-      </MDBox>
-      <MDBox p={2}>
-        <MDBox mb={2} lineHeight={1}>
-          <MDTypography variant="button" color="text" fontWeight="light">
-            {description}
-          </MDTypography>
-        </MDBox>
-        <MDBox opacity={0.3}>
-          <Divider />
-        </MDBox>
-        <MDBox>
-          {renderItems}
-          <MDBox display="flex" py={1} pr={2}>
-            <MDTypography variant="button" fontWeight="bold" textTransform="capitalize">
-              social: &nbsp;
-            </MDTypography>
-            {renderSocial}
+      <Grid container spacing={6}>
+        <Grid item xs={12} md={4}>
+          <MDBox display="flex" justifyContent="space-around" alignItems="center" pt={2} px={2}>
+            <MDAvatar src={photo} alt="profile-image" size="xxl" shadow="sm" />
           </MDBox>
-        </MDBox>
-      </MDBox>
+          <MDBox display="flex" justifyContent="space-around" alignItems="center" pt={2} px={2}>
+            <MDTypography variant="h5" fontWeight="medium">
+              {name}
+            </MDTypography>
+          </MDBox>
+          <MDBox display="flex" justifyContent="space-around" alignItems="center" px={2}>
+            <MDTypography variant="button" color="text" fontWeight="regular">
+              {role === "admin" ? "Administrator" : role}
+            </MDTypography>
+          </MDBox>
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <MDBox display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
+            <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
+              {title}
+            </MDTypography>
+            <MDTypography component={Link} to={action.route} variant="body2" color="secondary">
+              <Tooltip title={action.tooltip} placement="top">
+                <Icon>edit</Icon>
+              </Tooltip>
+            </MDTypography>
+          </MDBox>
+          <MDBox p={2}>
+            <MDBox>{renderItems}</MDBox>
+          </MDBox>
+        </Grid>
+      </Grid>
     </Card>
   );
 }
@@ -127,9 +118,10 @@ ProfileInfoCard.defaultProps = {
 // Typechecking props for the ProfileInfoCard
 ProfileInfoCard.propTypes = {
   title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  photo: PropTypes.string.isRequired,
   info: PropTypes.objectOf(PropTypes.string).isRequired,
-  social: PropTypes.arrayOf(PropTypes.object).isRequired,
+  name: PropTypes.string.isRequired,
+  role: PropTypes.string.isRequired,
   action: PropTypes.shape({
     route: PropTypes.string.isRequired,
     tooltip: PropTypes.string.isRequired,

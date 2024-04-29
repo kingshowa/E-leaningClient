@@ -14,11 +14,12 @@ import MDTypography from "components/MDTypography";
 import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
 
-import quiz from "assets/json/quiz.json";
-
 import { fetchObjects, deleteObject } from "api.js";
+import { useAuth } from "context/authContext";
 
 function AlertDialog({ name, restore, id, setData, parent_id }) {
+  const { token } = useAuth();
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,28 +31,10 @@ function AlertDialog({ name, restore, id, setData, parent_id }) {
   const handleDelete = () => {
     let url = "content/delete/" + id;
     let loader = "module/contents/" + parent_id;
-    // switch (name) {
-    //   case "program":
-    //     url = "program/delete/" + id;
-    //     loader = "programs";
-    //   case "course":
-    //     url = parent_id === "" ? "program/delete/" + id + "/" + parent_id : "course/delete/" + id;
-    //     loader = parent_id === "" ? "courses/manage" : "program/courses/" + parent_id;
-    //   case "module":
-    //     url = parent_id === "" ? "course/delete/" + parent_id + "/" + id : "module/delete/" + id;
-    //     loader = parent_id === "" ? "courses/manage" : "course/modules/" + parent_id;
-    //   case "content":
-    //   case "question":
-    //     url = "quize/question/" + id;
-    //   case "option":
-
-    //   default:
-    //     "";
-    // }
 
     const deleteData = async () => {
       try {
-        const data = await deleteObject(url);
+        const data = await deleteObject(url, token);
         console.log(data.message);
         await fetchData();
       } catch (error) {
@@ -63,7 +46,7 @@ function AlertDialog({ name, restore, id, setData, parent_id }) {
 
     const fetchData = async () => {
       try {
-        const data = await fetchObjects(loader); // to be made dynamic
+        const data = await fetchObjects(loader, token); // to be made dynamic
         setData(data.module);
         console.log(data.quize);
       } catch (error) {

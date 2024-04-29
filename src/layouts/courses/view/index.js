@@ -36,8 +36,11 @@ import "assets/css/style.css";
 import { getColumns, getRows } from "layouts/modules/data";
 
 import { fetchObjects, postData, editData } from "api.js";
+import { useAuth } from "context/authContext";
 
 function ViewCourse() {
+  const { token } = useAuth();
+
   // Get params from url
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -55,7 +58,7 @@ function ViewCourse() {
 
   const fetchData = async () => {
     try {
-      const data1 = await fetchObjects("course/modules/" + id);
+      const data1 = await fetchObjects("course/modules/" + id, token);
       setData(data1.course);
       setTeachers(data1.teachers);
       setFormData(data1.course);
@@ -82,7 +85,7 @@ function ViewCourse() {
 
   const fetchModuleData = async () => {
     try {
-      const data1 = await fetchObjects("modules/manage/" + id);
+      const data1 = await fetchObjects("modules/manage/" + id, token);
       setModules(data1.modules);
       //setIsLoading(false);
     } catch (error) {
@@ -122,7 +125,7 @@ function ViewCourse() {
     const saveData = async () => {
       try {
         const d = { enabled: checked };
-        const responseData = await editData(d, url);
+        const responseData = await editData(d, url, token);
         console.log("Data saved successfully:", responseData);
         // Navigate to another page after successful data saving
         //setIsSaved(true);
@@ -141,7 +144,7 @@ function ViewCourse() {
     const saveData = async () => {
       try {
         const d = { completed: checked };
-        const responseData = await editData(d, url);
+        const responseData = await editData(d, url, token);
         console.log("Data saved successfully:", responseData);
       } catch (error) {
         console.error("Error posting data:", error.message);
@@ -157,7 +160,7 @@ function ViewCourse() {
       const url = "course/edit/" + id;
       const saveData = async () => {
         try {
-          const responseData = await postData(formData, url);
+          const responseData = await postData(formData, url, token);
           console.log("Data saved successfully:", responseData);
           // Navigate to another page after successful data saving
           setIsSaved(true);
@@ -181,7 +184,7 @@ function ViewCourse() {
       const url = "course/add/module";
       const saveData = async () => {
         try {
-          const responseData = await postData(moduleData, url);
+          const responseData = await postData(moduleData, url, token);
           console.log("Data saved successfully:", responseData);
           setSelectedValue1(0);
           fetchData();
@@ -283,7 +286,7 @@ function ViewCourse() {
                     <SearchableSelect
                       options={teachers}
                       name="assigned_to"
-                      val={formData.assigned_to}
+                      val={0}
                       title="Select responsible teacher"
                       setValue={setSelectedValue}
                     />

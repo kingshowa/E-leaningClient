@@ -1,29 +1,13 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
-
-// @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
+import MDButton from "components/MDButton";
+import MDInput from "components/MDInput";
 import MDTypography from "components/MDTypography";
 
 // Material Dashboard 2 React example components
@@ -31,168 +15,257 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
-import ProfilesList from "examples/Lists/ProfilesList";
-import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 
 // Overview page components
 import Header from "layouts/profile/components/Header";
-import PlatformSettings from "layouts/profile/components/PlatformSettings";
 
-// Data
-import profilesListData from "layouts/profile/data/profilesListData";
-
-// Images
-import homeDecor1 from "assets/images/home-decor-1.jpg";
-import homeDecor2 from "assets/images/home-decor-2.jpg";
-import homeDecor3 from "assets/images/home-decor-3.jpg";
-import homeDecor4 from "assets/images/home-decor-4.jpeg";
-import team1 from "assets/images/team-1.jpg";
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
+import { fetchObjects, postData } from "api.js";
+import { useAuth } from "context/authContext";
 
 function Overview() {
-  return (
+  const navigate = useNavigate();
+  const { token } = useAuth();
+
+  // Get params from url
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = Number(searchParams.get("id"));
+  const state = Number(searchParams.get("state"));
+
+  const [data, setData] = useState();
+  const [data1, setData1] = useState();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isVerified, setIsVerified] = useState(false);
+
+  const [isSaved, setIsSaved] = useState(false);
+  const [toggleState, setToggleState] = useState(state);
+
+  // fetch data
+  useEffect(() => {
+    fetchData();
+  }, [id]);
+
+  const fetchData = async () => {
+    try {
+      const data1 = await fetchObjects("user", token);
+      setData(data1.user);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch objects:", error);
+    }
+  };
+
+  // Update data management
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+    setIsSaved(false);
+  };
+
+  const handleInputChange1 = (e) => {
+    const { name, value } = e.target;
+    setData1({ ...data1, [name]: value });
+    console.log(data1);
+  };
+
+  const handleFileUpload = (event) => {
+    // get the selected file from the input
+    data.photo = event.target.files[0];
+    setIsSaved(false);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (data != null && !isSaved) {
+      const url = "user";
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data, url, token);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          setIsSaved(true);
+          setToggleState(0);
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
+  };
+
+  const verifyPassword = (e) => {
+    const value = e.target.value;
+    const selector = document.querySelector("#verify");
+    if (data1 != null)
+      if (value === data1.password) {
+        setIsVerified(true);
+        selector.style.color = "green";
+      } else {
+        setIsVerified(false);
+        selector.style.color = "red";
+      }
+  };
+
+  const handleSubmit1 = (event) => {
+    event.preventDefault();
+    console.log(data1);
+    if (data1 != null && isVerified) {
+      const url = "auth/reset";
+      const saveData = async () => {
+        try {
+          const responseData = await postData(data1, url, token);
+          console.log("Data saved successfully:", responseData);
+          // Navigate to another page after successful data saving
+          navigate("/authentication/sign-in");
+        } catch (error) {
+          console.error("Error posting data:", error.message);
+        }
+      };
+      saveData();
+    }
+  };
+
+  return isLoading ? (
+    <div>
+      <p>Loading</p>
+    </div>
+  ) : (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox mb={2} />
-      <Header>
-        <MDBox mt={5} mb={3}>
-          <Grid container spacing={1}>
-            <Grid item xs={12} md={6} xl={4}>
-              <PlatformSettings />
-            </Grid>
-            <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
-              <Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
-              <ProfileInfoCard
-                title="profile information"
-                description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
-                info={{
-                  fullName: "Alec M. Thompson",
-                  mobile: "(44) 123 1234 123",
-                  email: "alecthompson@mail.com",
-                  location: "USA",
-                }}
-                social={[
-                  {
-                    link: "https://www.facebook.com/CreativeTim/",
-                    icon: <FacebookIcon />,
-                    color: "facebook",
-                  },
-                  {
-                    link: "https://twitter.com/creativetim",
-                    icon: <TwitterIcon />,
-                    color: "twitter",
-                  },
-                  {
-                    link: "https://www.instagram.com/creativetimofficial/",
-                    icon: <InstagramIcon />,
-                    color: "instagram",
-                  },
-                ]}
-                action={{ route: "", tooltip: "Edit Profile" }}
-                shadow={false}
-              />
-              <Divider orientation="vertical" sx={{ mx: 0 }} />
-            </Grid>
-            <Grid item xs={12} xl={4}>
-              <ProfilesList title="conversations" profiles={profilesListData} shadow={false} />
-            </Grid>
-          </Grid>
+      <Header state={toggleState} setToggleState={setToggleState}>
+        {/* View content */}
+        <MDBox mt={5} mb={2} className={toggleState == 0 ? "active-content" : "content"}>
+          <ProfileInfoCard
+            photo={data.photo}
+            name={data.name + " " + data.surname}
+            role={data.role}
+            title="profile information"
+            info={{
+              firstName: data.name,
+              lastName: data.surname,
+              email: data.email,
+              Role: data.role,
+              DateOfBirth: data.date_of_birth,
+            }}
+            action={{ route: "", tooltip: "Edit Profile" }}
+            shadow={false}
+          />
         </MDBox>
-        <MDBox pt={2} px={2} lineHeight={1.25}>
-          <MDTypography variant="h6" fontWeight="medium">
-            Projects
-          </MDTypography>
-          <MDBox mb={1}>
-            <MDTypography variant="button" color="text">
-              Architects design houses
-            </MDTypography>
+        {/* Edit content */}
+        <MDBox mt={3} mb={2} className={toggleState == 1 ? "active-content" : "content"}>
+          <MDBox component="form" role="form" onSubmit={handleSubmit} p={3} pt={2}>
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <MDBox my={1}>
+                  <MDInput
+                    type="text"
+                    name="name"
+                    label="First Name"
+                    value={data.name}
+                    onChange={handleInputChange}
+                    fullWidth
+                    variant="standard"
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={6}>
+                <MDBox my={1}>
+                  <MDInput
+                    type="text"
+                    name="surname"
+                    label="Last Name"
+                    value={data.surname}
+                    onChange={handleInputChange}
+                    fullWidth
+                    variant="standard"
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={6}>
+                <MDBox my={1}>
+                  <MDInput
+                    type="date"
+                    name="date_of_birth"
+                    label="Date of birth"
+                    fullWidth
+                    onChange={handleInputChange}
+                    variant="standard"
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <MDBox my={1}>
+                  <MDInput
+                    type="file"
+                    name="imageUrl"
+                    label="Profile Photo"
+                    fullWidth
+                    onChange={handleFileUpload}
+                    variant="standard"
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <MDBox my={1}>
+                  <MDButton variant="gradient" color="dark" type="submit">
+                    save profile
+                  </MDButton>
+                </MDBox>
+              </Grid>
+            </Grid>
           </MDBox>
         </MDBox>
-        <MDBox p={2}>
-          <Grid container spacing={6}>
-            <Grid item xs={12} md={6} xl={3}>
-              <DefaultProjectCard
-                image={homeDecor1}
-                label="project #2"
-                title="modern"
-                description="As Uber works through a huge amount of internal management turmoil."
-                action={{
-                  type: "internal",
-                  route: "/pages/profile/profile-overview",
-                  color: "info",
-                  label: "view project",
-                }}
-                authors={[
-                  { image: team1, name: "Elena Morison" },
-                  { image: team2, name: "Ryan Milly" },
-                  { image: team3, name: "Nick Daniel" },
-                  { image: team4, name: "Peterson" },
-                ]}
-              />
+        {/* Edit content */}
+        <MDBox mt={3} mb={2} className={toggleState == 2 ? "active-content" : "content"}>
+          <MDBox component="form" role="form" onSubmit={handleSubmit1} p={3} pt={2}>
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <MDBox my={1}>
+                  <MDInput
+                    type="password"
+                    name="old_password"
+                    label="Old Password"
+                    onChange={handleInputChange1}
+                    fullWidth
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={6}>
+                <MDBox my={1}>
+                  <MDInput
+                    type="password"
+                    label="New Password"
+                    name="password"
+                    fullWidth
+                    onChange={handleInputChange1}
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={6}>
+                <MDBox my={1}>
+                  <MDInput
+                    type="password"
+                    label="Verify New Password"
+                    onChange={verifyPassword}
+                    fullWidth
+                  />
+                  <MDTypography color="text" fontWeight="regular" variant="h6" id="verify">
+                    {isVerified ? "Password verified" : "Password not verified"}
+                  </MDTypography>
+                </MDBox>
+              </Grid>
+              <Grid item xs={12} md={6}></Grid>
+              <Grid item xs={12} md={6}>
+                <MDBox my={1}>
+                  <MDButton variant="gradient" color="dark" type="submit">
+                    save new password
+                  </MDButton>
+                </MDBox>
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={6} xl={3}>
-              <DefaultProjectCard
-                image={homeDecor2}
-                label="project #1"
-                title="scandinavian"
-                description="Music is something that everyone has their own specific opinion about."
-                action={{
-                  type: "internal",
-                  route: "/pages/profile/profile-overview",
-                  color: "info",
-                  label: "view project",
-                }}
-                authors={[
-                  { image: team3, name: "Nick Daniel" },
-                  { image: team4, name: "Peterson" },
-                  { image: team1, name: "Elena Morison" },
-                  { image: team2, name: "Ryan Milly" },
-                ]}
-              />
-            </Grid>
-            <Grid item xs={12} md={6} xl={3}>
-              <DefaultProjectCard
-                image={homeDecor3}
-                label="project #3"
-                title="minimalist"
-                description="Different people have different taste, and various types of music."
-                action={{
-                  type: "internal",
-                  route: "/pages/profile/profile-overview",
-                  color: "info",
-                  label: "view project",
-                }}
-                authors={[
-                  { image: team4, name: "Peterson" },
-                  { image: team3, name: "Nick Daniel" },
-                  { image: team2, name: "Ryan Milly" },
-                  { image: team1, name: "Elena Morison" },
-                ]}
-              />
-            </Grid>
-            <Grid item xs={12} md={6} xl={3}>
-              <DefaultProjectCard
-                image={homeDecor4}
-                label="project #4"
-                title="gothic"
-                description="Why would anyone pick blue over pink? Pink is obviously a better color."
-                action={{
-                  type: "internal",
-                  route: "/pages/profile/profile-overview",
-                  color: "info",
-                  label: "view project",
-                }}
-                authors={[
-                  { image: team4, name: "Peterson" },
-                  { image: team3, name: "Nick Daniel" },
-                  { image: team2, name: "Ryan Milly" },
-                  { image: team1, name: "Elena Morison" },
-                ]}
-              />
-            </Grid>
-          </Grid>
+          </MDBox>
         </MDBox>
       </Header>
       <Footer />

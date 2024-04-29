@@ -22,23 +22,23 @@ import DataTable from "examples/Tables/DataTable";
 import { Link } from "react-router-dom";
 
 // Data
-import courses from "assets/json/courses.json";
 import { getColumns, getRows } from "layouts/courses/data";
 import { getDelColumns, getDelRows } from "layouts/courses/data/deleted";
 
 import { fetchObjects, deleteObject } from "api.js";
+import { useAuth } from "context/authContext";
 
 function Courses() {
+  const { token } = useAuth();
+
   // Courses table
   const [data, setData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
   // fetch data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data1 = await fetchObjects("courses/manage");
+        const data1 = await fetchObjects("courses/manage", token);
         setData(data1);
-        setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch objects:", error);
       }

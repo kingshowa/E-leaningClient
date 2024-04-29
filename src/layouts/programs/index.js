@@ -24,27 +24,31 @@ import { Link } from "react-router-dom";
 // Data
 import { getColumns, getRows } from "layouts/programs/data";
 import { getDelColumns, getDelRows } from "layouts/programs/data/deleted";
-import programs from "assets/json/programs.json";
 
-import { fetchObjects, deleteObject } from "api.js";
+import { fetchObjects } from "api.js";
+import { useAuth } from "context/authContext";
 
 function Programs() {
+  const { token } = useAuth();
+
   // Programs table
   const [data, setData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+
   // fetch data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data1 = await fetchObjects("admin/programs");
-        setData(data1);
-        setIsLoading(false);
+        if (!token) return;
+        const fetchedData = await fetchObjects("admin/programs", token);
+        setData(fetchedData);
       } catch (error) {
         console.error("Failed to fetch objects:", error);
+        setIsLoading(false);
+        // Set error state for displaying error message to users
       }
     };
     fetchData();
-  }, []);
+  }, [token]);
 
   // Courses table
   const columns = getColumns();

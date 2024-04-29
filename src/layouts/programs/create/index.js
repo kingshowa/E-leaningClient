@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -16,8 +18,13 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
 import { postData } from "api.js";
+import { useAuth } from "context/authContext";
 
 function CreateProgram() {
+  const { token } = useAuth();
+
+  const navigate = useNavigate();
+
   const [data, setData] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
   // Update data management
@@ -33,7 +40,7 @@ function CreateProgram() {
       const url = "program";
       const saveData = async () => {
         try {
-          const responseData = await postData(data, url);
+          const responseData = await postData(data, url, token);
           console.log("Data saved successfully:", responseData);
           // Navigate to another page after successful data saving
           setIsSaved(true);
@@ -58,7 +65,7 @@ function CreateProgram() {
   useEffect(() => {
     if (isSaved) {
       // Perform navigation after state change
-      window.location.href = "/programs"; // Navigate to another page
+      navigate("/programs"); // Navigate to another page
     }
   }, [isSaved]);
 
