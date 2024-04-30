@@ -10,14 +10,9 @@ import DeleteModal from "layouts/courses/data/deleteModal";
 import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
 
-// Images
-import team2 from "assets/images/team-2.jpg";
-
 // react-router-dom components
 import { Link } from "react-router-dom";
 
-// Material Dashboard 2 React context
-import { useMaterialUIController } from "context";
 import PropTypes from "prop-types";
 
 const Course = ({ image, name }) => (
@@ -49,9 +44,7 @@ function getColumns() {
   ];
 }
 
-function getRows({ items, setData, parent_id }) {
-  // const [controller] = useMaterialUIController();
-  // const { darkMode } = controller;
+function getRows({ items, setData, parent_id, user }) {
   let pRow = [];
   let index = 1;
   items.forEach(function (item) {
@@ -132,6 +125,7 @@ function getRows({ items, setData, parent_id }) {
               id={item.id}
               setData={setData}
               parent_id={parent_id}
+              user={user}
             />
           </Tooltip>
         </MDBox>
@@ -150,6 +144,7 @@ getRows.propTypes = {
   ).isRequired,
   setData: PropTypes.func,
   parent_id: PropTypes.number,
+  user: PropTypes.bool,
 };
 
 export { getColumns, getRows };

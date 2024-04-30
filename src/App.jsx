@@ -119,13 +119,13 @@ export default function App() {
     </MDBox>
   );
 
-  const [isConnected, setIsConnected] = useState();
+  const [isConnected, setIsConnected] = useState(token);
 
   useEffect(() => {
     if (token != null) {
-      setIsConnected(true);
+      setIsConnected(token);
     } else {
-      setIsConnected(false);
+      setIsConnected(null);
     }
   }, [token]);
 
@@ -139,7 +139,7 @@ export default function App() {
               <Sidenav
                 color={sidenavColor}
                 brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                brandName="E-learning Platform"
+                brandName="MAJIDLearn"
                 routes={role == USER_ROLES.ADMIN ? adminRoutes : teacherRoutes}
                 onMouseEnter={handleOnMouseEnter}
                 onMouseLeave={handleOnMouseLeave}
@@ -155,10 +155,6 @@ export default function App() {
         </>
       ) : (
         <>
-          <>
-            <Configurator />
-            {configsButton}
-          </>
           <Routes>
             {getRoutes(studentRoutes)}
             <Route path="*" element={<Navigate to="/home" />} />

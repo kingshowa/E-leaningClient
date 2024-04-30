@@ -31,7 +31,7 @@ import { useAuth } from "context/authContext";
 function Users() {
   const { token } = useAuth();
 
-  // Programs table
+  // users table
   const [data, setData] = useState();
 
   // fetch data
@@ -51,11 +51,11 @@ function Users() {
 
   // Courses table
   const columns = getColumns();
-  const rows = data ? getRows({ items: data.programs, setData, parent_id: "" }) : []; //  courses is an array not object
+  const rows = data ? getRows({ items: data.users, setData, parent_id: "" }) : []; //  courses is an array not object
 
   // Deleted data
   const pColumns = getDelColumns();
-  const pRows = data ? getDelRows({ items: data.deleted_programs, setData, parent_id: "" }) : []; // to be changed
+  const pRows = data ? getDelRows({ items: data.deleted_users, setData, parent_id: "" }) : []; // to be changed
 
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5; // Number of rows per page

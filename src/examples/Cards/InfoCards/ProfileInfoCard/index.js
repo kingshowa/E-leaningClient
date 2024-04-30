@@ -77,7 +77,7 @@ function ProfileInfoCard({ title, photo, info, name, role, action, shadow }) {
       <Grid container spacing={6}>
         <Grid item xs={12} md={4}>
           <MDBox display="flex" justifyContent="space-around" alignItems="center" pt={2} px={2}>
-            <MDAvatar src={photo} alt="profile-image" size="xxl" shadow="sm" />
+            <MDAvatar bgColor="dark" src={photo} alt="profile-image" size="xxl" shadow="sm" />
           </MDBox>
           <MDBox display="flex" justifyContent="space-around" alignItems="center" pt={2} px={2}>
             <MDTypography variant="h5" fontWeight="medium">
@@ -94,11 +94,6 @@ function ProfileInfoCard({ title, photo, info, name, role, action, shadow }) {
           <MDBox display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
             <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
               {title}
-            </MDTypography>
-            <MDTypography component={Link} to={action.route} variant="body2" color="secondary">
-              <Tooltip title={action.tooltip} placement="top">
-                <Icon>edit</Icon>
-              </Tooltip>
             </MDTypography>
           </MDBox>
           <MDBox p={2}>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 // react-router components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -9,11 +9,14 @@ import PropTypes from "prop-types";
 // @mui material components
 import Container from "@mui/material/Container";
 import Icon from "@mui/material/Icon";
+import Menu from "@mui/material/Menu";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDButton from "components/MDButton";
+import MDSwitch from "components/MDSwitch";
+import MDAvatar from "components/MDAvatar";
+import NotificationItem from "examples/Items/NotificationItem";
 
 // Material Dashboard 2 React example components
 import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
@@ -24,6 +27,9 @@ import breakpoints from "assets/theme/base/breakpoints";
 
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
+
+import { postData } from "api.js";
+import { useAuth } from "context/authContext";
 
 function DefaultNavbar({ transparent, light, action }) {
   const [controller] = useMaterialUIController();
@@ -60,6 +66,68 @@ function DefaultNavbar({ transparent, light, action }) {
     return () => window.removeEventListener("resize", displayMobileNavbar);
   }, []);
 
+  const { token, logout } = useAuth();
+
+  const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
+  const handleCloseMenu = () => setOpenMenu(false);
+  const [openMenu, setOpenMenu] = useState(false);
+  const navigate = useNavigate();
+
+  const logOut = () => {
+    console.log("Loged out");
+    const url = "auth/logout";
+    const saveData = async () => {
+      try {
+        const responseData = await postData({}, url, token);
+        console.log("Data saved successfully:", responseData);
+        logout();
+        // Navigate to another page after successful data saving
+        navigate("/authentication/sign-in");
+      } catch (error) {
+        console.error("Error posting data:", error.message);
+      }
+    };
+    saveData();
+  };
+  // Render the notifications menu
+  const renderMenu = () => (
+    <Menu
+      anchorEl={openMenu}
+      anchorReference={null}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left",
+      }}
+      open={Boolean(openMenu)}
+      onClose={handleCloseMenu}
+      sx={{ mt: 2 }}
+    >
+      {token ? (
+        <div>
+          <Link to="/profile">
+            <NotificationItem icon={<Icon>person</Icon>} title="My Profile" />
+          </Link>
+          <Link to="/learning">
+            <NotificationItem icon={<Icon>backpack</Icon>} title="My Learning" />
+          </Link>
+          <Link to="/messages">
+            <NotificationItem icon={<Icon>email</Icon>} title="Messages" />
+          </Link>
+          <NotificationItem icon={<Icon>logout</Icon>} title="Log Out" onClick={() => logOut()} />
+        </div>
+      ) : (
+        <div>
+          <Link to="/authentication/sign-in">
+            <NotificationItem icon={<Icon>key</Icon>} title="Sign In" />
+          </Link>
+          <Link to="/authentication/sign-up">
+            <NotificationItem icon={<Icon>person</Icon>} title="Sign Up" />
+          </Link>
+        </div>
+      )}
+    </Menu>
+  );
+
   return (
     <Container>
       <MDBox
@@ -94,55 +162,40 @@ function DefaultNavbar({ transparent, light, action }) {
           lineHeight={1}
           pl={{ xs: 0, lg: 1 }}
         >
-          <MDTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
-            Material Dashboard 2
+          <MDTypography variant="button h2" fontWeight="bold" color={light ? "white" : "dark"}>
+            MAJID
+          </MDTypography>
+          <MDTypography variant="button h2" fontWeight="light" color={light ? "white" : "dark"}>
+            Learn
           </MDTypography>
         </MDBox>
         <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
-          <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} />
-          <DefaultNavbarLink icon="person" name="profile" route="/profile" light={light} />
-          <DefaultNavbarLink
-            icon="account_circle"
-            name="sign up"
-            route="/authentication/sign-up"
-            light={light}
-          />
-          <DefaultNavbarLink
-            icon="key"
-            name="sign in"
-            route="/authentication/sign-in"
-            light={light}
-          />
-        </MDBox>
-        {action &&
-          (action.type === "internal" ? (
-            <MDBox display={{ xs: "none", lg: "inline-block" }}>
-              <MDButton
-                component={Link}
-                to={action.route}
-                variant="gradient"
-                color={action.color ? action.color : "info"}
-                size="small"
-              >
-                {action.label}
-              </MDButton>
-            </MDBox>
+          <DefaultNavbarLink icon="home" name="Home" route="/" light={light} />
+          <DefaultNavbarLink icon="school" name="Programs" route="/programs" light={light} />
+          <DefaultNavbarLink icon="local_library" name="Courses" route="/courses" light={light} />
+          <DefaultNavbarLink icon="info" name="About Us" route="/about-us" light={light} />
+          {token ? (
+            <DefaultNavbarLink icon="backpack" name="My Learning" route="/learning" light={light} />
           ) : (
-            <MDBox display={{ xs: "none", lg: "inline-block" }}>
-              <MDButton
-                component="a"
-                href={action.route}
-                target="_blank"
-                rel="noreferrer"
-                variant="gradient"
-                color={action.color ? action.color : "info"}
-                size="small"
-                sx={{ mt: -0.3 }}
-              >
-                {action.label}
-              </MDButton>
-            </MDBox>
-          ))}
+            <div />
+          )}
+        </MDBox>
+        <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
+          <MDBox display="flex" justifyContent="space-around" alignItems="center">
+            <MDSwitch />
+          </MDBox>
+          <MDBox
+            component={Link}
+            display="flex"
+            justifyContent="space-around"
+            alignItems="center"
+            pl={2}
+            onClick={handleOpenMenu}
+          >
+            <MDAvatar bgColor="dark" src={""} alt="profile-image" size="sm" shadow="sm" />
+          </MDBox>
+          {renderMenu()}
+        </MDBox>
         <MDBox
           display={{ xs: "inline-block", lg: "none" }}
           lineHeight={0}

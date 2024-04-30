@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import MenuItem from "@mui/material/MenuItem";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import MDInput from "components/MDInput";
-import MDTextarea from "components/MDTextarea";
+import MDSelect from "components/MDSelect";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -39,7 +40,7 @@ function CreateUser() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (data != null && isVerified) {
-      const url = "user";
+      const url = "auth/admin/register";
       const saveData = async () => {
         try {
           const responseData = await postData(data, url, token);
@@ -52,9 +53,6 @@ function CreateUser() {
       };
       saveData();
     }
-    console.log(data);
-    //setData(null);
-    // perfom save operations
   };
 
   const verifyPassword = (e) => {
@@ -92,7 +90,7 @@ function CreateUser() {
                 alignItems="center"
               >
                 <MDTypography variant="h6" fontWeight="medium">
-                  Create New Program
+                  Create New User
                 </MDTypography>
               </MDBox>
               <MDBox component="form" role="form" onSubmit={handleSubmit} p={3} pt={2}>
@@ -117,6 +115,16 @@ function CreateUser() {
                         fullWidth
                         onChange={handleInputChange}
                       />
+                    </MDBox>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <MDBox my={1}>
+                      <MDSelect defaultValue=" " name="role" onChange={handleInputChange}>
+                        <MenuItem value=" ">-- Select Role --</MenuItem>
+                        <MenuItem value="student">Student</MenuItem>
+                        <MenuItem value="teacher">Teacher</MenuItem>
+                        <MenuItem value="admin">Admin</MenuItem>
+                      </MDSelect>
                     </MDBox>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -154,7 +162,6 @@ function CreateUser() {
                       </MDTypography>
                     </MDBox>
                   </Grid>
-                  <Grid item xs={12} md={6}></Grid>
                   <Grid item xs={12} md={6}>
                     <MDBox my={1}>
                       <MDButton variant="gradient" color="dark" type="submit">

@@ -35,19 +35,13 @@ function Footer({ light }) {
             color={light ? "white" : "text"}
             fontSize={size.sm}
           >
-            &copy; {new Date().getFullYear()}, made with
-            <MDBox fontSize={size.md} color={light ? "white" : "dark"} mb={-0.5} mx={0.25}>
-              <Icon color="inherit" fontSize="inherit">
-                favorite
-              </Icon>
-            </MDBox>
-            by
+            Made by
             <Link href="" target="_blank">
               <MDTypography variant="button" fontWeight="medium" color={light ? "white" : "dark"}>
                 &nbsp;ATM Consulting&nbsp;
               </MDTypography>
             </Link>
-            for a better web.
+            &copy; {new Date().getFullYear()}
           </MDBox>
           <MDBox
             component="ul"
@@ -73,7 +67,7 @@ function Footer({ light }) {
                   fontWeight="regular"
                   color={light ? "white" : "dark"}
                 >
-                  ATM Consulting
+                  MAJID Learn
                 </MDTypography>
               </Link>
             </MDBox>

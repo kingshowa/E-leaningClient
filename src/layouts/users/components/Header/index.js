@@ -69,15 +69,6 @@ function Header({ children, state, setToggleState }) {
                 />
                 <Tab
                   onClick={() => setToggleState(1)}
-                  label="Edit"
-                  icon={
-                    <Icon fontSize="small" sx={{ mt: -0.25 }}>
-                      edit
-                    </Icon>
-                  }
-                />
-                <Tab
-                  onClick={() => setToggleState(2)}
                   label="Settings"
                   icon={
                     <Icon fontSize="small" sx={{ mt: -0.25 }}>

@@ -19,7 +19,7 @@ import quiz from "assets/json/quiz.json";
 import { fetchObjects, deleteObject } from "api.js";
 import { useAuth } from "context/authContext";
 
-function AlertDialog({ name, restore, id, setData, parent_id }) {
+function AlertDialog({ name, restore, id, setData, parent_id, user }) {
   const { token } = useAuth();
 
   const [open, setOpen] = React.useState(false);
@@ -31,8 +31,18 @@ function AlertDialog({ name, restore, id, setData, parent_id }) {
     setOpen(false);
   };
   const handleDelete = () => {
-    let url = parent_id === "" ? "course/delete/" + id : "program/delete/" + id + "/" + parent_id;
-    let loader = parent_id === "" ? "courses/manage" : "program/courses/" + parent_id;
+    let url = "";
+    let loader = "";
+    if (parent_id === "") {
+      url = "course/delete/" + id;
+      loader = "courses/manage";
+    } else if (user) {
+      url = "user/delete/" + id + "/" + parent_id;
+      loader = "user/courses/" + parent_id;
+    } else {
+      url = "program/delete/" + id + "/" + parent_id;
+      loader = "program/courses/" + parent_id;
+    }
 
     const deleteData = async () => {
       try {
@@ -103,6 +113,7 @@ AlertDialog.propTypes = {
   id: PropTypes.number.isRequired,
   setData: PropTypes.func,
   parent_id: PropTypes.number,
+  user: PropTypes.bool,
 };
 
 export default AlertDialog;

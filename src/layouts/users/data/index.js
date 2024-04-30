@@ -27,15 +27,6 @@ function getColumns() {
 }
 
 function getRows({ items, setData, parent_id }) {
-  const User = (image, name) => (
-    <MDBox display="flex" alignItems="center" lineHeight={1}>
-      <MDAvatar src={image} name={name} size="sm" />
-      <MDTypography display="block" variant="button" fontWeight="medium">
-        {name}
-      </MDTypography>
-    </MDBox>
-  );
-
   let pRow = [];
   let index = 1;
   items.forEach(function (item) {
@@ -45,7 +36,15 @@ function getRows({ items, setData, parent_id }) {
           {index++}
         </MDTypography>
       ),
-      user: <User image={item.photo} name={item.name + " " + item.surname} />,
+      user: (
+        <MDBox display="flex" alignItems="center" lineHeight={1}>
+          <MDAvatar bgColor="dark" src={item.photo} name={item.name} size="sm" />
+          &nbsp;&nbsp;&nbsp;
+          <MDTypography display="block" variant="button" fontWeight="medium">
+            {item.name + " " + item.surname}
+          </MDTypography>
+        </MDBox>
+      ),
       role: (
         <MDTypography variant="caption" color="text" fontWeight="medium">
           {item.role}

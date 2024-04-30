@@ -11,7 +11,6 @@ import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
-import MDButton from "components/MDButton";
 
 function ProfilesList({ profiles, shadow, setSelectedChat }) {
   const clickedProfile = (id) => {
@@ -21,7 +20,7 @@ function ProfilesList({ profiles, shadow, setSelectedChat }) {
     <MDBox key={name} component="li" py={1} mb={1}>
       <MDBox component={Link} onClick={() => clickedProfile(id)} display="flex" alignItems="center">
         <MDBox mr={2}>
-          <MDAvatar src={photo} alt="something here" shadow="md" />
+          <MDAvatar bgColor="dark" src={photo} alt="something here" shadow="md" />
         </MDBox>
         <MDBox
           display="flex"
