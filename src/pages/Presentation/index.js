@@ -29,14 +29,14 @@ import routes from "routes/routes";
 import footerRoutes from "routes/footer.routes";
 
 // Images
-import bgImage from "assets/front/images/bg-presentation.jpg";
+import bgImage from "assets/front/images/home-bg.jpg";
 
 function Presentation() {
   return (
     <>
       <DefaultNavbar />
       <MKBox
-        minHeight="75vh"
+        minHeight="100vh"
         width="100%"
         sx={{
           backgroundImage: `url(${bgImage})`,
@@ -47,29 +47,13 @@ function Presentation() {
         }}
       >
         <Container>
-          <Grid container item xs={12} lg={7} justifyContent="center" mx="auto">
-            <MKTypography
-              variant="h1"
-              color="white"
-              mt={-6}
-              mb={1}
-              sx={({ breakpoints, typography: { size } }) => ({
-                [breakpoints.down("md")]: {
-                  fontSize: size["3xl"],
-                },
-              })}
-            >
-              Material Kit 2 React{" "}
+          <Grid container item xs={12} lg={6} pl={{ xs: 1, lg: 2 }} justifyContent="center">
+            <MKTypography variant="h1" color="white" mt={-6} mb={1} pl={0}>
+              Unlock Your Future With Us.
             </MKTypography>
-            <MKTypography
-              variant="body1"
-              color="white"
-              textAlign="center"
-              px={{ xs: 6, lg: 12 }}
-              mt={1}
-            >
-              Free & Open Source Web UI Kit built over ReactJS &amp; MUI. Join over 1.6 million
-              developers around the world.
+            <MKTypography variant="body1" color="white" mt={1}>
+              MajidLearn is a Dynamic E-Learning Platform, empowering learning, anytime, anywhere.
+              Join thousands of learners excelling with us!
             </MKTypography>
           </Grid>
         </Container>
@@ -78,7 +62,7 @@ function Presentation() {
         sx={{
           p: 2,
           mx: { xs: 2, lg: 3 },
-          mt: -8,
+          mt: 4,
           mb: 4,
           backdropFilter: "saturate(200%) blur(30px)",
           boxShadow: ({ boxShadows: { xxl } }) => xxl,

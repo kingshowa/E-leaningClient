@@ -46,7 +46,6 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import AboutUs from "layouts/pages/landing-pages/about-us";
 import ContactUs from "layouts/pages/landing-pages/contact-us";
 import Author from "layouts/pages/landing-pages/author";
-import SignIn from "layouts/pages/authentication/sign-in";
 
 const routes = [
   {
@@ -72,16 +71,6 @@ const routes = [
             name: "author",
             route: "/pages/landing-pages/author",
             component: <Author />,
-          },
-        ],
-      },
-      {
-        name: "account",
-        collapse: [
-          {
-            name: "sign in",
-            route: "/pages/authentication/sign-in",
-            component: <SignIn />,
           },
         ],
       },

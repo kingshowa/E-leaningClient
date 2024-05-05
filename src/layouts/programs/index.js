@@ -43,8 +43,6 @@ function Programs() {
         setData(fetchedData);
       } catch (error) {
         console.error("Failed to fetch objects:", error);
-        setIsLoading(false);
-        // Set error state for displaying error message to users
       }
     };
     fetchData();

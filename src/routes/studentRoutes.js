@@ -25,9 +25,17 @@ import Messages from "layouts/messages";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
-import Home from "layouts/home";
+import Home from "layouts/pages/home";
+import Courses from "layouts/pages/courses";
+import Course from "layouts/pages/course";
+import Programs from "layouts/pages/programs";
+import Program from "layouts/pages/program";
+import Learning from "layouts/pages/learning";
+import Study from "layouts/pages/study";
+import Payment from "layouts/pages/payment";
 import AboutUs from "layouts/pages/landing-pages/about-us";
 import Presentation from "layouts/pages/presentation";
+import Author from "pages/LandingPages/Author";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -71,12 +79,44 @@ const studentRoutes = [
     component: <Home />,
   },
   {
+    route: "/courses",
+    component: <Courses />,
+  },
+  {
+    route: "/course/:id",
+    component: <Course />,
+  },
+  {
+    route: "/programs",
+    component: <Programs />,
+  },
+  {
+    route: "/program/:id",
+    component: <Program />,
+  },
+  {
+    route: "/register/:name/:id",
+    component: <Payment />,
+  },
+  {
+    route: "/learning",
+    component: <Learning />,
+  },
+  {
+    route: "/course/study/:id",
+    component: <Study />,
+  },
+  {
     route: "/about-us",
     component: <AboutUs />,
   },
   {
     route: "/presentation",
     component: <Presentation />,
+  },
+  {
+    route: "/author",
+    component: <Author />,
   },
 ];
 

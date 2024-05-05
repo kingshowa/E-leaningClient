@@ -3,7 +3,7 @@ const imagesPrefix =
 
 export default [
   {
-    title: "Design Blocks",
+    title: "Software engineering program",
     description: "A selection of 45 page sections that fit perfectly in any combination",
     items: [
       {

@@ -8,12 +8,14 @@ import PropTypes from "prop-types";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
+import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import MDButton from "components/MDButton";
 
-function ProjectInfoCard({ image, title, price, description, info, shadow }) {
+function ProjectInfoCard({ image, title, price, description, info, shadow, action }) {
   const labels = [];
   const values = [];
 
@@ -81,6 +83,14 @@ function ProjectInfoCard({ image, title, price, description, info, shadow }) {
         <Grid item xs={12} md={6}>
           <MDBox pl={2}>
             <MDBox>{renderItems}</MDBox>
+            {action && (
+              <MDBox mt={6}>
+                <MDButton variant="gradient" color="dark" component={Link} to={action.route}>
+                  <Icon sx={{ fontWeight: "bold" }}>{action.icon}</Icon>
+                  &nbsp;&nbsp;{action.name}
+                </MDButton>
+              </MDBox>
+            )}
           </MDBox>
         </Grid>
       </Grid>
@@ -100,6 +110,7 @@ ProjectInfoCard.propTypes = {
   price: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   info: PropTypes.objectOf(PropTypes.string).isRequired,
+  action: PropTypes.objectOf(PropTypes.string).isRequired,
   shadow: PropTypes.bool,
 };
 

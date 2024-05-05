@@ -170,8 +170,6 @@ function ViewCourse() {
       };
       saveData();
     }
-    console.log(formData);
-    // perfom save operations
   };
 
   const handleSubmit1 = (event) => {
@@ -229,10 +227,15 @@ function ViewCourse() {
             price={data.price}
             description={data.description}
             info={{
-              creator: "Alec M. Thompson",
-              mobile: "(44) 123 1234 123",
-              email: "alecthompson@mail.com",
-              location: "USA",
+              duration: data.duration,
+              instructor: data.teacher.name,
+              email: data.teacher.email,
+              modules: data.total_modules,
+            }}
+            action={{
+              name: "preview",
+              route: "/course/" + data.id,
+              icon: "visibility",
             }}
             shadow={false}
           />

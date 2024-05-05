@@ -13,11 +13,11 @@ import MDTypography from "components/MDTypography";
 // Material Dashboard 2 React base styles
 import typography from "assets/theme/base/typography";
 
-function Footer({ light }) {
+function Footer({ light, absolute }) {
   const { size } = typography;
 
   return (
-    <MDBox position="absolute" width="100%" bottom={0} py={1}>
+    <MDBox position={absolute ? "absolute" : "relative"} width="100%" bottom={0} py={1}>
       <Container>
         <MDBox
           width="100%"
@@ -26,13 +26,14 @@ function Footer({ light }) {
           justifyContent="space-between"
           alignItems="center"
           px={1.5}
+          color="inherit"
         >
           <MDBox
             display="flex"
             justifyContent="center"
             alignItems="center"
             flexWrap="wrap"
-            color={light ? "white" : "text"}
+            color={light ? "white" : "dark"}
             fontSize={size.sm}
           >
             Made by
@@ -108,6 +109,7 @@ Footer.defaultProps = {
 // Typechecking props for the Footer
 Footer.propTypes = {
   light: PropTypes.bool,
+  absolute: PropTypes.bool,
 };
 
 export default Footer;

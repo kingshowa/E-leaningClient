@@ -30,7 +30,7 @@ function Places() {
             <TransparentBlogCard
               image={post1}
               title="Rover raised $65 million"
-              description="Finding temporary housing for your dog should be as easy as renting an Airbnb. That’s the idea behind Rover ..."
+              description="hould be as easy as renting an Airbnb. That’s the idea behind Rover ..."
               action={{
                 type: "internal",
                 route: "/pages/blogs/author",
