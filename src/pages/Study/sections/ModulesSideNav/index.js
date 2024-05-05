@@ -16,9 +16,10 @@ import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 import ScrollableBox from "pages/Study/sections/ScrollableBox";
 import PropTypes from "prop-types";
 
-function ModulesSideNav({ modules, setActiveModule }) {
-  const handleModuleClick = (module) => {
+function ModulesSideNav({ modules, setActiveModule, setIndex }) {
+  const handleModuleClick = (module, index) => {
     setActiveModule(module.id);
+    setIndex(index);
   };
 
   return (
@@ -26,10 +27,10 @@ function ModulesSideNav({ modules, setActiveModule }) {
       <MDTypography variant="h6">Course Outline</MDTypography>
       <Divider sx={{ mt: 1 }} />
       <ScrollableBox sx={{ flex: "0 0 30%", maxHeight: "77vh" }}>
-        {modules.map((module) => (
+        {modules.map((module, index) => (
           <MKBox
             key={module.id}
-            onClick={() => handleModuleClick(module)}
+            onClick={() => handleModuleClick(module, index + 1)}
             display="flex"
             justifyContent="space-between"
             alignItems="center"
@@ -43,7 +44,7 @@ function ModulesSideNav({ modules, setActiveModule }) {
             }}
           >
             <MDTypography variant="caption" fontWeight="medium">
-              {module.name}
+              {String(index + 1) + ". " + module.name}
             </MDTypography>
             <MDTypography variant="h6" color="text" fontWeight="bold" mr={2}>
               <Icon>{module.progress ? "task_alt" : "panorama_fish_eye"}</Icon>
@@ -59,5 +60,6 @@ function ModulesSideNav({ modules, setActiveModule }) {
 ModulesSideNav.propTypes = {
   modules: PropTypes.array.isRequired,
   setActiveModule: PropTypes.func.isRequired,
+  setIndex: PropTypes.func.isRequired,
 };
 export default ModulesSideNav;

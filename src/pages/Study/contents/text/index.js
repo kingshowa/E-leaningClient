@@ -5,12 +5,12 @@ import PropTypes from "prop-types";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-function ViewContent({ data }) {
+function ViewContent({ data, index }) {
   return (
     <MDBox mt={2} mb={1}>
       <MDBox display="flex" justifyContent="space-between" alignItems="center" pt={0} px={2}>
         <MDTypography variant="h4" fontWeight="medium" textTransform="capitalize">
-          {data.title}
+          {index + " " + data.title}
         </MDTypography>
       </MDBox>
       <MDBox display="flex" justifyContent="space-between" alignItems="center" mt={3} px={2}>
@@ -26,6 +26,7 @@ ViewContent.propTypes = {
     title: PropTypes.string,
     data: PropTypes.string,
   }).isRequired,
+  index: PropTypes.string,
 };
 
 export default ViewContent;

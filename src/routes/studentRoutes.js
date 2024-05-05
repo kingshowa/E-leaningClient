@@ -32,6 +32,7 @@ import Programs from "layouts/pages/programs";
 import Program from "layouts/pages/program";
 import Learning from "layouts/pages/learning";
 import Study from "layouts/pages/study";
+import Quiz from "layouts/pages/quiz";
 import Payment from "layouts/pages/payment";
 import AboutUs from "layouts/pages/landing-pages/about-us";
 import Presentation from "layouts/pages/presentation";
@@ -105,6 +106,10 @@ const studentRoutes = [
   {
     route: "/course/study/:id",
     component: <Study />,
+  },
+  {
+    route: "/excercise/:id",
+    component: <Quiz />,
   },
   {
     route: "/about-us",

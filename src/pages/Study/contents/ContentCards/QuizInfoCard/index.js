@@ -1,5 +1,6 @@
 // prop-types is library for typechecking of props
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -8,8 +9,9 @@ import Grid from "@mui/material/Grid";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import MDButton from "components/MDButton";
 
-function QuizInfoCard({ title, instruction, info, shadow }) {
+function QuizInfoCard({ id, title, instruction, info, shadow }) {
   const labels = [];
   const values = [];
 
@@ -42,24 +44,27 @@ function QuizInfoCard({ title, instruction, info, shadow }) {
 
   return (
     <Card sx={{ height: "100%", boxShadow: !shadow && "none" }}>
+      <MDBox px={2}>
+        <MDTypography variant="h4" fontWeight="medium" textTransform="capitalize">
+          {title}
+        </MDTypography>
+      </MDBox>
+      <MDBox lineHeight={1} p={2}>
+        <MDTypography variant="button" color="text" fontWeight="light">
+          {instruction}
+        </MDTypography>
+      </MDBox>
       <Grid container spacing={6}>
-        <Grid item xs={12} md={6}>
-          <MDBox display="flex" justifyContent="space-between" alignItems="center" px={2}>
-            <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-              {title}
-            </MDTypography>
-          </MDBox>
-          <MDBox p={2}>
-            <MDBox lineHeight={1}>
-              <MDTypography variant="button" color="text" fontWeight="light">
-                {instruction}
-              </MDTypography>
-            </MDBox>
-          </MDBox>
-        </Grid>
         <Grid item xs={12} md={6}>
           <MDBox pl={2}>
             <MDBox>{renderItems}</MDBox>
+          </MDBox>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <MDBox p={2}>
+            <MDButton color="dark" component={Link} to={"/excercise/" + id}>
+              Start Excercise
+            </MDButton>
           </MDBox>
         </Grid>
       </Grid>
@@ -74,9 +79,10 @@ QuizInfoCard.defaultProps = {
 
 // Typechecking props for the QuizInfoCard
 QuizInfoCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  instruction: PropTypes.string.isRequired,
-  info: PropTypes.objectOf(PropTypes.string).isRequired,
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string,
+  instruction: PropTypes.string,
+  info: PropTypes.objectOf(PropTypes.string),
   shadow: PropTypes.bool,
 };
 

@@ -5,11 +5,11 @@ import MDBox from "components/MDBox";
 
 import VideoContentCard from "pages/Study/contents/ContentCards/VideoContentCard";
 
-function ViewContent({ data }) {
+function ViewContent({ data, index }) {
   return (
     <MDBox mt={2} mb={1}>
       <VideoContentCard
-        title={data.title}
+        title={index + " " + data.title}
         video={data.link}
         caption={data.caption}
         shadow={false}
@@ -25,6 +25,7 @@ ViewContent.propTypes = {
     link: PropTypes.string,
     caption: PropTypes.string,
   }).isRequired,
+  index: PropTypes.string,
 };
 
 export default ViewContent;

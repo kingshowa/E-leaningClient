@@ -5,11 +5,11 @@ import MDBox from "components/MDBox";
 
 import ImageContentCard from "pages/Study/contents/ContentCards/ImageContentCard";
 
-function ViewContent({ data }) {
+function ViewContent({ data, index }) {
   return (
     <MDBox mt={2} mb={1}>
       <ImageContentCard
-        title={data.title}
+        title={index + " " + data.title}
         image={data.link}
         caption={data.caption}
         shadow={false}
@@ -25,5 +25,6 @@ ViewContent.propTypes = {
     link: PropTypes.string,
     caption: PropTypes.string,
   }).isRequired,
+  index: PropTypes.string,
 };
 export default ViewContent;

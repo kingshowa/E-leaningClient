@@ -1,18 +1,13 @@
 // @mui material components
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
-import MKTypography from "components/MKTypography";
 import MDTypography from "components/MDTypography";
-import MKButton from "components/MKButton";
 import MDSwitch from "components/MDSwitch";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
-
-import "assets/css/style.css";
 
 // Images
 import bgImage from "assets/front/images/bg-presentation.jpg";
@@ -21,12 +16,9 @@ import React, { useCallback } from "react";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { fetchObjects } from "api.js";
 
-import ListCourses from "pages/Courses/section/Courses";
 import { Icon } from "@mui/material";
 import ModulesSideNav from "./sections/ModulesSideNav";
-import { position } from "stylis";
 import MDBox from "components/MDBox";
-import zIndex from "@mui/material/styles/zIndex";
 import ContentDisplay from "./sections/ContentDisplay";
 import { useAuth } from "context/authContext";
 
@@ -39,6 +31,19 @@ function Courses() {
   const [contentsData, setContentsData] = useState();
   const [isLoadingContents, setIsLoadingContents] = useState(true);
 
+  const [index, setIndex] = useState();
+  const [isNavOpen, setIsNavOpen] = useState(true);
+  const handle = useFullScreenHandle();
+
+  // toggle module nav
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
+  // Go full screen
+  const goFullScreen = () => {
+    if (isNavOpen) setIsNavOpen(!isNavOpen);
+  };
+
   // fetch Modules data
   useEffect(() => {
     const fetchModulesData = async () => {
@@ -46,40 +51,51 @@ function Courses() {
         const fetchedData = await fetchObjects("study/modules/" + id, token);
         setModulesData(fetchedData.course);
         setActiveModule(fetchedData.course.active_module);
+        setIndex(fetchedData.course.index);
         setIsLoadingModules(false);
       } catch (error) {
         console.error("Failed to fetch objects:", error);
-        // Set error state for displaying error message to users
       }
     };
     fetchModulesData();
-  }, []);
+  }, [id, token]);
+
+  const fetchContentsData = useCallback(
+    async (moduleId) => {
+      try {
+        setIsLoadingContents(true);
+        const fetchedData = await fetchObjects("study/module/" + moduleId, token);
+        setContentsData(fetchedData.module);
+        setIsLoadingContents(false);
+      } catch (error) {
+        console.error("Failed to fetch contents:", error);
+      }
+    },
+    [token]
+  );
 
   useEffect(() => {
-    const fetchContentsData = async () => {
-      if (activeModule)
-        try {
-          setIsLoadingContents(true);
-          const fetchedData = await fetchObjects("study/module/" + activeModule, token);
-          setContentsData(fetchedData.module);
-          setIsLoadingContents(false);
-        } catch (error) {
-          console.error("Failed to fetch objects:", error);
-        }
-    };
-    fetchContentsData();
-  }, [activeModule]);
-  console.log(contentsData);
-  //console.log(activeModule);
+    if (activeModule) {
+      fetchContentsData(activeModule);
+    }
+  }, [activeModule, fetchContentsData]);
 
-  const [isNavOpen, setIsNavOpen] = useState(true);
-  const handle = useFullScreenHandle();
-  const toggleNav = () => {
-    setIsNavOpen(!isNavOpen);
+  const getNextModule = () => {
+    const nextIndex = index + 1;
+    if (nextIndex <= modulesData.modules.length) {
+      const nextModuleId = modulesData.modules[nextIndex - 1].id;
+      setActiveModule(nextModuleId);
+      setIndex(nextIndex);
+    }
   };
-  // Go full screen
-  const goFullScreen = () => {
-    if (isNavOpen) setIsNavOpen(!isNavOpen);
+
+  const getPrevModule = () => {
+    const prevIndex = index - 1;
+    if (prevIndex >= 1) {
+      const prevModuleId = modulesData.modules[prevIndex - 1].id;
+      setActiveModule(prevModuleId);
+      setIndex(prevIndex);
+    }
   };
 
   return (
@@ -136,8 +152,12 @@ function Courses() {
         <Grid container spacing={isNavOpen ? 3 : 0}>
           <Grid item sm={0} md={isNavOpen ? 3 : 0} sx={{ display: { xs: "none", md: "block" } }}>
             <MKBox mt={2} mb={2} className={isNavOpen ? "active-content" : "content"}>
-              {modulesData ? (
-                <ModulesSideNav modules={modulesData.modules} setActiveModule={setActiveModule} />
+              {!isLoadingModules ? (
+                <ModulesSideNav
+                  modules={modulesData.modules}
+                  setActiveModule={setActiveModule}
+                  setIndex={setIndex}
+                />
               ) : null}
             </MKBox>
           </Grid>
@@ -152,16 +172,15 @@ function Courses() {
                 <Icon fontSize="medium">{isNavOpen ? "menu_open" : "menu"}</Icon>
               </MDTypography>
               <MDTypography variant="h6" fontWeight="medium" sx={{ mr: "48%", mt: -1.5 }}>
-                {contentsData ? contentsData.name : ""}
+                {contentsData ? index + ". " + contentsData.name : ""}
               </MDTypography>
               <MDTypography
-                variant="button h2"
+                variant="button h6"
                 fontWeight="bold"
                 onClick={() => {
                   goFullScreen();
                   handle.enter();
                 }}
-                sx={{ display: { xs: "none", md: "block" } }}
               >
                 <Icon sx={{ mt: 0 }} fontSize="medium">
                   fullscreen
@@ -179,7 +198,7 @@ function Courses() {
                   zIndex: 10,
                 }}
               >
-                <MDTypography variant="button h2" fontWeight="bold" onClick={() => toggleNav()}>
+                <MDTypography variant="button h2" fontWeight="bold" onClick={() => getPrevModule()}>
                   <Icon fontSize="large">arrow_back_ios</Icon>
                 </MDTypography>
               </MDBox>
@@ -192,11 +211,13 @@ function Courses() {
                   zIndex: 10,
                 }}
               >
-                <MDTypography variant="button h1" fontWeight="bold" onClick={() => toggleNav()}>
+                <MDTypography variant="button h1" fontWeight="bold" onClick={() => getNextModule()}>
                   <Icon fontSize="large">arrow_forward_ios</Icon>
                 </MDTypography>
               </MDBox>
-              {!isLoadingContents ? <ContentDisplay contents={contentsData.contents} /> : null}
+              {!isLoadingContents ? (
+                <ContentDisplay contents={contentsData.contents} p_index={index} />
+              ) : null}
             </FullScreen>
           </Grid>
         </Grid>

@@ -18,19 +18,30 @@ import ScrollableBox from "pages/Study/sections/ScrollableBox";
 import ImageView from "pages/Study/contents/image";
 import VideoView from "pages/Study/contents/video";
 import TextView from "pages/Study/contents/text";
-// import QuizeView from "pages/Study/contents/quiz";
+import QuizeView from "pages/Study/contents/quiz";
+import DocumentView from "pages/Study/contents/document";
 
-function ContentDisplay({ contents }) {
+function ContentDisplay({ contents, p_index }) {
   return (
     <ScrollableBox sx={{ flex: "0 0 100%", px: 2, mt: -1, maxHeight: "100vh" }}>
       <Card>
-        {contents.map((content) => (
+        {contents.map((content, index) => (
           <MKBox key={content.id}>
-            {content.type === "image" && <ImageView data={content} />}
-            {content.type === "video" && <VideoView data={content} />}
-            {content.type === "text" && <TextView data={content} />}
-            {content.type === "quize" && "Quize"}
-            {content.type === "document" && "Document"}
+            {content.type === "image" && (
+              <ImageView data={content} index={p_index + "." + String(index + 1)} />
+            )}
+            {content.type === "video" && (
+              <VideoView data={content} index={p_index + "." + String(index + 1)} />
+            )}
+            {content.type === "text" && (
+              <TextView data={content} index={p_index + "." + String(index + 1)} />
+            )}
+            {content.type === "quize" && (
+              <QuizeView data={content} index={p_index + "." + String(index + 1)} />
+            )}
+            {content.type === "document" && (
+              <DocumentView data={content} index={p_index + "." + String(index + 1)} />
+            )}
           </MKBox>
         ))}
       </Card>
@@ -40,6 +51,7 @@ function ContentDisplay({ contents }) {
 
 ContentDisplay.propTypes = {
   contents: PropTypes.array.isRequired,
+  p_index: PropTypes.array,
 };
 
 export default ContentDisplay;
