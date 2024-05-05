@@ -59,12 +59,12 @@ function Courses() {
     const fetchContentsData = async () => {
       if (activeModule)
         try {
+          setIsLoadingContents(true);
           const fetchedData = await fetchObjects("study/module/" + activeModule, token);
           setContentsData(fetchedData.module);
           setIsLoadingContents(false);
         } catch (error) {
           console.error("Failed to fetch objects:", error);
-          // Set error state for displaying error message to users
         }
     };
     fetchContentsData();
@@ -152,7 +152,7 @@ function Courses() {
                 <Icon fontSize="medium">{isNavOpen ? "menu_open" : "menu"}</Icon>
               </MDTypography>
               <MDTypography variant="h6" fontWeight="medium" sx={{ mr: "48%", mt: -1.5 }}>
-                Module Name
+                {contentsData ? contentsData.name : ""}
               </MDTypography>
               <MDTypography
                 variant="button h2"
@@ -174,7 +174,7 @@ function Courses() {
                 sx={{
                   position: "absolute",
                   top: "50%",
-                  left: isNavOpen ? "25%" : 5,
+                  left: isNavOpen ? "25%" : 0,
                   transform: "translateY(-50%)",
                   zIndex: 10,
                 }}
@@ -184,13 +184,19 @@ function Courses() {
                 </MDTypography>
               </MDBox>
               <MDBox
-                sx={{ position: "absolute", top: "50%", right: 5, transform: "translateY(-50%)" }}
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  right: 0,
+                  transform: "translateY(-50%)",
+                  zIndex: 10,
+                }}
               >
                 <MDTypography variant="button h1" fontWeight="bold" onClick={() => toggleNav()}>
                   <Icon fontSize="large">arrow_forward_ios</Icon>
                 </MDTypography>
               </MDBox>
-              <ContentDisplay />
+              {!isLoadingContents ? <ContentDisplay contents={contentsData.contents} /> : null}
             </FullScreen>
           </Grid>
         </Grid>

@@ -17,15 +17,6 @@ import ScrollableBox from "pages/Study/sections/ScrollableBox";
 import PropTypes from "prop-types";
 
 function ModulesSideNav({ modules, setActiveModule }) {
-  // // Sample course modules data
-  // const [modules, setModules] = useState(
-  //   Array.from({ length: 20 }, (_, index) => ({
-  //     id: index + 1,
-  //     title: `Module ${index + 1}`,
-  //     content: `Content for Module ${index + 1}`,
-  //   }))
-  // );
-
   const handleModuleClick = (module) => {
     setActiveModule(module.id);
   };
@@ -34,7 +25,7 @@ function ModulesSideNav({ modules, setActiveModule }) {
     <>
       <MDTypography variant="h6">Course Outline</MDTypography>
       <Divider sx={{ mt: 1 }} />
-      <ScrollableBox sx={{ flex: "0 0 30%" }}>
+      <ScrollableBox sx={{ flex: "0 0 30%", maxHeight: "77vh" }}>
         {modules.map((module) => (
           <MKBox
             key={module.id}

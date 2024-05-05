@@ -3,7 +3,6 @@ import MDBox from "components/MDBox";
 
 // Styled Box component to customize scrollbar appearance
 const ScrollableBox = styled(MDBox)({
-  maxHeight: "77vh",
   overflowY: "auto",
   "&::-webkit-scrollbar": {
     width: "0px",
