@@ -52,9 +52,8 @@ function Basic() {
           console.log("Data saved successfully:", responseData);
           // Navigate to another page after successful data saving
           setIsSaved(true);
-          const { token, role } = responseData;
-          console.log(responseData);
-          login(token, role); // Store token and role in AuthProvider
+          const { token, role, user } = responseData;
+          login(token, role, user.name, user.photo); // Store token and role in AuthProvider
         } catch (error) {
           console.error("Error posting data:", error.message);
         }

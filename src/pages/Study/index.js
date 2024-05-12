@@ -21,6 +21,8 @@ import ModulesSideNav from "./sections/ModulesSideNav";
 import MDBox from "components/MDBox";
 import ContentDisplay from "./sections/ContentDisplay";
 import { useAuth } from "context/authContext";
+import CourseNavBar from "pages/Study/sections/CourseNavBar.js";
+import Footer from "layouts/authentication/components/Footer";
 
 function Courses() {
   const { id } = useParams("id");
@@ -100,55 +102,8 @@ function Courses() {
 
   return (
     <>
-      <MKBox
-        minHeight="50px"
-        width="100%"
-        sx={{
-          backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
-            `${linearGradient(
-              rgba(gradients.dark.main, 0.6),
-              rgba(gradients.dark.state, 0.6)
-            )}, url(${bgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "top",
-          display: "grid",
-        }}
-      >
-        <MKBox px={3} display="flex" justifyContent="space-between" alignItems="center">
-          <MKBox>
-            <MDTypography variant="button h2" fontWeight="bold" color="white">
-              MAJID
-            </MDTypography>
-            <MDTypography variant="button h2" fontWeight="light" color="white">
-              Learn
-            </MDTypography>
-          </MKBox>
-          <MDTypography
-            color="white"
-            variant="h6"
-            fontWeight="medium"
-            sx={{ display: { xs: "none", md: "block" }, mr: "20%" }}
-          >
-            {modulesData ? modulesData.name : ""}
-          </MDTypography>
-          <MKBox display="flex" justifyContent="space-between" alignItems="center">
-            <MDSwitch />
-            <MDTypography
-              variant="h2 button"
-              fontWeight="bold"
-              mt={1}
-              component={Link}
-              to="/learning"
-              color="white"
-            >
-              <Icon sx={{ ml: 2 }} fontSize="xl3">
-                close
-              </Icon>
-            </MDTypography>
-          </MKBox>
-        </MKBox>
-      </MKBox>
-      <MKBox component="section" mx={3}>
+      <CourseNavBar courseId={id} courseName={modulesData ? modulesData.name : ""} isStudy />
+      <MKBox component="section" sx={{ mx: { xs: 1, md: 3 } }}>
         <Grid container spacing={isNavOpen ? 3 : 0}>
           <Grid item sm={0} md={isNavOpen ? 3 : 0} sx={{ display: { xs: "none", md: "block" } }}>
             <MKBox mt={2} mb={2} className={isNavOpen ? "active-content" : "content"}>
@@ -171,7 +126,11 @@ function Courses() {
               >
                 <Icon fontSize="medium">{isNavOpen ? "menu_open" : "menu"}</Icon>
               </MDTypography>
-              <MDTypography variant="h6" fontWeight="medium" sx={{ mr: "48%", mt: -1.5 }}>
+              <MDTypography
+                variant="h6"
+                fontWeight="medium"
+                sx={{ mr: { xs: 0, md: "48%" }, mt: -1.5 }}
+              >
                 {contentsData ? index + ". " + contentsData.name : ""}
               </MDTypography>
               <MDTypography
@@ -193,7 +152,7 @@ function Courses() {
                 sx={{
                   position: "absolute",
                   top: "50%",
-                  left: isNavOpen ? "25%" : 0,
+                  left: { xs: 0, md: isNavOpen ? "25%" : 0 },
                   transform: "translateY(-50%)",
                   zIndex: 10,
                 }}
@@ -216,11 +175,14 @@ function Courses() {
                 </MDTypography>
               </MDBox>
               {!isLoadingContents ? (
-                <ContentDisplay contents={contentsData.contents} p_index={index} />
+                <ContentDisplay contents={contentsData.contents} p_index={index} courseId={id} />
               ) : null}
             </FullScreen>
           </Grid>
         </Grid>
+      </MKBox>
+      <MKBox px={1} mt={3}>
+        <Footer />
       </MKBox>
     </>
   );

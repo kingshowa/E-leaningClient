@@ -26,7 +26,7 @@ function ViewContent({ data, index }) {
   return (
     <>
       <MDBox mt={2} px={2}>
-        <MDTypography variant="h4" fontWeight="medium" textTransform="capitalize">
+        <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
           {index + " " + data.title}
         </MDTypography>
       </MDBox>

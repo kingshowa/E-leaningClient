@@ -200,10 +200,8 @@ function ViewProgram() {
             price={data.price}
             description={data.description}
             info={{
-              creator: "Alec M. Thompson",
-              mobile: "(44) 123 1234 123",
-              email: "alecthompson@mail.com",
-              location: "USA",
+              courses: data.courses.length,
+              price: data.price + " DZD",
             }}
             shadow={false}
           />

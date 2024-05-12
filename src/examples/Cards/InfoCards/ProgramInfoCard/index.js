@@ -68,9 +68,9 @@ function ProjectInfoCard({ image, title, price, description, info, shadow, actio
             <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
               {title}
             </MDTypography>
-            <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-              {price}
-            </MDTypography>
+            {/* <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
+              {price}&nbsp;DZD
+            </MDTypography> */}
           </MDBox>
           <MDBox p={2}>
             <MDBox lineHeight={1}>
@@ -85,7 +85,13 @@ function ProjectInfoCard({ image, title, price, description, info, shadow, actio
             <MDBox>{renderItems}</MDBox>
             {action && (
               <MDBox mt={6}>
-                <MDButton variant="gradient" color="dark" component={Link} to={action.route}>
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  component={action.name === "preview" ? "a" : Link}
+                  href={action.route}
+                  to={action.route}
+                >
                   <Icon sx={{ fontWeight: "bold" }}>{action.icon}</Icon>
                   &nbsp;&nbsp;{action.name}
                 </MDButton>

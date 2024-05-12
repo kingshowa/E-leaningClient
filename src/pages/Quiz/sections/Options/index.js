@@ -6,50 +6,49 @@ import CardMedia from "@mui/material/CardMedia";
 import MKBox from "components/MKBox";
 import MDTypography from "components/MDTypography";
 
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Radio } from "@mui/material";
-import { CheckBox } from "@mui/icons-material";
+import ImageOption from "../ImageOption";
+import TextOption from "../TextOption";
 
-function Option({ options, p_index }) {
+function Options({ options, p_index, setData, isSaved }) {
   return (
     <>
-      {options.map((option, index) => (
-        <Grid container key={option.id}>
-          <Grid item xs={0.5}>
-            <CheckBox />
-            <MDTypography variant="body2" color="text" fontWeight="light">
-              {index + " "}A .
-            </MDTypography>
-          </Grid>
-          <Grid item xs={11}>
-            <MDTypography variant="body2" color="text" fontWeight="light">
-              {option.type + " "} Option data here....
-            </MDTypography>
-          </Grid>
-          {/* {image && (
-        <Grid item xs={12} md={5}>
-          <MKBox mr={4}>
-            <CardMedia
-              component="img"
-              src={image}
-              sx={{
-                maxWidth: "100%",
-                objectFit: "cover",
-                objectPosition: "center",
-              }}
+      {options[0].type === "text" &&
+        options.map((option, index) => (
+          <MKBox key={option.id}>
+            <TextOption
+              index={index}
+              p_index={p_index}
+              option={option}
+              setData={setData}
+              isSaved={isSaved}
             />
           </MKBox>
+        ))}
+      {options[0].type === "image" && (
+        <Grid container spacing={2}>
+          {options.map((option, index) => (
+            <Grid item xs={12} md={6} key={option.id}>
+              <ImageOption
+                index={index}
+                p_index={p_index}
+                option={option}
+                setData={setData}
+                isSaved={isSaved}
+              />
+            </Grid>
+          ))}
         </Grid>
-      )} */}
-        </Grid>
-      ))}
+      )}
     </>
   );
 }
 
-Option.propTypes = {
+Options.propTypes = {
   p_index: PropTypes.number.isRequired,
+  setData: PropTypes.func.isRequired,
+  isSaved: PropTypes.bool.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -60,4 +59,4 @@ Option.propTypes = {
   ).isRequired,
 };
 
-export default Option;
+export default Options;

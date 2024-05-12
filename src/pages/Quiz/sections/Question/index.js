@@ -12,19 +12,14 @@ import PropTypes from "prop-types";
 function Question({ index, context, image }) {
   return (
     <Grid container>
-      <Grid item xs={0.5}>
+      <Grid item xs={12} md={image ? 6 : 12}>
         <MDTypography variant="body2" color="text" fontWeight="light">
-          {index + 1}.
-        </MDTypography>
-      </Grid>
-      <Grid item xs={11.5} md={image ? 6.5 : 11.5}>
-        <MDTypography variant="body2" color="text" fontWeight="light">
-          {context}
+          {index + 1}.&nbsp;&nbsp;{context}
         </MDTypography>
       </Grid>
       {image && (
-        <Grid item xs={12} md={5}>
-          <MKBox mr={4}>
+        <Grid item xs={12} md={6}>
+          <MKBox mr="5%">
             <CardMedia
               component="img"
               src={image}

@@ -21,10 +21,10 @@ import TextView from "pages/Study/contents/text";
 import QuizeView from "pages/Study/contents/quiz";
 import DocumentView from "pages/Study/contents/document";
 
-function ContentDisplay({ contents, p_index }) {
+function ContentDisplay({ contents, p_index, courseId }) {
   return (
     <ScrollableBox sx={{ flex: "0 0 100%", px: 2, mt: -1, maxHeight: "100vh" }}>
-      <Card>
+      <Card sx={{ px: { xs: 1, md: 4 } }}>
         {contents.map((content, index) => (
           <MKBox key={content.id}>
             {content.type === "image" && (
@@ -37,7 +37,11 @@ function ContentDisplay({ contents, p_index }) {
               <TextView data={content} index={p_index + "." + String(index + 1)} />
             )}
             {content.type === "quize" && (
-              <QuizeView data={content} index={p_index + "." + String(index + 1)} />
+              <QuizeView
+                data={content}
+                index={p_index + "." + String(index + 1)}
+                courseId={courseId}
+              />
             )}
             {content.type === "document" && (
               <DocumentView data={content} index={p_index + "." + String(index + 1)} />
@@ -52,6 +56,7 @@ function ContentDisplay({ contents, p_index }) {
 ContentDisplay.propTypes = {
   contents: PropTypes.array.isRequired,
   p_index: PropTypes.array,
+  courseId: PropTypes.number,
 };
 
 export default ContentDisplay;

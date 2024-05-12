@@ -11,7 +11,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 
-function QuizInfoCard({ id, title, instruction, info, shadow }) {
+function QuizInfoCard({ id, title, instruction, info, shadow, courseId, mark }) {
   const labels = [];
   const values = [];
 
@@ -43,9 +43,9 @@ function QuizInfoCard({ id, title, instruction, info, shadow }) {
   ));
 
   return (
-    <Card sx={{ height: "100%", boxShadow: !shadow && "none" }}>
+    <Card sx={{ height: "100%", boxShadow: !shadow && "none", marginBottom: 4 }}>
       <MDBox px={2}>
-        <MDTypography variant="h4" fontWeight="medium" textTransform="capitalize">
+        <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
           {title}
         </MDTypography>
       </MDBox>
@@ -61,10 +61,21 @@ function QuizInfoCard({ id, title, instruction, info, shadow }) {
           </MDBox>
         </Grid>
         <Grid item xs={12} md={6}>
+          {mark && (
+            <MDTypography variant="button" color="text" p={2} fontWeight="light">
+              Previous Mark: {mark} %
+            </MDTypography>
+          )}
           <MDBox p={2}>
-            <MDButton color="dark" component={Link} to={"/excercise/" + id}>
-              Start Excercise
-            </MDButton>
+            {mark ? (
+              <MDButton color="dark" component={Link} to={"/excercise/" + id + "/" + courseId}>
+                Retake Excercise
+              </MDButton>
+            ) : (
+              <MDButton color="dark" component={Link} to={"/excercise/" + id + "/" + courseId}>
+                Start Excercise
+              </MDButton>
+            )}
           </MDBox>
         </Grid>
       </Grid>
@@ -84,6 +95,8 @@ QuizInfoCard.propTypes = {
   instruction: PropTypes.string,
   info: PropTypes.objectOf(PropTypes.string),
   shadow: PropTypes.bool,
+  courseId: PropTypes.number,
+  mark: PropTypes.number,
 };
 
 export default QuizInfoCard;

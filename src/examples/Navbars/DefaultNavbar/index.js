@@ -66,7 +66,7 @@ function DefaultNavbar({ transparent, light, action }) {
     return () => window.removeEventListener("resize", displayMobileNavbar);
   }, []);
 
-  const { token, logout } = useAuth();
+  const { token, logout, photo } = useAuth();
 
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
@@ -192,7 +192,13 @@ function DefaultNavbar({ transparent, light, action }) {
             pl={2}
             onClick={handleOpenMenu}
           >
-            <MDAvatar bgColor="dark" src={""} alt="profile-image" size="sm" shadow="sm" />
+            <MDAvatar
+              bgColor="dark"
+              src={photo ? photo : ""}
+              alt="profile-image"
+              size="sm"
+              shadow="sm"
+            />
           </MDBox>
           {renderMenu()}
         </MDBox>

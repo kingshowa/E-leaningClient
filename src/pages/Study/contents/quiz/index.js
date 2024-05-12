@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import MDBox from "components/MDBox";
 import QuizInfoCard from "pages/Study/contents/ContentCards/QuizInfoCard";
 
-function ViewContent({ data, index }) {
+function ViewContent({ data, index, courseId }) {
   return (
     <MDBox mt={2} mb={1}>
       <QuizInfoCard
@@ -17,6 +17,8 @@ function ViewContent({ data, index }) {
           pass_mark: data.pass_percentage + " %",
         }}
         shadow={false}
+        courseId={courseId}
+        mark={data.previousMark}
       />
     </MDBox>
   );
@@ -29,8 +31,10 @@ ViewContent.propTypes = {
     title: PropTypes.string,
     duration: PropTypes.number,
     pass_percentage: PropTypes.number,
+    previousMark: PropTypes.number,
   }).isRequired,
   index: PropTypes.string,
+  courseId: PropTypes.number,
 };
 
 export default ViewContent;

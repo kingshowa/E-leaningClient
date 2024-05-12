@@ -109,12 +109,16 @@ function ViewContent() {
         {/* View content */}
         <MDBox mt={5} mb={2} className={toggleState == 0 ? "active-content" : "content"}>
           <MDBox display="flex" justifyContent="space-between" alignItems="center" pt={0} px={2}>
-            <MDTypography variant="h4" fontWeight="medium" textTransform="capitalize">
+            <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
               {data.title}
             </MDTypography>
           </MDBox>
           <MDBox display="flex" justifyContent="space-between" alignItems="center" mt={3} px={2}>
-            <MDTypography dangerouslySetInnerHTML={{ __html: data.data }} />
+            <MDTypography
+              variant="button"
+              fontWeight="light"
+              dangerouslySetInnerHTML={{ __html: data.data }}
+            />
           </MDBox>
         </MDBox>
         {/* Edit content */}

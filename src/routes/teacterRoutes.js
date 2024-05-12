@@ -23,15 +23,12 @@
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
 import Messages from "layouts/messages";
-import Programs from "layouts/programs";
 import Courses from "layouts/courses";
 import Modules from "layouts/modules";
-import CreateProgram from "layouts/programs/create";
 import CreateCourse from "layouts/courses/create";
 import CreateModule from "layouts/modules/create";
 import CreateContent from "layouts/contents/create";
 import CreateQuestion from "layouts/contents/create/CreateQuestion";
-import ViewProgram from "layouts/programs/view";
 import ViewCourse from "layouts/courses/view";
 import ViewModule from "layouts/modules/view";
 import ViewVideoContent from "layouts/contents/view/video";
@@ -39,14 +36,17 @@ import ViewImageContent from "layouts/contents/view/image";
 import ViewTextContent from "layouts/contents/view/text";
 import ViewQuizContent from "layouts/contents/view/quiz";
 import ViewQuestion from "layouts/contents/view/question";
-// import EditModule from "layouts/modules/edit";
 import EditDocumentContent from "layouts/contents/edit/document";
-import Billing from "layouts/billing";
-import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
+import LiveStream from "layouts/pages/live-stream";
+import Discussion from "layouts/pages/discussion";
+
+// front side view
+import Study from "layouts/pages/study";
+import Quiz from "layouts/pages/quiz";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
@@ -64,7 +64,7 @@ const teacherRoutes = [
     type: "collapse",
     name: "Courses",
     key: "courses",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">auto_stories</Icon>,
     route: "/courses",
     collapse: [
       {
@@ -88,7 +88,7 @@ const teacherRoutes = [
     type: "collapse",
     name: "Modules",
     key: "modules",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">style</Icon>,
     route: "/modules",
     collapse: [
       {
@@ -163,20 +163,28 @@ const teacherRoutes = [
     component: <Profile />,
   },
   {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
   },
   {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
     route: "/authentication/sign-up",
     component: <SignUp />,
+  },
+  {
+    route: "/course/study/:id",
+    component: <Study />,
+  },
+  {
+    route: "/excercise/:id/:courseId",
+    component: <Quiz />,
+  },
+  {
+    route: "/room/:roomId",
+    component: <LiveStream />,
+  },
+  {
+    route: "/discussion/:id",
+    component: <Discussion />,
   },
 ];
 

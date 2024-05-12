@@ -49,8 +49,6 @@ function AboutUs() {
       setUserData(fetchedData.user);
       setCompletedCourseData(fetchedData.completed_courses);
       setIsLoading(false);
-      console.log(courseData);
-      console.log(completedCourseData);
     } catch (error) {
       console.error("Failed to fetch objects:", error);
       // Set error state for displaying error message to users
@@ -65,8 +63,6 @@ function AboutUs() {
         setProgramData(fetchedData.programs);
         setCompletedProgramData(fetchedData.completed_programs);
         fetchCourseData();
-        console.log(programData);
-        console.log(completedProgramData);
       } catch (error) {
         console.error("Failed to fetch objects:", error);
         // Set error state for displaying error message to users

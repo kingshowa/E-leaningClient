@@ -20,7 +20,7 @@ function ProfilesList({ profiles, shadow, setSelectedChat }) {
     <MDBox key={name} component="li" py={1} mb={1}>
       <MDBox component={Link} onClick={() => clickedProfile(id)} display="flex" alignItems="center">
         <MDBox mr={2}>
-          <MDAvatar bgColor="dark" src={photo} alt="something here" shadow="md" />
+          <MDAvatar bgColor="dark" src={photo} alt="something here" shadow="md" size="sm" />
         </MDBox>
         <MDBox
           display="flex"

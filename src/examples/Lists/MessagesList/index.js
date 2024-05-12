@@ -31,7 +31,17 @@ function downloadDocument(url, name) {
 function MessagesList({ patnerId, messages, shadow }) {
   const renderMessages = messages.map(({ id, text, attachment, sent_by }) => (
     <MDBox key={id} component="li" display="flex" alignItems="center" py={1} mb={1}>
-      <MDBox mr={2} ml={sent_by != patnerId ? "auto" : ""}>
+      <MDBox
+        mr={2}
+        ml={sent_by != patnerId ? "auto" : ""}
+        display="flex"
+        bgColor="info" // Background color
+        color="info.contrastText" // Text color
+        p={2} // Padding
+        borderRadius={8} // Border radius
+        boxShadow={3} // Box shadow
+        maxWidth={400} // Max width
+      >
         {attachment ? (
           <MDTypography
             variant="caption"

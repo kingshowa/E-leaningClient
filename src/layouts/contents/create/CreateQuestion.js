@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -36,6 +36,7 @@ function CreateContent() {
   const [optionsNum, setOptionsNum] = useState(0);
 
   const [qnId, setQnId] = useState(null);
+  const [done, setDone] = useState(false);
 
   const [data, setData] = useState();
   const [isSaved, setIsSaved] = useState(false);
@@ -183,6 +184,11 @@ function CreateContent() {
               </MDBox>
               <MDBox px={3} mb={3}>
                 {renderContent()}
+              </MDBox>
+              <MDBox mb={4} ml={3}>
+                <MDButton color="dark" component={Link} to={"/quize-content?id=" + id}>
+                  Back to quiz
+                </MDButton>
               </MDBox>
             </Card>
           </Grid>

@@ -54,24 +54,6 @@ function ProfileInfoCard({ title, photo, info, name, role, action, shadow }) {
     </MDBox>
   ));
 
-  // // Render the card social media icons
-  // const renderSocial = social.map(({ link, icon, color }) => (
-  //   <MDBox
-  //     key={color}
-  //     component="a"
-  //     href={link}
-  //     target="_blank"
-  //     rel="noreferrer"
-  //     fontSize={size.lg}
-  //     color={socialMediaColors[color].main}
-  //     pr={1}
-  //     pl={0.5}
-  //     lineHeight={1}
-  //   >
-  //     {icon}
-  //   </MDBox>
-  // ));
-
   return (
     <Card sx={{ height: "100%", boxShadow: !shadow && "none" }}>
       <Grid container spacing={6}>

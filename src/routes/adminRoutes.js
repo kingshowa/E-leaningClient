@@ -49,6 +49,9 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
+// front side view
+import Study from "layouts/pages/study";
+import Quiz from "layouts/pages/quiz";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
@@ -66,7 +69,7 @@ const adminRoutes = [
     type: "collapse",
     name: "Programs",
     key: "programs",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">folder_special</Icon>,
     route: "/programs",
     collapse: [
       {
@@ -90,7 +93,7 @@ const adminRoutes = [
     type: "collapse",
     name: "Courses",
     key: "courses",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">auto_stories</Icon>,
     route: "/courses",
     collapse: [
       {
@@ -114,7 +117,7 @@ const adminRoutes = [
     type: "collapse",
     name: "Modules",
     key: "modules",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">style</Icon>,
     route: "/modules",
     collapse: [
       {
@@ -205,18 +208,10 @@ const adminRoutes = [
     component: <Messages />,
   },
   {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/billing",
     component: <Billing />,
   },
   {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notifications",
     component: <Notifications />,
   },
@@ -229,20 +224,20 @@ const adminRoutes = [
     component: <Profile />,
   },
   {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
   },
   {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
     route: "/authentication/sign-up",
     component: <SignUp />,
+  },
+  {
+    route: "/course/study/:id",
+    component: <Study />,
+  },
+  {
+    route: "/excercise/:id/:courseId",
+    component: <Quiz />,
   },
 ];
 

@@ -231,10 +231,11 @@ function ViewCourse() {
               instructor: data.teacher.name,
               email: data.teacher.email,
               modules: data.total_modules,
+              price: data.price + " DZD",
             }}
             action={{
               name: "preview",
-              route: "/course/" + data.id,
+              route: "/course/study/" + data.id,
               icon: "visibility",
             }}
             shadow={false}

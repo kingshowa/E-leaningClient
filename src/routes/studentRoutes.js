@@ -21,8 +21,7 @@
 */
 
 // Material Dashboard 2 React layouts
-import Messages from "layouts/messages";
-import Profile from "layouts/profile";
+import Profile from "layouts/pages/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Home from "layouts/pages/home";
@@ -33,6 +32,9 @@ import Program from "layouts/pages/program";
 import Learning from "layouts/pages/learning";
 import Study from "layouts/pages/study";
 import Quiz from "layouts/pages/quiz";
+import Messages from "layouts/pages/messages";
+import Discussion from "layouts/pages/discussion";
+import LiveStream from "layouts/pages/live-stream";
 import Payment from "layouts/pages/payment";
 import AboutUs from "layouts/pages/landing-pages/about-us";
 import Presentation from "layouts/pages/presentation";
@@ -44,18 +46,18 @@ import Icon from "@mui/material/Icon";
 // STUDENTS ROUTES //
 const studentRoutes = [
   {
-    type: "collapse",
-    name: "Messages",
-    key: "messages",
-    icon: <Icon fontSize="small">email</Icon>,
     route: "/messages",
     component: <Messages />,
   },
   {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
+    route: "/discussion/:id",
+    component: <Discussion />,
+  },
+  {
+    route: "/room/:roomId",
+    component: <LiveStream />,
+  },
+  {
     route: "/profile",
     component: <Profile />,
   },
@@ -108,7 +110,7 @@ const studentRoutes = [
     component: <Study />,
   },
   {
-    route: "/excercise/:id",
+    route: "/excercise/:id/:courseId",
     component: <Quiz />,
   },
   {

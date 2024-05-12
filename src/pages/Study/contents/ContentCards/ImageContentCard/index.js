@@ -19,7 +19,7 @@ function VideoContentCard({ image, title, caption, shadow }) {
       <Grid container>
         <Grid item pr={4}>
           <MDBox display="flex" justifyContent="space-between" alignItems="center" pt={0} px={2}>
-            <MDTypography variant="h4" fontWeight="medium" textTransform="capitalize">
+            <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
               {title}
             </MDTypography>
           </MDBox>
