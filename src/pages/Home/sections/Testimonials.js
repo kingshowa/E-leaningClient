@@ -19,7 +19,7 @@ import digitalOceanLogo from "assets/front/images/logos/gray-logos/logo-digitalo
 
 function Information() {
   return (
-    <MKBox component="section" py={12}>
+    <MKBox component="section" py={12} mt={-5}>
       <Container>
         <Grid
           container
@@ -29,10 +29,12 @@ function Information() {
           justifyContent="center"
           sx={{ mx: "auto", textAlign: "center" }}
         >
-          <MKTypography variant="h2">Trusted by over 1,679+ learners</MKTypography>
+          <MKTypography variant="h2" color="red">
+            Trusted by over 1,679+ learners
+          </MKTypography>
           <MKTypography variant="body1" color="text" mb={2}>
-            Many companies, startups, universities and governmental institutions recommend
-            MajidLearn Courses.
+            Many companies, startups, universities and governmental institutions recommend ATM
+            Learning Courses.
           </MKTypography>
         </Grid>
         <Grid container spacing={3} sx={{ mt: 8 }}>
@@ -40,7 +42,7 @@ function Information() {
             <DefaultReviewCard
               name="Nick Willever"
               date="1 day ago"
-              review="This is an excellent product, the documentation is excellent and helped me get things done more efficiently."
+              review="This is an excellent platform, the courses are excellent and helped me grasp knowledge more efficiently."
               rating={5}
             />
           </Grid>
@@ -49,7 +51,7 @@ function Information() {
               color="info"
               name="Shailesh Kushwaha"
               date="1 week ago"
-              review="I found solution to all my design needs from Creative Tim. I use them as a freelancer in my hobby projects for fun! And its really affordable, very humble guys !!!"
+              review="I found solution to all my learning needs from ATM Learning. I use this platform for all my technical knowledge needs."
               rating={5}
             />
           </Grid>
@@ -57,7 +59,7 @@ function Information() {
             <DefaultReviewCard
               name="Samuel Kamuli"
               date="3 weeks ago"
-              review="Great product. Helped me cut the time to set up a site. I used the components within instead of starting from scratch. I highly recommend for developers who want to spend more time on the backend!."
+              review="Great product. Helped me cut the costs to learn new things. I highly recommend for learners who want to take specialized courses and programs."
               rating={5}
             />
           </Grid>

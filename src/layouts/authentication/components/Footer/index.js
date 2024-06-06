@@ -68,7 +68,7 @@ function Footer({ light, absolute }) {
                   fontWeight="regular"
                   color={light ? "white" : "dark"}
                 >
-                  MAJID Learn
+                  ATM Learning
                 </MDTypography>
               </Link>
             </MDBox>

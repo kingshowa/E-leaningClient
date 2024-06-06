@@ -49,7 +49,7 @@ function Courses() {
     <>
       <DefaultNavbar />
       <MKBox
-        minHeight="65vh"
+        minHeight="45vh"
         width="100%"
         sx={{
           backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
@@ -85,11 +85,11 @@ function Courses() {
             >
               Courses
             </MKTypography>
-            <MKTypography variant="body1" color="white" opacity={0.8} mt={1} mb={3}>
+            {/* <MKTypography variant="body1" color="white" opacity={0.8} mt={1} mb={3}>
               Explore our diverse catalog of courses covering a myriad of subjects and interests.
               From programming to poetry, our course counter proudly displays our ever-expanding
               collection, ensuring there&apos;s always something new to discover and learn.
-            </MKTypography>
+            </MKTypography> */}
           </Grid>
         </Container>
       </MKBox>
@@ -97,7 +97,7 @@ function Courses() {
         sx={{
           p: 2,
           mx: { xs: 2, lg: 3 },
-          mt: -15,
+          mt: -10,
           mb: 4,
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}

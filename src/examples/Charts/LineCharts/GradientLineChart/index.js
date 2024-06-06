@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2  React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useRef, useEffect, useState, useMemo } from "react";
 
 // porp-types is a library for typechecking of props
@@ -71,20 +56,20 @@ function GradientLineChart({ icon, title, description, height, chart }) {
 
     const chartDatasets = chart.datasets
       ? chart.datasets.map((dataset) => ({
-          ...dataset,
-          tension: 0,
-          pointRadius: 0,
-          borderWidth: 4,
-          borderColor: colors[dataset.color]
-            ? colors[dataset.color || "dark"].main
-            : colors.dark.main,
-          fill: true,
-          maxBarThickness: 6,
-          backgroundColor: gradientChartLine(
-            chartElement.ctx,
-            colors[dataset.color] ? colors[dataset.color || "dark"].main : colors.dark.main
-          ),
-        }))
+        ...dataset,
+        tension: 0,
+        pointRadius: 0,
+        borderWidth: 4,
+        borderColor: colors[dataset.color]
+          ? colors[dataset.color || "dark"].main
+          : colors.dark.main,
+        fill: true,
+        maxBarThickness: 6,
+        backgroundColor: gradientChartLine(
+          chartElement.ctx,
+          colors[dataset.color] ? colors[dataset.color || "dark"].main : colors.dark.main
+        ),
+      }))
       : [];
 
     setChartData(configs(chart.labels || [], chartDatasets));

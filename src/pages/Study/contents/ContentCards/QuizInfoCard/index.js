@@ -68,11 +68,11 @@ function QuizInfoCard({ id, title, instruction, info, shadow, courseId, mark }) 
           )}
           <MDBox p={2}>
             {mark ? (
-              <MDButton color="dark" component={Link} to={"/excercise/" + id + "/" + courseId}>
+              <MDButton color="red" component={Link} to={"/excercise/" + id + "/" + courseId}>
                 Retake Excercise
               </MDButton>
             ) : (
-              <MDButton color="dark" component={Link} to={"/excercise/" + id + "/" + courseId}>
+              <MDButton color="red" component={Link} to={"/excercise/" + id + "/" + courseId}>
                 Start Excercise
               </MDButton>
             )}

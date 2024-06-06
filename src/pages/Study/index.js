@@ -52,7 +52,7 @@ function Courses() {
       try {
         const fetchedData = await fetchObjects("study/modules/" + id, token);
         setModulesData(fetchedData.course);
-        setActiveModule(fetchedData.course.active_module);
+        setActiveModule(fetchedData.course.active_module || fetchedData.course.modules[0].id);
         setIndex(fetchedData.course.index);
         setIsLoadingModules(false);
       } catch (error) {

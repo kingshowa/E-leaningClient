@@ -31,9 +31,9 @@ function DefaultNavbarLink({ icon, name, route, light }) {
         {icon}
       </Icon>
       <MDTypography
-        variant="button"
+        variant="body2"
         fontWeight="regular"
-        color={light ? "white" : "dark"}
+        color={light ? "white" : "red"}
         textTransform="capitalize"
         sx={{ width: "100%", lineHeight: 0 }}
       >

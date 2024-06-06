@@ -12,7 +12,7 @@ function QuestionsDisplay({ data, setData, isSaved }) {
   const questions = data.questions;
   return (
     <>
-      <MDTypography variant="body1" color="text" fontWeight="light" mb={2}>
+      <MDTypography variant="body1" color="text" fontWeight="regular" mb={2}>
         {data.instruction}
       </MDTypography>
       {questions.map((question, index) => (

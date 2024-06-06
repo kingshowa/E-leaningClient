@@ -17,6 +17,7 @@ function Courses({ data }) {
   const renderData = data.map(({ id, photo, name, description, progress, level }) => (
     <Grid item xs={12} md={3} key={id}>
       <CourseCard
+        id={id}
         image={photo}
         title={name}
         description={description}

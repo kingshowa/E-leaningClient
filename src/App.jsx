@@ -25,6 +25,7 @@ import themeDark from "assets/theme-dark";
 import adminRoutes from "routes/adminRoutes";
 import teacherRoutes from "routes/teacterRoutes";
 import studentRoutes from "routes/studentRoutes";
+import guestRoutes from "routes/guest";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
@@ -138,8 +139,8 @@ export default function App() {
             <>
               <Sidenav
                 color={sidenavColor}
-                brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                brandName="MAJIDLearn"
+                // brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+                brandName="ATM Learning"
                 routes={role == USER_ROLES.ADMIN ? adminRoutes : teacherRoutes}
                 onMouseEnter={handleOnMouseEnter}
                 onMouseLeave={handleOnMouseLeave}
@@ -166,7 +167,7 @@ export default function App() {
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
       <Routes>
-        {getRoutes(studentRoutes)}
+        {getRoutes(guestRoutes)}
         <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
       </Routes>
     </ThemeProvider>

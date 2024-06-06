@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import MDTypography from "components/MDTypography";
 
 // Presentation page components
 import CourseCard from "pages/Home/components/CourseCard";
@@ -21,7 +22,7 @@ function Courses({ data }) {
     <Grid container spacing={3} sx={{ mb: 10 }} key={id}>
       <Grid item xs={12} lg={3}>
         <MKBox position="sticky" top="100px" pb={{ xs: 2, lg: 6 }}>
-          <MKTypography variant="h3" fontWeight="bold" mb={1}>
+          <MKTypography variant="h3" fontWeight="bold" mb={1} color="red">
             {name} Courses
           </MKTypography>
         </MKBox>
@@ -41,7 +42,7 @@ function Courses({ data }) {
   ));
 
   return (
-    <MKBox component="section" py={6} id="courses">
+    <MKBox component="section" py={6} id="courses" mt={-5}>
       <Container>
         <Grid
           container
@@ -52,7 +53,7 @@ function Courses({ data }) {
           alignItems="center"
           sx={{ textAlign: "center", my: 3, mx: "auto", px: 0.75 }}
         >
-          <MKTypography variant="h2" fontWeight="bold">
+          <MKTypography variant="h2" fontWeight="bold" color="red">
             Browse Popular Courses Collection
           </MKTypography>
         </Grid>

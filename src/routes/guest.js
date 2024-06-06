@@ -46,31 +46,7 @@ import Author from "pages/LandingPages/Author";
 import Icon from "@mui/material/Icon";
 
 // STUDENTS ROUTES //
-const studentRoutes = [
-  {
-    route: "/messages",
-    component: <Messages />,
-  },
-  {
-    route: "/certificate/:name/:id",
-    component: <Certificate />,
-  },
-  {
-    route: "/certificate/verify/:id",
-    component: <Verify />,
-  },
-  {
-    route: "/discussion/:id",
-    component: <Discussion />,
-  },
-  {
-    route: "/room/:roomId",
-    component: <LiveStream />,
-  },
-  {
-    route: "/profile",
-    component: <Profile />,
-  },
+const guestRoutes = [
   {
     type: "collapse",
     name: "Sign In",
@@ -108,33 +84,13 @@ const studentRoutes = [
     component: <Program />,
   },
   {
-    route: "/register/:name/:id",
-    component: <Payment />,
-  },
-  {
-    route: "/learning",
-    component: <Learning />,
-  },
-  {
-    route: "/course/study/:id",
-    component: <Study />,
-  },
-  {
-    route: "/excercise/:id/:courseId",
-    component: <Quiz />,
-  },
-  {
     route: "/about-us",
     component: <AboutUs />,
   },
   {
-    route: "/presentation",
-    component: <Presentation />,
-  },
-  {
-    route: "/author",
-    component: <Author />,
+    route: "/certificate/verify/:id",
+    component: <Verify />,
   },
 ];
 
-export default studentRoutes;
+export default guestRoutes;

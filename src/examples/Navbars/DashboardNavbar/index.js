@@ -112,7 +112,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       sx={{ mt: 2 }}
     >
       <Link to="/messages">
-        <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
+        <NotificationItem icon={<Icon>email</Icon>} title="My Messages" />
       </Link>
       <Link to="/profile">
         <NotificationItem icon={<Icon>person</Icon>} title="My Profile" />
@@ -146,9 +146,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox pr={1}>
+            {/* <MDBox pr={1}>
               <MDInput label="Search here" />
-            </MDBox>
+            </MDBox> */}
             <MDBox color={light ? "white" : "inherit"}>
               <IconButton sx={navbarIconButton} size="small" disableRipple onClick={handleOpenMenu}>
                 <Icon sx={iconsStyle}>account_circle</Icon>
@@ -172,17 +172,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 onClick={handleConfiguratorOpen}
               >
                 <Icon sx={iconsStyle}>settings</Icon>
-              </IconButton>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                aria-controls="notification-menu"
-                aria-haspopup="true"
-                variant="contained"
-              >
-                <Icon sx={iconsStyle}>notifications</Icon>
               </IconButton>
               {renderMenu()}
             </MDBox>

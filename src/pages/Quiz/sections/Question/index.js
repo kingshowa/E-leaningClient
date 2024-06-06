@@ -13,7 +13,7 @@ function Question({ index, context, image }) {
   return (
     <Grid container>
       <Grid item xs={12} md={image ? 6 : 12}>
-        <MDTypography variant="body2" color="text" fontWeight="light">
+        <MDTypography variant="body2" color="text" fontWeight="regular">
           {index + 1}.&nbsp;&nbsp;{context}
         </MDTypography>
       </Grid>

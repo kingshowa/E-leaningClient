@@ -17,7 +17,7 @@ import Footer from "layouts/authentication/components/Footer";
 import Counters from "pages/Presentation/sections/Counters";
 import Courses from "pages/Home/sections/Courses";
 import Programs from "pages/Home/sections/Programs";
-import Testimonials from "pages/Presentation/sections/Testimonials";
+import Testimonials from "pages/Home/sections/Testimonials";
 
 // Images
 import bgImage from "assets/front/images/home-bg.jpg";
@@ -62,17 +62,17 @@ function Home() {
         <Container>
           <Grid container item xs={12} lg={6} px={{ xs: 0, lg: 1 }} justifyContent="">
             <MKTypography variant="h1" color="white" mt={4} mb={1} pl={0}>
-              Unlock Your Future With MajidLearn.
+              Unlock Your Future With ATM Learning.
             </MKTypography>
             <MKTypography variant="body1" color="white" mt={1}>
-              MajidLearn is a gateway to endless knowledge and growth. Empowering learning, anytime,
-              anywhere. Join thousands of learners excelling with us and embark on your journey
-              towards success!
+              ATM Learning is a gateway to endless knowledge and growth. Empowering learning,
+              anytime, anywhere. Join thousands of learners excelling with us and embark on your
+              journey towards success!
             </MKTypography>
             <MKTypography
               mt={3}
               component={Link}
-              to="#courses"
+              to="/courses"
               variant="body1"
               color="white"
               fontWeight="regular"

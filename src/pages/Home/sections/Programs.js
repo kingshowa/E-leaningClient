@@ -25,7 +25,7 @@ function Programs({ data }) {
   ));
 
   return (
-    <MKBox component="section">
+    <MKBox component="section" mt={-5}>
       <Container>
         <Grid
           container
@@ -36,12 +36,12 @@ function Programs({ data }) {
           alignItems="center"
           sx={{ textAlign: "center", mx: "auto", px: 0.75 }}
         >
-          <MKTypography variant="h2" fontWeight="bold">
-            Browse Our Specialised Programs
+          <MKTypography variant="h2" fontWeight="bold" color="red">
+            Browse Our Popular Programs
           </MKTypography>
         </Grid>
       </Container>
-      <Container sx={{ mt: { xs: 4, lg: 8 } }}>
+      <Container sx={{ mt: { xs: 2, lg: 6 } }}>
         <Grid container spacing={3}>
           <Grid item xs={12} lg={9} sx={{ mt: 1, px: { xs: 0, lg: 8 } }}>
             <Grid container spacing={3}>
@@ -50,10 +50,10 @@ function Programs({ data }) {
           </Grid>
           <Grid item xs={12} lg={3}>
             <MKBox position="sticky" top="100px" pb={{ xs: 2, lg: 6 }}>
-              <MKTypography variant="h3" fontWeight="bold" mb={1}>
+              <MKTypography variant="h3" fontWeight="bold" mb={1} color="red">
                 Enroll in one of our Specialised programs
               </MKTypography>
-              <MKTypography variant="body2" fontWeight="regular" color="secondary" mb={1} pr={2}>
+              <MKTypography variant="body2" fontWeight="regular" color="text" mb={1} pr={2}>
                 Delve into the realm of possibilities with our array of comprehensive programs
                 designed to nurture your skills and expertise. Whether you&apos;re aiming for
                 personal growth or professional advancement, our programs counter showcases the

@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import MDTypography from "components/MDTypography";
 import MKProgress from "components/MKProgress";
 
 // Presentation page components
@@ -42,9 +43,9 @@ function Courses({ data }) {
       </Grid>
       <Grid item xs={12} lg={3}>
         <MKBox position="sticky" top="50px" pb={{ xs: 2, lg: 6 }}>
-          <MKTypography variant="h3" fontWeight="bold" mb={1}>
+          <MDTypography variant="h3" fontWeight="bold" mb={1} color="red">
             {name}
-          </MKTypography>
+          </MDTypography>
           <MKProgress color="primary" value={progress} label />
           <MKTypography variant="body2" component="p" color="text" mb={1}>
             {description}

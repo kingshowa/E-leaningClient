@@ -77,7 +77,7 @@ function Quiz() {
   const handleChange = () => {
     setIsChecked(!isChecked);
   };
-
+  // console.log(token);
   return (
     <>
       <CourseNavBar courseId={courseId} courseName={!isLoading ? data.title : ""} />
@@ -116,19 +116,19 @@ function Quiz() {
                       disabled={isSaved}
                     />
                   </MKBox>
-                  <MDTypography variant="body2" color="text" fontWeight="light" mt={-0.3}>
+                  <MDTypography variant="body2" color="text" fontWeight="regular" mt={-0.3}>
                     &nbsp;&nbsp;I agree to submit my answers!
                   </MDTypography>
                 </MKBox>
                 <MKBox mt={2} ml={1} display="flex">
                   <Grid container>
                     <Grid item xs={12} md={6}>
-                      <MDButton color="dark" onClick={handleSubmit} disabled={isSaved}>
+                      <MDButton color="red" onClick={handleSubmit} disabled={isSaved}>
                         submit excercise
                       </MDButton>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                      <MDTypography variant="body2" fontWeight="light">
+                      <MDTypography variant="body2" fontWeight="lregular">
                         {isSaved ? totalMark : ""}
                       </MDTypography>
                     </Grid>

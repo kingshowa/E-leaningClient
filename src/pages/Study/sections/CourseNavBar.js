@@ -28,11 +28,12 @@ function CourseNavBar({ courseId, courseName, isStudy }) {
         minHeight="50px"
         width="100%"
         sx={{
-          backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
-            `${linearGradient(
-              rgba(gradients.dark.main, 0.6),
-              rgba(gradients.dark.state, 0.6)
-            )}, url(${bgImage})`,
+          // backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
+          //   `${linearGradient(
+          //     rgba(gradients.dark.main, 0.6),
+          //     rgba(gradients.dark.state, 0.6)
+          //   )}, url(${bgImage})`,
+          backgroundColor: "#841317",
           backgroundSize: "cover",
           backgroundPosition: "top",
           display: "grid",
@@ -46,10 +47,10 @@ function CourseNavBar({ courseId, courseName, isStudy }) {
         >
           <MKBox>
             <MDTypography variant="button h2" fontWeight="bold" color="white">
-              MAJID
+              ATM {""}
             </MDTypography>
             <MDTypography variant="button h2" fontWeight="light" color="white">
-              Learn
+              Learning
             </MDTypography>
           </MKBox>
           <MDTypography

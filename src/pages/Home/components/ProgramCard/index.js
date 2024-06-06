@@ -42,18 +42,24 @@ function ExampleCard({ image, name, price, description, ...rest }) {
         justifyContent="space-between"
         alignItems="center"
       >
-        <MDTypography mt={1} variant="h6" fontWeight="medium" textTransform="capitalize">
+        <MDTypography
+          mt={1}
+          variant="h6"
+          fontWeight="medium"
+          textTransform="capitalize"
+          color="red"
+        >
           {name}
         </MDTypography>
-        <MKTypography variant="body2" fontWeight="regular" color="secondary">
+        <MDTypography variant="body2" fontWeight="regular" color="red">
           {price === 0 ? "Free" : price + " DA"}
-        </MKTypography>
+        </MDTypography>
       </MKBox>
-      {description && (
-        <MKTypography variant="body2" fontWeight="regular" color="secondary">
+      {/* {description && (
+        <MDTypography variant="body2" fontWeight="regular" color="secondary">
           {description}
-        </MKTypography>
-      )}
+        </MDTypography>
+      )} */}
     </MKBox>
   );
 }

@@ -151,33 +151,46 @@ function DefaultNavbar({ transparent, light, action }) {
         }) => ({
           backgroundColor: transparent
             ? transparentColor.main
-            : rgba(darkMode ? background.sidenav : white.main, 0.8),
+            : rgba(darkMode ? "#841317" : white.main, 0.8),
           backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
         })}
       >
         <MDBox
           component={Link}
-          to="/"
+          to="/home"
           py={transparent ? 1.5 : 0.75}
           lineHeight={1}
           pl={{ xs: 0, lg: 1 }}
         >
-          <MDTypography variant="button h2" fontWeight="bold" color={light ? "white" : "dark"}>
-            MAJID
+          <MDTypography variant="button h2" fontWeight="bold" color="red">
+            ATM{" "}
           </MDTypography>
-          <MDTypography variant="button h2" fontWeight="light" color={light ? "white" : "dark"}>
-            Learn
+          <MDTypography variant="button h2" fontWeight="regular" color="red">
+            Learning
           </MDTypography>
         </MDBox>
         <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
-          <DefaultNavbarLink icon="home" name="Home" route="/" light={light} />
+          <DefaultNavbarLink icon="home" name="Home" route="/home" light={light} />
           <DefaultNavbarLink icon="school" name="Programs" route="/programs" light={light} />
           <DefaultNavbarLink icon="local_library" name="Courses" route="/courses" light={light} />
-          <DefaultNavbarLink icon="info" name="About Us" route="/about-us" light={light} />
+          {/* <DefaultNavbarLink icon="info" name="About Us" route="/about-us" light={light} /> */}
           {token ? (
             <DefaultNavbarLink icon="backpack" name="My Learning" route="/learning" light={light} />
           ) : (
-            <div />
+            <>
+              <DefaultNavbarLink
+                icon="key"
+                name="Sign In"
+                route="/authentication/sign-in"
+                light={light}
+              />
+              <DefaultNavbarLink
+                icon="person"
+                name="Sign Up"
+                route="/authentication/sign-up"
+                light={light}
+              />
+            </>
           )}
         </MDBox>
         <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>

@@ -12,6 +12,7 @@ import MuiLink from "@mui/material/Link";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import MDTypography from "components/MDTypography";
 import MKProgress from "components/MKProgress";
 import MKBadge from "components/MKBadge";
 
@@ -58,9 +59,9 @@ function CourseCard({ image, title, description, progress, level, action }) {
       <MKProgress color="primary" value={progress} label />
       <MKBox pt={2} pb={3}>
         <Link to={action.route} sx={cardActionStyles}>
-          <MKTypography variant="h5" gutterBottom>
+          <MDTypography variant="h5" gutterBottom color="red">
             {title}
-          </MKTypography>
+          </MDTypography>
         </Link>
         <MKTypography variant="body2" component="p" color="text" mb={3}>
           {description}

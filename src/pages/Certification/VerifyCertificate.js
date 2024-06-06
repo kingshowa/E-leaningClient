@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from "react";
+
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -9,28 +11,35 @@ import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 
 // Material Kit 2 React examples
+//import DefaultNavbar from "examples/front/Navbars/DefaultNavbar";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import Footer from "layouts/authentication/components/Footer";
 
 // Images
 import bgImage from "assets/front/images/bg-about-us.jpg";
-import { useState, useEffect } from "react";
+import bgImage1 from "assets/front/images/10339629.jpg";
+
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import CertificateContent from "./CertificateContent";
+import CertificateInfoCard from "./CertificateInfoCard";
+
 import { fetchObjects } from "api.js";
+import { useAuth } from "context/authContext";
+import { useParams } from "react-router-dom";
 
-import ListPrograms from "pages/Programs/section/Programs";
-
-function Programs() {
+function Certificate() {
+  const { token } = useAuth();
+  const { id } = useParams();
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
-
-  // fetch data
+  // fetch certificate data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedData = await fetchObjects("programs", "");
-        setData(fetchedData.programs);
+        const fetchedData = await fetchObjects("certificate-verify/" + id);
+        setData(fetchedData.certificate);
         setIsLoading(false);
-        console.log(data);
+        console.log(fetchedData.certificate);
       } catch (error) {
         console.error("Failed to fetch objects:", error);
         // Set error state for displaying error message to users
@@ -38,7 +47,7 @@ function Programs() {
     };
     fetchData();
   }, []);
-
+  console.log(data);
   return (
     <>
       <DefaultNavbar />
@@ -56,43 +65,12 @@ function Programs() {
           display: "grid",
           placeItems: "center",
         }}
-      >
-        <Container>
-          <Grid
-            container
-            item
-            xs={12}
-            lg={8}
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="column"
-            sx={{ mx: "auto", textAlign: "center" }}
-          >
-            <MKTypography
-              variant="h1"
-              color="white"
-              sx={({ breakpoints, typography: { size } }) => ({
-                [breakpoints.down("md")]: {
-                  fontSize: size["3xl"],
-                },
-              })}
-            >
-              Programs
-            </MKTypography>
-            {/* <MKTypography variant="body1" color="white" opacity={0.8} mt={1} mb={3}>
-              Delve into the realm of possibilities with our array of comprehensive programs
-              designed to nurture your skills and expertise. Whether you&apos;re aiming for personal
-              growth or professional advancement, our programs counter showcases the breadth of
-              opportunities awaiting you.
-            </MKTypography> */}
-          </Grid>
-        </Container>
-      </MKBox>
+      ></MKBox>
       <Card
         sx={{
-          p: 2,
-          mx: { xs: 2, lg: 3 },
-          mt: -10,
+          p: { xs: 2, md: 4 },
+          mx: { xs: 2, lg: 10 },
+          mt: -15,
           mb: 4,
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
@@ -102,14 +80,24 @@ function Programs() {
             <p>Loading...</p>
           </div>
         ) : (
-          <ListPrograms data={data} />
+          <CertificateInfoCard
+            image={data.photo}
+            title={data.course.name}
+            info={{
+              completed_on: data.date,
+              duration: data.course.duration + " Hours",
+              modules: data.course.modules + " Modules",
+            }}
+            data={data}
+            shadow={false}
+          />
         )}
       </Card>
-      <MKBox pt={6} px={1} mt={6}>
+      <MKBox px={1}>
         <Footer />
       </MKBox>
     </>
   );
 }
 
-export default Programs;
+export default Certificate;

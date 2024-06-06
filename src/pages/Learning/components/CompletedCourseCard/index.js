@@ -12,11 +12,12 @@ import MuiLink from "@mui/material/Link";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import MDTypography from "components/MDTypography";
 import MKProgress from "components/MKProgress";
 import MKBadge from "components/MKBadge";
 import MKButton from "components/MKButton";
 
-function CourseCard({ image, title, description, progress, level, action }) {
+function CourseCard({ id, image, title, description, progress, level, action }) {
   const cardActionStyles = {
     display: "flex",
     alignItems: "center",
@@ -59,9 +60,9 @@ function CourseCard({ image, title, description, progress, level, action }) {
       <MKProgress color="success" value={progress} label />
       <MKBox pt={2} pb={3}>
         <Link to={action.route} sx={cardActionStyles}>
-          <MKTypography variant="h5" gutterBottom>
+          <MDTypography variant="h5" gutterBottom color="red">
             {title}
-          </MKTypography>
+          </MDTypography>
         </Link>
         <MKTypography variant="body2" component="p" color="text" mb={3}>
           {description}
@@ -79,7 +80,9 @@ function CourseCard({ image, title, description, progress, level, action }) {
           {action.label}
           <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
         </MKTypography>
-        <MKButton>Download Certificate</MKButton>
+        <MKButton component={Link} to={"/certificate/course/" + id}>
+          View Certificate
+        </MKButton>
       </MKBox>
     </Card>
   );
@@ -87,6 +90,7 @@ function CourseCard({ image, title, description, progress, level, action }) {
 
 // Typechecking props for the CourseCard
 CourseCard.propTypes = {
+  id: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,

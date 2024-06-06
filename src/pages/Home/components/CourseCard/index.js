@@ -34,7 +34,7 @@ function CoursesCard({ image, name, price, level, ...rest }) {
   return (
     <MKBox position="relative">
       {imageTemplate}
-      <MDTypography mt={1} variant="h6" fontWeight="medium" textTransform="capitalize">
+      <MDTypography mt={1} variant="h6" fontWeight="medium" textTransform="capitalize" color="red">
         {name}
       </MDTypography>
       <MKBox
@@ -44,12 +44,12 @@ function CoursesCard({ image, name, price, level, ...rest }) {
         justifyContent="space-between"
         alignItems="center"
       >
-        <MKTypography variant="body2" fontWeight="bold" textTransform="capitalize">
+        <MDTypography variant="body2" fontWeight="regular" textTransform="capitalize" color="red">
           {level}
-        </MKTypography>
-        <MKTypography variant="body2" fontWeight="regular" color="secondary">
+        </MDTypography>
+        <MDTypography variant="body2" fontWeight="bold" color="red">
           {price === 0 ? "Free" : price + " DA"}
-        </MKTypography>
+        </MDTypography>
       </MKBox>
     </MKBox>
   );

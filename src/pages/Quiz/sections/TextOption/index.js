@@ -34,7 +34,7 @@ function Option({ option, p_index, index, setData, isSaved }) {
             disabled={isSaved}
           />
         </MKBox>
-        <MDTypography variant="body2" color="text" fontWeight="light">
+        <MDTypography variant="body2" color="text" fontWeight="regular">
           &nbsp;&nbsp;{String.fromCharCode(65 + index)}.&nbsp;&nbsp;{option.data}
         </MDTypography>
       </MKBox>

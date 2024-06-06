@@ -8,6 +8,7 @@ import Card from "@mui/material/Card";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import MDTypography from "components/MDTypography";
 import MKButton from "components/MKButton";
 
 // Material Kit 2 React examples
@@ -76,7 +77,7 @@ function AboutUs() {
     <>
       <DefaultNavbar />
       <MKBox
-        minHeight="55vh"
+        minHeight="50vh"
         width="100%"
         sx={{
           backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
@@ -122,15 +123,16 @@ function AboutUs() {
         sx={{
           p: 2,
           mx: { xs: 2, lg: 3 },
-          mt: -15,
+          mt: -10,
           mb: 4,
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
         <Container>
           <MKBox pt={2} display="flex" justifyContent="space-between" alignItems="center">
-            <MKTypography
+            <MDTypography
               variant="h3"
+              color="red"
               sx={({ breakpoints, typography: { size } }) => ({
                 [breakpoints.down("md")]: {
                   fontSize: size["3xl"],
@@ -138,11 +140,11 @@ function AboutUs() {
               })}
             >
               My Learnings
-            </MKTypography>
+            </MDTypography>
             <SimpleToggle setToggleState={setToggleState} />
           </MKBox>
           <MKBox mt={2} mb={2} className={toggleState == 0 ? "active-content" : "content"}>
-            <MKTypography variant="body1" color="text" opacity={0.8}>
+            <MKTypography variant="body1" color="text" opacity={1}>
               In Progress
             </MKTypography>
             {isLoading ? (
