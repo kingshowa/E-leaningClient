@@ -1,6 +1,3 @@
-// react-routers components
-import { Link } from "react-router-dom";
-
 // prop-types is library for typechecking of props
 import PropTypes from "prop-types";
 
@@ -55,7 +52,7 @@ function MessagesList({ patnerId, messages, shadow }) {
                 component="a"
                 onClick={() => downloadDocument(attachment, "Attachment")}
               >
-                Download Attachment&nbsp;
+                {text}&nbsp;
                 {<Icon fontSize="small">download</Icon>}
               </MDTypography>
             ) : (

@@ -32,7 +32,7 @@ function CreateContent({ setData }) {
           <MDInput
             type="text"
             name="instruction"
-            label="Instruction"
+            label="Instruction *"
             fullWidth
             onChange={handleInputChange}
           />

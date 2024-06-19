@@ -142,7 +142,7 @@ function Overview() {
               lastName: data.surname,
               email: data.email,
               Role: data.role,
-              DateOfBirth: data.date_of_birth,
+              Phone: data.phone,
             }}
             action={{ route: "", tooltip: "Edit Profile" }}
             shadow={false}
@@ -157,11 +157,10 @@ function Overview() {
                   <MDInput
                     type="text"
                     name="name"
-                    label="First Name"
+                    label="First Name *"
                     value={data.name}
                     onChange={handleInputChange}
                     fullWidth
-                    variant="standard"
                   />
                 </MDBox>
               </Grid>
@@ -170,23 +169,22 @@ function Overview() {
                   <MDInput
                     type="text"
                     name="surname"
-                    label="Last Name"
+                    label="Last Name *"
                     value={data.surname}
                     onChange={handleInputChange}
                     fullWidth
-                    variant="standard"
                   />
                 </MDBox>
               </Grid>
               <Grid item xs={6}>
                 <MDBox my={1}>
                   <MDInput
-                    type="date"
-                    name="date_of_birth"
-                    label="Date of birth"
+                    type="text"
+                    name="phone"
+                    label="Phone Number"
+                    value={data.phone}
                     fullWidth
                     onChange={handleInputChange}
-                    variant="standard"
                   />
                 </MDBox>
               </Grid>
@@ -198,7 +196,6 @@ function Overview() {
                     label="Profile Photo"
                     fullWidth
                     onChange={handleFileUpload}
-                    variant="standard"
                   />
                 </MDBox>
               </Grid>
@@ -221,7 +218,7 @@ function Overview() {
                   <MDInput
                     type="password"
                     name="old_password"
-                    label="Old Password"
+                    label="Old Password *"
                     onChange={handleInputChange1}
                     fullWidth
                   />
@@ -231,7 +228,7 @@ function Overview() {
                 <MDBox my={1}>
                   <MDInput
                     type="password"
-                    label="New Password"
+                    label="New Password *"
                     name="password"
                     fullWidth
                     onChange={handleInputChange1}
@@ -242,7 +239,7 @@ function Overview() {
                 <MDBox my={1}>
                   <MDInput
                     type="password"
-                    label="Verify New Password"
+                    label="Verify New Password *"
                     onChange={verifyPassword}
                     fullWidth
                   />

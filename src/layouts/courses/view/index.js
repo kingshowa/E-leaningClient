@@ -251,7 +251,7 @@ function ViewCourse() {
                     <MDInput
                       type="text"
                       name="name"
-                      label="Name"
+                      label="Name *"
                       fullWidth
                       value={formData.name}
                       onChange={handleInputChange}
@@ -263,7 +263,7 @@ function ViewCourse() {
                     <MDInput
                       type="text"
                       name="code"
-                      label="Code"
+                      label="Code *"
                       fullWidth
                       value={formData.code}
                       onChange={handleInputChange}
@@ -278,7 +278,7 @@ function ViewCourse() {
                       value={formData.level}
                       onChange={handleInputChange}
                     >
-                      <MenuItem value=" ">Select Level</MenuItem>
+                      <MenuItem value=" ">-- Select Level --</MenuItem>
                       <MenuItem value="beginner">Beginner</MenuItem>
                       <MenuItem value="intermediate">Intermediate</MenuItem>
                       <MenuItem value="advanced">Advanced</MenuItem>
@@ -324,7 +324,7 @@ function ViewCourse() {
                   <MDBox my={1}>
                     <MDTextarea
                       name="description"
-                      label="Bescription"
+                      label="Description *"
                       value={formData.description}
                       onChange={handleInputChange}
                     />

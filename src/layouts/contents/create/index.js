@@ -129,7 +129,7 @@ function CreateContent() {
                       <MDInput
                         type="text"
                         name="title"
-                        label="Title"
+                        label="Title *"
                         fullWidth
                         onChange={handleInputChange}
                       />
@@ -138,7 +138,7 @@ function CreateContent() {
                   <Grid item xs={12} md={3}>
                     <MDBox my={1}>
                       <MDSelect defaultValue=" " onChange={handleChange} name="type">
-                        <MenuItem value=" ">Select content type</MenuItem>
+                        <MenuItem value=" ">-- Select content type --</MenuItem>
                         <MenuItem value="text">Reading</MenuItem>
                         {/* <MenuItem value="linked_video">Link Video</MenuItem> */}
                         <MenuItem value="video">Video</MenuItem>

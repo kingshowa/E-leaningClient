@@ -158,6 +158,7 @@ function ViewProgram() {
               firstName: data.name,
               lastName: data.surname,
               email: data.email,
+              phone: data.phone,
               Role: data.role,
               Status: data.enabled ? "Enabled" : "Disabled",
             }}

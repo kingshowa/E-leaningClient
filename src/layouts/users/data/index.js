@@ -21,6 +21,7 @@ function getColumns() {
     { Header: "User", accessor: "user", width: "30%", align: "left" },
     { Header: "role", accessor: "role", align: "left" },
     { Header: "email", accessor: "email", align: "left" },
+    { Header: "phone No", accessor: "phone", align: "left" },
     { Header: "Status", accessor: "status", align: "center" },
     { Header: "Action", accessor: "action", align: "left" },
   ];
@@ -53,6 +54,11 @@ function getRows({ items, setData, parent_id }) {
       email: (
         <MDTypography variant="caption" color="text" fontWeight="medium">
           {item.email}
+        </MDTypography>
+      ),
+      phone: (
+        <MDTypography variant="caption" color="text" fontWeight="medium">
+          {item.phone}
         </MDTypography>
       ),
       status: (

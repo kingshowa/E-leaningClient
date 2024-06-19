@@ -114,11 +114,6 @@ const adminRoutes = [
     ],
   },
   {
-    type: "collapse",
-    name: "Modules",
-    key: "modules",
-    icon: <Icon fontSize="small">style</Icon>,
-    route: "/modules",
     collapse: [
       {
         key: "modules",

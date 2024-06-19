@@ -51,7 +51,7 @@ function getDelRows({ items, setData, parent_id }) {
       ),
       duration: (
         <MDTypography variant="caption" color="text" fontWeight="medium">
-          {item.level}
+          {item.duration} Hours
         </MDTypography>
       ),
       action: (

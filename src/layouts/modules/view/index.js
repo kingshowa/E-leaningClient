@@ -146,7 +146,7 @@ function ViewModule() {
                     <MDInput
                       type="text"
                       name="name"
-                      label="Name"
+                      label="Name *"
                       fullWidth
                       value={formData.name}
                       onChange={handleInputChange}
@@ -158,7 +158,7 @@ function ViewModule() {
                     <MDInput
                       type="text"
                       name="code"
-                      label="Code"
+                      label="Code *"
                       fullWidth
                       value={formData.code}
                       onChange={handleInputChange}
@@ -169,7 +169,7 @@ function ViewModule() {
                   <MDBox my={1}>
                     <MDTextarea
                       name="description"
-                      label="Description"
+                      label="Description *"
                       value={formData.description}
                       onChange={handleInputChange}
                     />
@@ -180,24 +180,13 @@ function ViewModule() {
                     <MDInput
                       type="number"
                       name="duration"
-                      label="Duration in hours"
+                      label="Duration * (Hours)"
                       fullWidth
                       value={formData.duration}
                       onChange={handleInputChange}
                     />
                   </MDBox>
                 </Grid>
-                {/* <Grid item xs={12} md={6}>
-                  <MDBox my={1}>
-                    <SearchableSelect
-                      options={courses}
-                      name="course_id"
-                      val={formData.course_id}
-                      title="Select course"
-                      setValue={setSelectedValue}
-                    />
-                  </MDBox>
-                </Grid> */}
                 <Grid item xs={12} md={6}>
                   <MDBox my={1}>
                     <MDButton variant="gradient" color="dark" type="submit">

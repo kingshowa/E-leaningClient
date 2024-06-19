@@ -134,7 +134,7 @@ function Messages() {
   };
 
   const messageFileUpload = (file) => {
-    setMessageToSend({ ...messageToSend, ["attachment"]: file });
+    setMessageToSend({ ...messageToSend, ["attachment"]: file, ["text"]: file.name });
     document.querySelector("#message").value = file.name;
   };
 
@@ -287,7 +287,6 @@ function Messages() {
                       <MDBox>
                         <MDHidenFileInput onFileChange={messageFileUpload} />
                       </MDBox>
-
                       <MDBox sx={{ minWidth: { xs: "70%", md: "80%", xl: "85%" } }}>
                         <MDInput
                           id="message"

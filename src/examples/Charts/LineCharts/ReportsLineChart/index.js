@@ -28,6 +28,7 @@ import MDTypography from "components/MDTypography";
 
 // ReportsLineChart configurations
 import configs from "examples/Charts/LineCharts/ReportsLineChart/configs";
+import MDButton from "components/MDButton";
 
 ChartJS.register(
   CategoryScale,
@@ -40,7 +41,7 @@ ChartJS.register(
   Filler
 );
 
-function ReportsLineChart({ color, title, description, date, chart }) {
+function ReportsLineChart({ color, title, description, date, chart, setId, id }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});
 
   return (
@@ -71,13 +72,18 @@ function ReportsLineChart({ color, title, description, date, chart }) {
             {description}
           </MDTypography>
           <Divider />
-          <MDBox display="flex" alignItems="center">
-            <MDTypography variant="button" color="text" lineHeight={1} sx={{ mt: 0.15, mr: 0.5 }}>
-              <Icon>schedule</Icon>
-            </MDTypography>
-            <MDTypography variant="button" color="text" fontWeight="light">
-              {date}
-            </MDTypography>
+          <MDBox display="flex" alignItems="center" justifyContent="space-between">
+            <MDBox display="flex" alignItems="center">
+              <MDTypography variant="button" color="text" lineHeight={1} sx={{ mt: 0.15, mr: 0.5 }}>
+                <Icon>schedule</Icon>
+              </MDTypography>
+              <MDTypography variant="button" color="text" fontWeight="light">
+                {date}
+              </MDTypography>
+            </MDBox>
+            <MDButton color="dark" onClick={() => setId(id)}>
+              Students Progress
+            </MDButton>
           </MDBox>
         </MDBox>
       </MDBox>
@@ -97,6 +103,8 @@ ReportsLineChart.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   date: PropTypes.string.isRequired,
+  setId: PropTypes.func,
+  id: PropTypes.number,
   chart: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])).isRequired,
 };
 

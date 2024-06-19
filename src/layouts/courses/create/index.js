@@ -127,7 +127,7 @@ function CreateCourse() {
                       <MDInput
                         type="text"
                         name="name"
-                        label="Name"
+                        label="Name *"
                         fullWidth
                         onChange={handleInputChange}
                       />
@@ -138,7 +138,7 @@ function CreateCourse() {
                       <MDInput
                         type="text"
                         name="code"
-                        label="Code"
+                        label="Code *"
                         fullWidth
                         onChange={handleInputChange}
                       />
@@ -147,7 +147,7 @@ function CreateCourse() {
                   <Grid item xs={12} md={6}>
                     <MDBox my={1}>
                       <MDSelect defaultValue=" " name="level" onChange={handleInputChange}>
-                        <MenuItem value=" ">Select Level</MenuItem>
+                        <MenuItem value=" ">-- Select Level --</MenuItem>
                         <MenuItem value="beginner">Beginner</MenuItem>
                         <MenuItem value="intermediate">Intermediate</MenuItem>
                         <MenuItem value="advanced">Advanced</MenuItem>
@@ -198,19 +198,6 @@ function CreateCourse() {
                       />
                     </MDBox>
                   </Grid>
-                  {/* <Grid item xs={12} md={6}>
-                    <MDBox>
-                      <Switch name="enabled" />
-                      <MDTypography
-                        variant="button"
-                        fontWeight="regular"
-                        color="text"
-                        sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-                      >
-                        &nbsp;&nbsp;Enable course
-                      </MDTypography>
-                    </MDBox>
-                  </Grid> */}
                   <Grid item xs={12} md={6}>
                     <MDBox my={1}>
                       <MDButton variant="gradient" color="dark" type="submit">

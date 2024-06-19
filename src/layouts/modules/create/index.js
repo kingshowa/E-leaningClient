@@ -32,25 +32,6 @@ function CreateCourse() {
 
   const [data, setData] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
-  // const [isLoading, setIsLoading] = useState(true);
-
-  // selected value from Searchable selection
-  // const [selectedValue, setSelectedValue] = useState(0);
-  // const [courses, setCourses] = useState();
-
-  // fetch data
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data1 = await fetchObjects("courses/manage");
-  //       setCourses(data1.courses);
-  // setIsLoading(false);
-  //     } catch (error) {
-  //       console.error("Failed to fetch objects:", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
 
   // Update data management
   const handleInputChange = (e) => {
@@ -111,7 +92,7 @@ function CreateCourse() {
                       <MDInput
                         type="text"
                         name="name"
-                        label="Name"
+                        label="Name *"
                         fullWidth
                         onChange={handleInputChange}
                       />
@@ -122,28 +103,17 @@ function CreateCourse() {
                       <MDInput
                         type="text"
                         name="code"
-                        label="Code"
+                        label="Code *"
                         fullWidth
                         onChange={handleInputChange}
                       />
                     </MDBox>
                   </Grid>
-                  {/* <Grid item xs={12} md={6}>
-                    <MDBox my={1}>
-                      <SearchableSelect
-                        options={courses}
-                        name="course"
-                        val={0}
-                        title="Select course"
-                        setValue={setSelectedValue}
-                      />
-                    </MDBox>
-                  </Grid> */}
                   <Grid item xs={12} md={6}>
                     <MDBox my={1}>
                       <MDTextarea
                         name="description"
-                        label="Description"
+                        label="Description *"
                         onChange={handleInputChange}
                       />
                     </MDBox>
@@ -153,7 +123,7 @@ function CreateCourse() {
                       <MDInput
                         type="text"
                         name="duration"
-                        label="Duration in hours"
+                        label="Duration * (Hours)"
                         fullWidth
                         placeholder="0.00"
                         onChange={handleInputChange}

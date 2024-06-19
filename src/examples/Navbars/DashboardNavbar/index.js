@@ -19,6 +19,7 @@ import Icon from "@mui/material/Icon";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDInput from "components/MDInput";
+import MDAvatar from "components/MDAvatar";
 
 // Material Dashboard 2 React example components
 import Breadcrumbs from "examples/Breadcrumbs";
@@ -42,7 +43,7 @@ import {
 } from "context";
 
 function DashboardNavbar({ absolute, light, isMini }) {
-  const { token, logout } = useAuth();
+  const { token, logout, photo } = useAuth();
   const navigate = useNavigate();
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
@@ -150,9 +151,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
               <MDInput label="Search here" />
             </MDBox> */}
             <MDBox color={light ? "white" : "inherit"}>
-              <IconButton sx={navbarIconButton} size="small" disableRipple onClick={handleOpenMenu}>
-                <Icon sx={iconsStyle}>account_circle</Icon>
-              </IconButton>
               <IconButton
                 size="small"
                 disableRipple
@@ -172,6 +170,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 onClick={handleConfiguratorOpen}
               >
                 <Icon sx={iconsStyle}>settings</Icon>
+              </IconButton>
+              <IconButton sx={navbarIconButton} size="small" disableRipple onClick={handleOpenMenu}>
+                {/* <Icon sx={iconsStyle}>account_circle</Icon> */}
+                <MDAvatar
+                  bgColor="dark"
+                  src={photo ? photo : ""}
+                  alt="profile-image"
+                  size="sm"
+                  shadow="sm"
+                />
               </IconButton>
               {renderMenu()}
             </MDBox>

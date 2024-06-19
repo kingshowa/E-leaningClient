@@ -67,7 +67,12 @@ function ProfileInfoCard({ title, photo, info, name, role, action, shadow }) {
             </MDTypography>
           </MDBox>
           <MDBox display="flex" justifyContent="space-around" alignItems="center" px={2}>
-            <MDTypography variant="button" color="text" fontWeight="regular">
+            <MDTypography
+              variant="button"
+              color="text"
+              fontWeight="regular"
+              textTransform="capitalize"
+            >
               {role === "admin" ? "Administrator" : role}
             </MDTypography>
           </MDBox>

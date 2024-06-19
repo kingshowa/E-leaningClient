@@ -72,7 +72,7 @@ function AboutUs() {
     fetchData();
   }, []);
 
-  //console.log(token);
+  console.log(token);
   return (
     <>
       <DefaultNavbar />

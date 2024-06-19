@@ -25,7 +25,7 @@ import { Link } from "react-router-dom";
 import { getColumns, getRows } from "layouts/courses/data";
 import { getDelColumns, getDelRows } from "layouts/courses/data/deleted";
 
-import { fetchObjects, deleteObject } from "api.js";
+import { fetchObjects } from "api.js";
 import { useAuth } from "context/authContext";
 
 function Courses() {
